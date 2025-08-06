@@ -1,16 +1,56 @@
 # -Project name-
+_A lightweight frontend Python project_
 
 ## Information
-We'll be using pyodide to work with the frontend
+This project uses [Pyodide](https://pyodide.org) to run Python directly in the browser using WebAssembly (WASM).  
+No JavaScript is required — the frontend is written entirely in Python and HTML/CSS.
 
-...
-
-## Coding rules
-Use `ruff check` to check your code style.
-```shell
-$ ruff check
+## Current Project Structure
 ```
-### Naming
+project/
+│   .gitignore
+│   .pre-commit-config.yaml
+│   LICENSE.txt
+│   pyproject.toml
+│   README.md
+│   template_README.md
+├───.github/
+│   └───workflows/
+│           lint.yaml
+├───samples/
+│       Pipfile
+│       pyproject.toml
+└───src/
+        main.py
+```
+
+## Our coding rules
+1. Comment your classes, functions, and non-obvious logic.
+2. Use docstrings with author tags and short descriptions.
+
+```py
+class ClassName:
+    '''
+    Handles user input and validation.
+    @author Mira
+    '''
+    ...
+
+# Short function description - Author
+def do_something():
+    '''
+    Performs a single-step operation.
+    @author Mira
+    '''
+    ...
+```
+
+## Naming Stuff Rules
+Use `ruff check` to check your code style. and fix it
+```shell
+$ ruff check .
+$ ruff check . --fix
+```
 **Functions**: lowercase and use underscores
 ```py
 def my_function():
