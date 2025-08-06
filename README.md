@@ -1,4 +1,4 @@
-# -Project name-
+# -Good Project name-
 _A lightweight frontend Python project_
 
 ## Information
