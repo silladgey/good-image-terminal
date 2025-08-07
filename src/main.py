@@ -1,15 +1,10 @@
-"""
-The main entry point for client-side code
-"""
+"""The main entry point for client-side code."""
 
 from pyodide.code import run_js
 
 
-def window_init():
-    """
-    Called from the browser to initialize the window.
-    """
-
+def window_init() -> None:
+    """Initialize the window. Should be called immediately from the browser."""
     root_style = """
         #root {
             width: 100%;
@@ -22,7 +17,6 @@ def window_init():
             color: white;
         }
     """
-
     run_js(f"""
         const style = document.createElement('style');
         style.innerHTML = `{root_style}`;

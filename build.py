@@ -1,6 +1,4 @@
-"""
-The build script for the website
-"""
+"""The build script for the website."""
 
 import argparse
 import http.server
@@ -17,28 +15,22 @@ PUBLIC_DIR = _this_dir / "public"
 SRC_DIR = _this_dir / "src"
 
 
-def _zip_dir(src: pathlib.Path, dest: pathlib.Path):
-    """
-    Creates a zip file from a directory and places it in `dest`
-    """
+def _zip_dir(src: pathlib.Path, dest: pathlib.Path) -> None:
+    """Create a zip file from a directory and places it in `dest`."""
     with zipfile.ZipFile(dest, "w", zipfile.ZIP_DEFLATED) as zf:
         for file in src.iterdir():
             zf.write(file, file.relative_to(src))
 
 
 class _DevHandler(http.server.SimpleHTTPRequestHandler):
-    """
-    Allows for serving the website locally for development
-    """
+    """Allows for serving the website locally for development."""
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, directory=BUILD_DIR, **kwargs)
+    def __init__(self, request, client_address, server) -> None:  # noqa: ANN001
+        super().__init__(request, client_address, server, directory=BUILD_DIR)
 
 
-def main():
-    """
-    The main build entry point
-    """
+def main() -> None:
+    """Define the build entry point."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--no-clean", action="store_false", dest="clean", default=True)
     parser.add_argument("--serve", action="store_true", default=False)
