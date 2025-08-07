@@ -1,11 +1,14 @@
 # -Good Project name-
+
 _A lightweight frontend Python project_
 
 ## Information
+
 This project uses [Pyodide](https://pyodide.org) to run Python directly in the browser using WebAssembly (WASM).  
 No JavaScript is required — the frontend is written entirely in Python and HTML/CSS.
 
 ## Current Project Structure
+
 ```
 project/
 │   .gitignore
@@ -25,6 +28,7 @@ project/
 ```
 
 ## Our coding rules
+
 1. Comment your classes, functions, and non-obvious logic.
 2. Use docstrings with author tags and short descriptions.
 
@@ -46,17 +50,23 @@ def do_something():
 ```
 
 ## Naming Stuff Rules
+
 Use `ruff check` to check your code style. and fix it
+
 ```shell
 $ ruff check .
 $ ruff check . --fix
 ```
+
 **Functions**: lowercase and use underscores
+
 ```py
 def my_function():
     my_variable = "value"
 ```
+
 **Classes and Variable names**: PascalCase style
+
 ```py
 from typing import List
 
@@ -65,11 +75,15 @@ class MyClass:
 
 ListOfMyClass = List[MyClass]
 ```
+
 **Constants**: SCREAMING_SNAKE_CASE style
+
 ```py
 MY_CONSTANT = 1
 ```
+
 **Operators**: at the start of a newline
+
 ```py
 # No
 result = (
@@ -84,21 +98,27 @@ result = (
     * 3
 )
 ```
+
 **equivalent to None**: use `is`, `is not` instead of `==`
+
 ```py
 if variable == None: # No
     print("Variable is None")
 if variable is None: # Yes
     print("Variable is None")¨
 ```
+
 **not** positioning:
+
 ```py
 if not variable is None: # No
     print("Variable is not None")
 if variable is not None: # Yes, easier to read
     print("Variable is not None")
 ```
-**Imports**: do not import multiple modules on one line or everything from a module (*)
+
+**Imports**: do not import multiple modules on one line or everything from a module (\*)
+
 ```py
 # No
 import pathlib, os
@@ -111,11 +131,15 @@ from pathlib import Path
 ```
 
 ## Setup
+
 1. First we set up our python enviroment
+
 ```shell
 $ python -m venv .venv
 ```
+
 2. Entering it
+
 ```shell
 # Linux, Bash
 $ source .venv/bin/activate
@@ -130,11 +154,25 @@ $ .venv/bin/Activate.ps1
 # Windows, PowerShell
 > .venv\Scripts\Activate.ps1
 ```
+
 3. Installing development dependecies
+
 ```shell
 $ pip install --group dev
 ```
+
 4. If we want to exit our enviroment we do
+
 ```shell
 $ deactivate
 ```
+
+## Running the project
+
+To build the project, run
+
+```shell
+$ python build.py --serve --port 8000
+```
+
+This will serve the project on `http://localhost:8000` after building it to `build/`. If you make changes to your code, run `build.py` again to rebuild the project.
