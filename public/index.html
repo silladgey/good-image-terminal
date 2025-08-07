@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr" lwt-newtab-brighttext="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.28.1/full/pyodide.js"></script>
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript">
+      (async () => {
+        const pyodide = await loadPyodide();
+        await pyodide.runPythonAsync(`
+            from pyodide.http import pyfetch
+            response = await pyfetch("src.zip")
+            await response.unpack_archive()
+          `);
+        const main = pyodide.pyimport("main");
+        main.window_init();
+      })();
+    </script>
+  </body>
+</html>

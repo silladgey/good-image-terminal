@@ -1,0 +1,62 @@
+"""
+The build script for the website
+"""
+
+import argparse
+import http.server
+import pathlib
+import shutil
+import socketserver
+import zipfile
+
+_this_dir = pathlib.Path(__file__).parent.resolve()
+
+# Project directories
+BUILD_DIR = _this_dir / "build"
+PUBLIC_DIR = _this_dir / "public"
+SRC_DIR = _this_dir / "src"
+
+
+def _zip_dir(src: pathlib.Path, dest: pathlib.Path):
+    """
+    Creates a zip file from a directory and places it in `dest`
+    """
+    with zipfile.ZipFile(dest, "w", zipfile.ZIP_DEFLATED) as zf:
+        for file in src.iterdir():
+            zf.write(file, file.relative_to(src))
+
+
+class _DevHandler(http.server.SimpleHTTPRequestHandler):
+    """
+    Allows for serving the website locally for development
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, directory=BUILD_DIR, **kwargs)
+
+
+def main():
+    """
+    The main build entry point
+    """
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--no-clean", action="store_false", dest="clean", default=True)
+    parser.add_argument("--serve", action="store_true", default=False)
+    parser.add_argument("--port", type=int, default=8000)
+    args = parser.parse_args()
+
+    if args.clean:
+        shutil.rmtree(BUILD_DIR)
+        BUILD_DIR.mkdir(exist_ok=True)
+
+    _zip_dir(SRC_DIR, BUILD_DIR / "src.zip")
+    shutil.copytree(PUBLIC_DIR, BUILD_DIR, dirs_exist_ok=True)
+
+    if args.serve:
+        print(f"Serving on http://localhost:{args.port}")
+        httpd = socketserver.TCPServer(("", args.port), _DevHandler)
+        httpd.serve_forever()
+
+
+if __name__ == "__main__":
+    main()
