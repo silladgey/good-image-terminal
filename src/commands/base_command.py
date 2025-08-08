@@ -4,7 +4,7 @@ from src.terminal import Terminal
 class BaseCommand:
     """BaseCommand is the class that all commands should inherit from.
 
-    it contains some utility functions, but most calls should be overwritten in full command implementation.
+    it contains some utility functions, but most calls should be overridden in full command implementation.
 
     `name` and `help_pages` should be overwritten in full command implementation.
     """
@@ -21,7 +21,7 @@ class BaseCommand:
     def __call__(self, terminal: Terminal, *args: list[str]) -> bool:
         """Preforms the command being called using `*args`.
 
-        This function should be overwritten by subclasses.
+        This function should be overridden by subclasses.
 
         The subclasses implementation should handle argument handling.
 
