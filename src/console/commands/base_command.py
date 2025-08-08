@@ -1,0 +1,29 @@
+class BaseCommand:
+    """BaseCommand is the class that all commands should inherit from.
+
+    it contains some utility functions, but most calls should be overwritten in full command implementation.
+
+    `name` and `help_pages` should be overwritten in full command implementation.
+    """
+
+    name = "BaseCommand"
+    help_pages = (
+        """BaseCommand is the class that all commands should inherit from.
+
+        raises NotImplementedError when called as it and this message should never be seen.
+        if you see this message in the application report how
+        """,
+    )
+
+    def __call__(self, *args: list[str]) -> bool:
+        """Preforms the command being called using `*args`.
+
+        This function should be overwritten by subclasses.
+
+        The subclasses implementation should handle argument handling.
+
+        :param args: arguments to be passed to the command.
+        :return: True if command was executed successfully.
+        """
+        msg = "BaseCommand should not be called and should be overridden"
+        raise NotImplementedError(msg)
