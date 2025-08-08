@@ -25,7 +25,7 @@ class BaseCommand:
 
         The subclasses implementation should handle argument handling.
 
-        :param console: The terminal instance.
+        :param terminal: The terminal instance.
         :param args: Arguments to be passed to the command.
         :return: True if command was executed successfully.
         """
