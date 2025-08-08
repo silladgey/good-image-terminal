@@ -1,5 +1,8 @@
 """The main entry point for client-side code."""
 
+from importlib import import_module
+from pathlib import Path
+
 from pyodide.code import run_js
 
 
@@ -27,3 +30,14 @@ def window_init() -> None:
         div.id = 'root';
         document.body.appendChild(div);
     """)
+
+def init_modules() -> None:
+    """Import all modules in /src except main.py and call their main()."""
+    src_path = Path(__file__).parent
+    for file in src_path.iterdir():
+        if file.name == "main.py" or file.suffix != ".py":
+            continue
+        module_name = file.stem
+        module = import_module(module_name)
+        if hasattr(module, "main"):
+            module.main()

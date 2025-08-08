@@ -51,6 +51,8 @@ def main() -> None:
         print(f"Serving on http://localhost:{args.port}")
         httpd = socketserver.TCPServer(("", args.port), _DevHandler)
         httpd.serve_forever()
+    else:
+        print("Add --serve to start")
 
 
 if __name__ == "__main__":
