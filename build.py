@@ -36,8 +36,11 @@ def main() -> None:
     parser.add_argument("--serve", action="store_true", default=False)
     parser.add_argument("--port", type=int, default=8000)
     args = parser.parse_args()
-
-    if args.clean:
+    
+    if not BUILD_DIR.exists(): # FileNotFoundError if this isn't here
+        BUILD_DIR.mkdir(exist_ok=True)
+    
+    elif args.clean:
         shutil.rmtree(BUILD_DIR)
         BUILD_DIR.mkdir(exist_ok=True)
 
