@@ -27,6 +27,30 @@ project/
         main.py
 ```
 
+## Dev Code Checks
+
+Use `ruff check` to check your code style. and fix it
+
+```shell
+$ ruff check .
+$ ruff check . --fix
+```
+
+Use `pre-commit` to run linting before committing. `pre-commit install` to install.
+### Examples:
+```shell
+pre-commit run --show-diff-on-failure --all-files
+pre-commit run ruff-check --all-files
+pre-commit run check-toml --all-files
+```
+**Pre-commit hooks:**
+- `check-toml`: Lints and corrects your TOML files.
+- `check-yaml`: Lints and corrects your YAML files.
+- `end-of-file-fixer`: Makes sure you always have an empty line at the end of your file.
+- `trailing-whitespace`: Removes whitespaces at the end of each line.
+- `ruff-check`: Runs the Ruff linter.
+- `ruff-format`: Runs the Ruff formatter.
+
 ## Our coding rules
 
 1. Comment your classes, functions, and non-obvious logic.

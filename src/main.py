@@ -31,6 +31,7 @@ def window_init() -> None:
         document.body.appendChild(div);
     """)
 
+
 def init_modules() -> None:
     """Import all modules in /src except main.py and call their main()."""
     src_path = Path(__file__).parent
