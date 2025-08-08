@@ -1,5 +1,5 @@
-class Console:
-    """Console manages a custom command environment."""
+class Terminal:
+    """Terminal manages a custom command environment."""
 
     def run_str(self, command_str: str) -> bool:
         """Parse and then run the given command.
@@ -13,5 +13,5 @@ class Console:
 
 
 if __name__ == "__main__":
-    test_console = Console()
-    test_console.run_str(input())
+    test_terminal = Terminal()
+    test_terminal.run_str(input())
