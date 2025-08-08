@@ -1,10 +1,15 @@
 [project]
 # This section contains metadata about your project.
 # Don't forget to change the name, description, and authors to match your project!
-name = "code-jam-template"
-description = "Add your description here"
+name = "command-line-image-editor"
+description = "A simple yet interesting image editor."
 authors = [
-    { name = "Your Name" }
+    { name = "Mira"},
+    { name = "Julien"},
+    { name = "Jont"},
+    { name = "Philip"},
+    { name = "Ricky P"},
+    { name = "Mark"}
 ]
 version = "0.1.0"
 readme = "README.md"

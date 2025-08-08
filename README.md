@@ -5,26 +5,29 @@ _A lightweight frontend Python project_
 ## Information
 
 This project uses [Pyodide](https://pyodide.org) to run Python directly in the browser using WebAssembly (WASM).  
-No JavaScript is required — the frontend is written entirely in Python and HTML/CSS.
+Almost no JavaScript is required — the frontend is written entirely in Python and HTML/CSS.
 
 ## Current Project Structure
 
 ```
 project/
-│   .gitignore
-│   .pre-commit-config.yaml
-│   LICENSE.txt
-│   pyproject.toml
-│   README.md
-│   template_README.md
-├───.github/
-│   └───workflows/
-│           lint.yaml
-├───samples/
-│       Pipfile
-│       pyproject.toml
-└───src/
-        main.py
+│  .gitignore
+│  build.py
+│  README.md
+│
+├─ .github/workflows/
+│    lint.yaml
+│
+├─ public/
+│    index.html
+│    templates/apptemplate.html
+│
+├─ samples/
+│    Pipfile
+│
+└─ src/
+    hello.py
+    main.py
 ```
 
 ## Dev Code Checks
@@ -59,7 +62,7 @@ pre-commit run check-toml --all-files
 ```py
 class ClassName:
     '''
-    Handles user input and validation.
+    Handle user input and validation.
     @author Mira
     '''
     ...
@@ -67,7 +70,7 @@ class ClassName:
 # Short function description - Author
 def do_something():
     '''
-    Performs a single-step operation.
+    Perform a single-step operation.
     @author Mira
     '''
     ...
