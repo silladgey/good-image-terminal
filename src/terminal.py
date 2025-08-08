@@ -1,11 +1,15 @@
 class Terminal:
-    """Terminal manages a custom command environment."""
+    """Terminal manages a custom command environment.
+
+    @author
+    """
 
     def run_str(self, command_str: str) -> bool:
         """Parse and then run the given command.
 
-        :param command_str: String of command to be executed
-        :return: success of command execution
+        @author Philip
+        @param command_str: String of command to be executed
+        @return success of command execution
         """
         command_str = command_str.strip()
         print(command_str)

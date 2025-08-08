@@ -7,6 +7,8 @@ class BaseCommand:
     it contains some utility functions, but most calls should be overridden in full command implementation.
 
     `name` and `help_pages` should be overwritten in full command implementation.
+
+    @author Philip
     """
 
     name = "BaseCommand"
@@ -25,9 +27,10 @@ class BaseCommand:
 
         The subclasses implementation should handle argument handling.
 
-        :param terminal: The terminal instance.
-        :param args: Arguments to be passed to the command.
-        :return: True if command was executed successfully.
+        @author Philip
+        @param terminal: The terminal instance.
+        @param args: Arguments to be passed to the command.
+        @return True if command was executed successfully.
         """
         msg = "BaseCommand should not be called and should be overridden"
         raise NotImplementedError(msg)
