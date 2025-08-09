@@ -17,6 +17,10 @@ body {
 .image {
     background-color: #adadad;
     height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .separator {
