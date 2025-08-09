@@ -105,6 +105,12 @@
             WINDOW_HEIGHT = window.innerHeight
 
             def move_separator_to_mouse(event):
+                """
+                if the mouse is dragging the separator, 
+                changes the height of elements to keep the mouse in the center
+
+                @author Julien
+                """
                 global is_dragging
                 if is_dragging:
                     mouse_y = event.clientY
@@ -113,35 +119,46 @@
 
 
 
-            # expands the document on click
             def toggle_expand_btn(event):
+                """
+                expands the document by toggling the open class
+
+                @author Julien
+                """
                 document_panel.classList.toggle('open')
             # create a callback that won't be destroyed after the python code has run
             toggle_callback = create_proxy(toggle_expand_btn)
             expand_btn.addEventListener('click', toggle_callback)
 
 
-            # drags the separator on mouse press
             def drag(event):
+                """
+                sets the "is_dragging" variable to be True 
+                and prevents the user to select text
+
+                @author Julien
+                """
                 global is_dragging
                 is_dragging = True
                 document.body.style.userSelect = 'none'
-            # create a callback
             drag_callback = create_proxy(drag)
             separator.addEventListener('mousedown', drag_callback)
 
 
-            # realease the separator on mouse down
             def release(event):
+                """
+                sets the "is_dragging" variable to be False 
+                and alows the user to select text
+
+                @author Julien
+                """
                 global is_dragging
                 is_dragging = False
                 document.body.style.userSelect = 'auto'
-            # create a callback
             release_callback = create_proxy(release)
             document.addEventListener('mouseup', release_callback)
 
 
-            # create a callback
             move_separator_callback = create_proxy(move_separator_to_mouse)
             # when dragging separator move it to the mouse
             document.addEventListener('mousemove', move_separator_callback)
