@@ -15,7 +15,7 @@ from pyodide.ffi import create_proxy
 # interact with or reflect the JS API
 
 
-class _HTMLElement(Protocol):
+class HTMLElement(Protocol):
     """Define a protocol for HTML elements to allow for type checking. This is a subset of the DOM API."""
 
     id: str
@@ -25,7 +25,10 @@ class _HTMLElement(Protocol):
     style: Any
     className: str  # noqa: N815
 
-    def appendChild(self, child: _HTMLElement) -> None:  # noqa: N802
+    def appendChild(self, child: HTMLElement) -> None:  # noqa: N802
+        ...
+
+    def removeChild(self, child: HTMLElement) -> None:  # noqa: N802
         ...
 
     def addEventListener(self, event: str, handler: Callable) -> None:  # noqa: N802
@@ -50,14 +53,14 @@ class Element:
     underlying HTML element directly.
     """
 
-    _html_element: _HTMLElement
+    _html_element: HTMLElement
 
     def __init__(
         self,
         tag_name: str | None = None,
         *,
-        element: _HTMLElement | None = None,
-        parent: _HTMLElement | Element | None = None,
+        element: HTMLElement | None = None,
+        parent: HTMLElement | Element | None = None,
         **kwargs: Any,  # noqa: ANN401
     ) -> None:
         if element is not None:
@@ -74,7 +77,7 @@ class Element:
             self._html_element = element
             return
 
-        self._html_element = js.document.createElement(tag_name, kwargs)
+        self._html_element = js.document.createElement(tag_name)
 
         for key, value in kwargs.items():
             self._html_element.setAttribute(key, value)
@@ -89,7 +92,7 @@ class Element:
         root.appendChild(self.html_element)
 
     @property
-    def html_element(self) -> _HTMLElement:
+    def html_element(self) -> HTMLElement:
         """Get the underlying HTML element. This is a read-only property."""
         return self._html_element
 
@@ -127,6 +130,12 @@ class Element:
     @class_name.setter
     def class_name(self, value: str) -> None:
         self.html_element.className = value
+    
+    def append_child(self, child: Element) -> None:
+        self.html_element.appendChild(child.html_element)
+    
+    def remove_child(self, child: Element) -> None:
+        self.html_element.removeChild(child.html_element)
 
     def __getitem__(self, key: str) -> Any:  # noqa: ANN401
         return getattr(self.html_element, key)
@@ -138,7 +147,7 @@ class Element:
 class Button(Element):
     """A button element."""
 
-    def __init__(self, parent: _HTMLElement | None = None, **kwargs: Any) -> None:  # noqa: ANN401
+    def __init__(self, parent: HTMLElement | Element | None = None, **kwargs: Any) -> None:  # noqa: ANN401
         super().__init__("button", parent=parent, **kwargs)
 
     def on_click(self, handler: Callable[[Any], None]) -> None:
@@ -149,7 +158,7 @@ class Button(Element):
 class Input(Element):
     """An input element."""
 
-    def __init__(self, parent: _HTMLElement | None = None, **kwargs: Any) -> None:  # noqa: ANN401
+    def __init__(self, parent: HTMLElement | Element | None = None, **kwargs: Any) -> None:  # noqa: ANN401
         super().__init__("input", parent=parent, **kwargs)
 
     def on_change(self, handler: Callable[[Any], None]) -> None:
@@ -159,3 +168,10 @@ class Input(Element):
     def on_input(self, handler: Callable[[Any], None]) -> None:
         """Add an input event handler to the input."""
         self.on("input", handler)
+    
+    def on_enter(self, handler: Callable[[Any], None]) -> None:
+        """Add an input event handler to the input."""
+        def on_keydown(event: Any) -> None:  # noqa: ANN401
+            if event.keyCode == 13:
+                handler(event)        
+        self.on("keydown", on_keydown)
