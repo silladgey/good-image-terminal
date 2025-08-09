@@ -19,7 +19,7 @@ class Help(BaseCommand):
         """,
     )
 
-    def __call__(self, terminal: Terminal, *args: list[str]) -> bool:
+    def __call__(self, terminal: Terminal, *args: str) -> bool:
         """Pushes the text present in the help_pages of each command.
 
         @author Philip
