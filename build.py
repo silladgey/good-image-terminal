@@ -17,9 +17,7 @@ SRC_DIR = _this_dir / "src"
 
 def _zip_dir(src: pathlib.Path, dest: pathlib.Path) -> None:
     """Create a zip file from a directory and places it in `dest`."""
-    with zipfile.ZipFile(dest, "w", zipfile.ZIP_DEFLATED) as zf:
-        for file in src.rglob("*"):  # iterate through every single file, not just the direct children .iterdir()
-            zf.write(file, file.relative_to(src))
+    shutil.make_archive(str(dest), "zip", str(src))
 
 
 class _DevHandler(http.server.SimpleHTTPRequestHandler):
