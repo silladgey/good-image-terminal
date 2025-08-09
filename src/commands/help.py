@@ -27,6 +27,5 @@ class Help(BaseCommand):
         @param args: Arguments to be passed to the command.
         @return True if command was executed successfully.
         """
-
         terminal.output_info(f"help command ran with given arguments: {args}")
         return True
