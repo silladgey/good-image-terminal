@@ -57,6 +57,7 @@ class Help(BaseCommand):
             return False
 
         terminal.output_info(f"help for `{args[0]}`\t\t page: {page}/{len(command.help_pages)}")
-        terminal.output_info(command.help_pages[page - 1])
+        for line in command.help_pages[page - 1].split("\n"):
+            terminal.output_info(line.strip())
 
         return True
