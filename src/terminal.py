@@ -1,3 +1,6 @@
+from src import commands
+
+
 class Terminal:
     """Terminal manages a custom command environment.
 
@@ -16,7 +19,15 @@ class Terminal:
         @return success of command execution
         """
         command_str = command_str.strip()
-        print(command_str)
+        command, *args = command_str.split()
+
+        if command in commands.all_commands:
+            commands.all_commands[command](self, *args)
+        else:
+            self.output_error(f"`{command_str}` is not a valid command.")
+            self.output_error("use `help` to see list of available commands`")
+            return False
+
         return True
 
     def output_info(self, output: str) -> None:
@@ -49,4 +60,5 @@ class Terminal:
 
 if __name__ == "__main__":
     test_terminal = Terminal()
-    test_terminal.run_str(input())
+    while test_terminal.run_str(input("> ")):
+        pass
