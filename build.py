@@ -5,7 +5,6 @@ import http.server
 import pathlib
 import shutil
 import socketserver
-import zipfile
 
 _this_dir = pathlib.Path(__file__).parent.resolve()
 
@@ -17,9 +16,7 @@ SRC_DIR = _this_dir / "src"
 
 def _zip_dir(src: pathlib.Path, dest: pathlib.Path) -> None:
     """Create a zip file from a directory and places it in `dest`."""
-    with zipfile.ZipFile(dest, "w", zipfile.ZIP_DEFLATED) as zf:
-        for file in src.iterdir():
-            zf.write(file, file.relative_to(src))
+    shutil.make_archive(str(dest), "zip", str(src))
 
 
 class _DevHandler(http.server.SimpleHTTPRequestHandler):
@@ -44,7 +41,7 @@ def main() -> None:
         shutil.rmtree(BUILD_DIR)
         BUILD_DIR.mkdir(exist_ok=True)
 
-    _zip_dir(SRC_DIR, BUILD_DIR / "src.zip")
+    _zip_dir(SRC_DIR, BUILD_DIR / "src")
     shutil.copytree(PUBLIC_DIR, BUILD_DIR, dirs_exist_ok=True)
 
     if args.serve:
