@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr" lwt-newtab-brighttext="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>App template</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.28.1/full/pyodide.js"></script>
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        font-family: monospace;
+      }
+      .image {
+        background-color: #adadad;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="image" id="image">
+        <img id="preview" style="max-height: 100%; max-width: 100%;" />
+    </div>
+
+
+    <script>
+      (async () => {
+        const pyodide = await loadPyodide();
+        await pyodide.loadPackage("pillow");
+        await pyodide.runPythonAsync(`
+        from pyodide.http import pyfetch
+        response = await pyfetch("src.zip")
+        await response.unpack_archive()
+        `);
+        await pyodide.runPythonAsync(`
+        from image import Image
+        img = Image()
+        print(img.load())
+        `);
+        let pyImgUrl = await pyodide.runPythonAsync(`img.get_js_link()`);
+        document.getElementById("preview").src = pyImgUrl;
+
+      })();
+    </script>
+
+
+  </body>
+</html>
