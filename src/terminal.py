@@ -1,8 +1,19 @@
+from src import commands
+
+
 class Terminal:
     """Terminal manages a custom command environment.
 
-    @author
+    @author Philip
     """
+
+    info_colour = (255, 255, 255)
+    success_colour = (0, 255, 0)
+    error_colour = (255, 0, 0)
+
+    def __init__(self) -> None:
+        self.image = None
+        self.terminal_display = None
 
     def run_str(self, command_str: str) -> bool:
         """Parse and then run the given command.
@@ -12,10 +23,46 @@ class Terminal:
         @return success of command execution
         """
         command_str = command_str.strip()
-        print(command_str)
+        command, *args = command_str.split()
+
+        if command in commands.all_commands:
+            commands.all_commands[command](self, *args)
+        else:
+            self.output_error(f"`{command_str}` is not a valid command.")
+            self.output_error("use `help` to see list of available commands`")
+            return False
+
         return True
+
+    def output_info(self, output: str) -> None:
+        """Output the given input to the display with `info_colour`.
+
+        @author Philip
+        @param output: Text to be printed
+        @return None
+        """
+        print(output)
+
+    def output_success(self, output: str) -> None:
+        """Output the given input to the display with `success_colour`.
+
+        @author Philip
+        @param output: Text to be printed
+        @return None
+        """
+        print(output)
+
+    def output_error(self, output: str) -> None:
+        """Output the given input to the display with `error_colour`.
+
+        @author Philip
+        @param output: Text to be printed
+        @return None
+        """
+        print(output)
 
 
 if __name__ == "__main__":
     test_terminal = Terminal()
-    test_terminal.run_str(input())
+    while test_terminal.run_str(input("> ")):
+        pass

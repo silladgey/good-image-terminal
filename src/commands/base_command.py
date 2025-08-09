@@ -11,8 +11,8 @@ class BaseCommand:
     @author Philip
     """
 
-    name = "BaseCommand"
-    help_pages = (
+    name: str = "BaseCommand"
+    help_pages: tuple[str, ...] = (
         """BaseCommand is the class that all commands should inherit from.
 
         raises NotImplementedError when called as it and this message should never be seen.
@@ -20,7 +20,7 @@ class BaseCommand:
         """,
     )
 
-    def __call__(self, terminal: Terminal, *args: list[str]) -> bool:
+    def __call__(self, terminal: Terminal, *args: str) -> bool:
         """Preforms the command being called using `*args`.
 
         This function should be overridden by subclasses.
