@@ -1,4 +1,6 @@
-import js # noqa: F401 # type: ignore
+from typing import Protocol
+
+import js  # type: ignore[import]
 
 from gui.element import Element
 
@@ -75,9 +77,17 @@ body {
 }
 """
 
+
+class _MouseEvent(Protocol):
+    button: int
+    clientX: int  # noqa: N815
+    clientY: int  # noqa: N815
+
+
 def init_gui() -> Element:
+    """Initialize the GUI."""
     body = Element(element=js.document.body)
-    
+
     # Set the base style for the app
     base_style = Element("style")
     base_style.text = _base_style
@@ -89,28 +99,28 @@ def init_gui() -> Element:
 
     is_dragging = False
 
-    def move_separator_to_mouse(_, event):
+    def move_separator_to_mouse(event: _MouseEvent) -> None:
         if not is_dragging:
             return
         mouse_y = event.clientY
         image["style"].height = str(mouse_y) + "px"
-    
-    def attach_separator_to_mouse(_, event):
+
+    def attach_separator_to_mouse(event: _MouseEvent) -> None:
         if event.button != 0:
             return
         nonlocal is_dragging
         is_dragging = True
         body["style"].userSelect = "none"
 
-    def release_separator(_, _event):
+    def release_separator(_event: _MouseEvent) -> None:
         nonlocal is_dragging
         is_dragging = False
         body["style"].userSelect = "auto"
-    
-    def on_body_mousemove(element, event):
+
+    def on_body_mousemove(event: _MouseEvent) -> None:
         if is_dragging:
-            move_separator_to_mouse(element, event)
-    
+            move_separator_to_mouse(event)
+
     body.on("mouseup", release_separator)
     body.on("mousemove", on_body_mousemove)
 
@@ -119,7 +129,7 @@ def init_gui() -> Element:
 
     separator.on("mousedown", attach_separator_to_mouse)
     separator.on("mouseup", release_separator)
-    
+
     terminal = Element("div", parent=body, id="terminal")
     terminal.class_name = "terminal"
     terminal.text = "Image editor v2.1 $ ping\npong!\nImage editor v2.1 $"
@@ -131,7 +141,7 @@ def init_gui() -> Element:
     expand_btn.class_name = "expand-btn"
     expand_btn.text = "☰"
 
-    expand_btn.on("click", lambda _, _event: document_panel["classList"].toggle("open"))
+    expand_btn.on("click", lambda _: document_panel["classList"].toggle("open"))
 
     documents = Element("div", parent=document_panel, id="Documents")
     documents.class_name = "documents"
