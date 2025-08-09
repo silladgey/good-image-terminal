@@ -11,6 +11,10 @@ class Terminal:
     success_colour = (0, 255, 0)
     error_colour = (255, 0, 0)
 
+    def __init__(self) -> None:
+        self.image = None
+        self.terminal_display = None
+
     def run_str(self, command_str: str) -> bool:
         """Parse and then run the given command.
 
