@@ -85,16 +85,45 @@
 
 
     <script>
-
         const DocumentPanel = document.getElementById('DocumentPanel');
         const ExpandBtn = document.getElementById('ExpandBtn');
+        const Terminal = document.getElementById('terminal');
+        const TopImage = document.getElementById('image');
+        const Separator = document.getElementById('separator');
 
+        let isDragging = false;
+
+        // Changes the height of the terminal and the image to put the separator on the mouse:
+        function moveSeparatorToMouse(event) {
+          const windowHeight = window.innerHeight;
+          const mouseY = event.clientY;
+          TopImage.style.height = mouseY + "px";
+          Terminal.style.height = windowHeight - mouseY + "px";
+        };
 
         // expands the document on click:
         ExpandBtn.addEventListener('click', () => {
           DocumentPanel.classList.toggle('open');
         });
 
+        // drags the separator on mouse press:
+        Separator.addEventListener('mousedown', () => {
+          isDragging = true;
+          document.body.style.userSelect = 'none';
+        });
+        // realease the separator on mouse down:
+        document.addEventListener('mouseup', () => {
+          isDragging = false;
+          document.body.style.userSelect = 'auto';
+        });
+        // when dragging separator move it:
+        document.addEventListener('mousemove', (event) => {
+          if (isDragging) {
+            moveSeparatorToMouse(event);
+          } else {
+            return;
+          };
+        });
     </script>
 
 
