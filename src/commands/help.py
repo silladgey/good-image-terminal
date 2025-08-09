@@ -9,8 +9,8 @@ class Help(BaseCommand):
     @author Philip
     """
 
-    name = "help"
-    help_pages = (
+    name: str = "help"
+    help_pages: tuple[str, ...] = (
         """help is a command that displays the help documentation of the command given.
 
         Usage: help command integer

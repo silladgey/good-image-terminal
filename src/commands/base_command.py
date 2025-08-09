@@ -11,8 +11,8 @@ class BaseCommand:
     @author Philip
     """
 
-    name = "BaseCommand"
-    help_pages = (
+    name: str = "BaseCommand"
+    help_pages: tuple[str, ...] = (
         """BaseCommand is the class that all commands should inherit from.
 
         raises NotImplementedError when called as it and this message should never be seen.
