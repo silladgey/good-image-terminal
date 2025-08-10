@@ -1,4 +1,4 @@
-from src.terminal import Terminal
+import terminal
 
 
 class BaseCommand:
@@ -20,17 +20,18 @@ class BaseCommand:
         """,
     )
 
-    def __call__(self, terminal: Terminal, *args: str) -> bool:
+    def __call__(self, terminal: terminal.Terminal, *args: str) -> bool:
         """Preforms the command being called using `*args`.
 
         This function should be overridden by subclasses.
 
         The subclasses implementation should handle argument handling.
 
+        :param terminal: The terminal instance.
+        :param args: Arguments to be passed to the command.
+        :return: True if command was executed successfully.
+
         @author Philip
-        @param terminal: The terminal instance.
-        @param args: Arguments to be passed to the command.
-        @return True if command was executed successfully.
         """
         msg = "BaseCommand should not be called and should be overridden"
         raise NotImplementedError(msg)
