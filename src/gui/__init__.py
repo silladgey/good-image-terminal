@@ -59,6 +59,10 @@ body {
     color: var(--terminal-background-color);
     background-color: var(--terminal-output-color);
 }
+
+.command-verb-span {
+    text-decoration: underline;
+}
 """
 
 

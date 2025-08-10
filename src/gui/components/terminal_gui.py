@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from collections import deque
 from typing import TYPE_CHECKING, Any
 
@@ -13,17 +14,36 @@ if TYPE_CHECKING:
 KEYCODE_TAB = 9
 KEYCODE_ENTER = 13
 
+_COMMAND_VERB_REGEX = re.compile(r"^\s*\S+\b")
+
 
 class _UserInput(Element):
     def __init__(self, text: str, parent: HTMLElement | Element | None = None) -> None:
         super().__init__(tag_name="div", parent=parent)
         self.class_name = "user-input"
-        self.text = f"$ {text}"
+        self.text = "$ "
+
+        command_verb_span = Element(tag_name="span")
+        command_verb_span.class_name = "command-verb-span"
+
+        command_verb = re.search(r"^\s*\S+\b", text)
+
+        if command_verb:
+            command_verb_span.text = command_verb.group(0)
+            self.append_child(command_verb_span)
+
+            command_end = text[len(command_verb.group(0)) :]
+            command_end_span = Element(tag_name="span")
+            command_end_span.text = command_end
+            self.append_child(command_end_span)
+        else:
+            self.text += text
 
 
 class _TerminalOutput(Element):
     def __init__(self, text: str, color: str | None = None, parent: HTMLElement | Element | None = None) -> None:
         style = f"--terminal-output-color: {color};" if color is not None else ""
+        print(style)
         super().__init__(tag_name="div", parent=parent, style=style)
         self.class_name = "terminal-output"
         self.text = text
@@ -55,6 +75,7 @@ class _TerminalInput(Element):
     text_input: Input
     suggestion_span: Element
     input_wrapper: Element
+    command_verb_span: Element
 
     def __init__(self, parent: HTMLElement | Element | None = None) -> None:
         super().__init__(
@@ -79,6 +100,21 @@ class _TerminalInput(Element):
         self.suggestion_span.text = ""
 
         self.text_input = self._make_text_input()
+        self.text_input.class_name = "terminal-text-input"
+
+        self.command_verb_span = self._make_command_verb_span()
+        self.command_verb_span.class_name = "command-verb-span"
+        self.command_verb_span.text = ""
+
+    def set_value(self, value: str) -> None:
+        """Set the value of the input field, updating the command verb span as needed."""
+        self.text_input["value"] = value
+
+        command = re.search(_COMMAND_VERB_REGEX, value)
+        if not command:
+            self.command_verb_span.text = ""
+            return
+        self.command_verb_span.text = " " * len(command.group(0))
 
     def _make_input_wrapper(self) -> Element:
         """Create the input wrapper element."""
@@ -114,23 +150,42 @@ class _TerminalInput(Element):
             id="suggestion-span",
         )
 
+    def _make_command_verb_span(self) -> Element:
+        """Create the command verb span element."""
+        return Element(
+            "span",
+            parent=self.input_wrapper,
+            style="""
+                background-color: transparent;
+                font-family: monospace;
+                position: absolute;
+                left: 0;
+                top: 0;
+                font-size: 1rem;
+                pointer-events: none;
+                white-space: pre;
+                z-index: 3;
+            """,
+            id="command-verb-span",
+        )
+
     def _make_text_input(self) -> Input:
         """Create the text input element."""
         return Input(
             parent=self.input_wrapper,
-            id="terminal-input-field",
+            id="terminal-text-input",
             style="""
-                background-color: transparent;
-                color: var(--terminal-output-color);
                 width: 100%;
                 font-family: monospace;
+                background-color: var(--terminal-background-color);
+                color: var(--terminal-input-color);
                 border: 0;
                 outline: 0;
                 margin: 0;
                 padding: 0;
                 font-size: 1rem;
                 position: relative;
-                z-index: 1;
+                z-index: 2;
             """,
         )
 
@@ -169,7 +224,7 @@ class TerminalGui(Element):
     def clear_terminal_history(self) -> None:
         """Clear the terminal history."""
         self.history.clear_history()
-        self.input.text_input["value"] = ""
+        self.input.set_value("")
         self.input.set_suggestion(None)
 
     def __init__(self, parent: HTMLElement | Element | None = None) -> None:
@@ -215,6 +270,7 @@ class TerminalGui(Element):
 
         event.target.value = ""
         self.input.set_suggestion(None)
+        self.input.set_value("")
 
     def _confirm_suggestion(self, event: Any) -> None:  # noqa: ANN401
         value = event.target.value
@@ -233,9 +289,9 @@ class TerminalGui(Element):
             self.current_command_idx = None
 
         if self.current_command_idx is None:
-            self.input.text_input["value"] = ""
+            self.input.set_value("")
         else:
-            self.input.text_input["value"] = self.previous_commands[self.current_command_idx]
+            self.input.set_value(self.previous_commands[self.current_command_idx])
 
     def _on_input_control_keydown(self, event: Any) -> None:  # noqa: ANN401
         """Handle keydown events on the terminal input field if a control key was pressed."""
@@ -257,6 +313,7 @@ class TerminalGui(Element):
     def _on_input(self, event: Any) -> None:  # noqa: ANN401
         """Handle input events on the terminal input field."""
         self.input.set_suggestion(self.get_suggestion(event.target.value))
+        self.input.set_value(event.target.value)
         self.current_command_idx = None
 
     def _focus_input(self, _event: Any) -> None:  # noqa: ANN401
