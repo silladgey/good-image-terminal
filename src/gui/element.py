@@ -14,6 +14,9 @@ from pyodide.ffi import create_proxy
 # done for classes and functions that directly
 # interact with or reflect the JS API
 
+ENTER_KEY_CODE = 13
+TAB_KEY_CODE = 9
+
 
 class HTMLElement(Protocol):
     """Define a protocol for HTML elements to allow for type checking. This is a subset of the DOM API."""
@@ -26,15 +29,19 @@ class HTMLElement(Protocol):
     className: str  # noqa: N815
 
     def appendChild(self, child: HTMLElement) -> None:  # noqa: N802
+        """Append a child element to this element."""
         ...
 
     def removeChild(self, child: HTMLElement) -> None:  # noqa: N802
+        """Remove a child element from this element."""
         ...
 
     def addEventListener(self, event: str, handler: Callable) -> None:  # noqa: N802
+        """Add an event listener to this element."""
         ...
 
     def setAttribute(self, name: str, value: str) -> None:  # noqa: N802
+        """Set an attribute on this element."""
         ...
 
 
@@ -120,6 +127,7 @@ class Element:
 
     @html.setter
     def html(self, value: str) -> None:
+        """Set the HTML content of the element."""
         self.html_element.innerHTML = value
 
     @property
@@ -130,17 +138,21 @@ class Element:
     @class_name.setter
     def class_name(self, value: str) -> None:
         self.html_element.className = value
-    
+
     def append_child(self, child: Element) -> None:
+        """Append a child element to this element."""
         self.html_element.appendChild(child.html_element)
-    
+
     def remove_child(self, child: Element) -> None:
+        """Remove a child element from this element."""
         self.html_element.removeChild(child.html_element)
 
     def __getitem__(self, key: str) -> Any:  # noqa: ANN401
+        """Get an attribute on the underlying HTML element."""
         return getattr(self.html_element, key)
 
     def __setitem__(self, key: str, value: Any) -> None:  # noqa: ANN401
+        """Set an attribute on the underlying HTML element."""
         setattr(self.html_element, key, value)
 
 
@@ -168,18 +180,22 @@ class Input(Element):
     def on_input(self, handler: Callable[[Any], None]) -> None:
         """Add an input event handler to the input."""
         self.on("input", handler)
-    
+
     def on_enter(self, handler: Callable[[Any], None]) -> None:
         """Add an enter key event handler to the input."""
+
         def on_keydown(event: Any) -> None:  # noqa: ANN401
-            if event.keyCode == 13:
-                handler(event)        
+            if event.keyCode == ENTER_KEY_CODE:
+                handler(event)
+
         self.on("keydown", on_keydown)
-    
+
     def on_tab(self, handler: Callable[[Any], None]) -> None:
         """Add a tab key event handler to the input."""
+
         def on_keydown(event: Any) -> None:  # noqa: ANN401
-            if event.keyCode == 9:
+            if event.keyCode == TAB_KEY_CODE:
                 handler(event)
                 event.preventDefault()
+
         self.on("keydown", on_keydown)

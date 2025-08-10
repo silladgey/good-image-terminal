@@ -1,11 +1,9 @@
-from typing import Protocol
-
 import js  # type: ignore[import]
 
-from gui.element import Element, Input
 from gui.components.description import Description
-from gui.components.terminal_gui import TerminalGui
 from gui.components.image_preview import ImagePreview
+from gui.components.terminal_gui import TerminalGui
+from gui.element import Element
 
 _base_style = """
 html,
@@ -39,6 +37,24 @@ body {
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+#terminal::selection,
+#terminal-input::selection,
+#terminal-input-field::selection,
+.user-input::selection {
+    background-color: white;
+    color: black;
+}
+
+.terminal-output::selection {
+    color: black;
+    background-color: var(--terminal-output-color, white);
+}
+
+.terminal-output {
+    color: var(--terminal-output-color, white);
+    background-color: black;
 }
 """
 
