@@ -1,6 +1,6 @@
-from src import commands
-from src.commands import BaseCommand
-from src.terminal import Terminal
+from commands import BaseCommand
+from terminal import Terminal
+
 
 class LoadImage(BaseCommand):
     """Help is a command that displays the help documentation of the command given.
@@ -19,7 +19,7 @@ class LoadImage(BaseCommand):
     )
 
     def __call__(self, terminal: Terminal, *args: str) -> bool:
-        """Loads an image to program memory.
+        """Load an image to program memory.
 
         :param terminal: The terminal instance.
         :param args: Arguments to be passed to the command.
@@ -32,8 +32,7 @@ class LoadImage(BaseCommand):
             return False
         if args[0] == "default":
             terminal.image.load()
-        else:
-            if terminal.image.load(args[0]):
-                terminal.output_error("Image not found.")
-                return False
+        elif terminal.image.load(args[0]):
+            terminal.output_error("Image not found.")
+            return False
         return True

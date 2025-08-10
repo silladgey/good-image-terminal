@@ -1,5 +1,6 @@
-from src import commands
-from src.image import PaintImage
+import commands
+from gui.components.terminal_gui import TerminalGui
+from image import PaintImage
 
 
 class Terminal:
@@ -21,7 +22,7 @@ class Terminal:
 
         :param command_str: String of command to be executed
         :return: success of command execution
-        
+
         @author Philip
         """
         command_str = command_str.strip()
@@ -41,7 +42,7 @@ class Terminal:
 
         :param output: Text to be printed
         :return: None
-        
+
         @authors Philip
         """
         print(output)
@@ -51,7 +52,7 @@ class Terminal:
 
         :param output: Text to be printed
         :return: None
-        
+
         @author Philip
         """
         print(output)
@@ -61,7 +62,7 @@ class Terminal:
 
         :param output: Text to be printed
         :return: None
-        
+
         @author Philip
         """
         print(output)

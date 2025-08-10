@@ -1,5 +1,5 @@
-from src.commands import BaseCommand
-from src.terminal import Terminal
+from commands import BaseCommand
+from terminal import Terminal
 
 
 class Ping(BaseCommand):
