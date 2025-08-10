@@ -1,6 +1,7 @@
 from src import commands
 from src.image import Image
 
+
 class Terminal:
     """Terminal manages a custom command environment.
 
