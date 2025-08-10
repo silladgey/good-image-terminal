@@ -30,7 +30,7 @@ class Color:
         return f"#{self.r:02x}{self.g:02x}{self.b:02x}{self.a:02x}"
 
     @property
-    def hsv(self) -> tuple[int, int, int]:
+    def hsv(self) -> tuple[float, float, float]:
         """Output as tuple in HSV color space."""
         mx = max(self.r, self.g, self.b)
         mn = min(self.r, self.g, self.b)
