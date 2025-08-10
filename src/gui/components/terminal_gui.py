@@ -1,5 +1,5 @@
 from collections import deque
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 import js  # type: ignore[import]
 
@@ -129,8 +129,8 @@ class TerminalGui(Element):
         if not command:
             return None
         return None
-        # suggestions = ("help", "ping", "pong", "clear", *self.previous_commands)
-        # return next((suggestion for suggestion in suggestions if suggestion.startswith(command)), None)
+        suggestions = ("help", "ping", "pong", "clear", *self.previous_commands)
+        return next((suggestion for suggestion in suggestions if suggestion.startswith(command)), None)
 
     def print_terminal_output(self, text: str, color: str | None = None) -> None:
         """Print the given text to the terminal output with an optional color. If no color is given, white is used."""
@@ -161,7 +161,7 @@ class TerminalGui(Element):
         self.history = _TerminalHistory(parent=self)
         self.input = _TerminalInput(parent=self)
 
-        self.terminal: Optional[Terminal] = None
+        self.terminal: Terminal | None = None
 
         def submit_input(event: Any) -> None:  # noqa: ANN401
             value = event.target.value
