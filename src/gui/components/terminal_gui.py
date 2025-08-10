@@ -1,9 +1,12 @@
 from collections import deque
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import js  # type: ignore[import]
 
 from gui.element import Element, HTMLElement, Input
+
+if TYPE_CHECKING:
+    from terminal import Terminal
 
 
 class _UserInput(Element):
@@ -125,6 +128,7 @@ class TerminalGui(Element):
         """Get a suggestion for the given command. If no suggestion is found, return None."""
         if not command:
             return None
+        return None
         suggestions = ("help", "ping", "pong", "clear", *self.previous_commands)
         return next((suggestion for suggestion in suggestions if suggestion.startswith(command)), None)
 
@@ -157,14 +161,20 @@ class TerminalGui(Element):
         self.history = _TerminalHistory(parent=self)
         self.input = _TerminalInput(parent=self)
 
+        self.terminal: Terminal | None = None
+
         def submit_input(event: Any) -> None:  # noqa: ANN401
             value = event.target.value
             self.history.add_history(_UserInput(value))
             if value:
                 self.previous_commands.appendleft(value)
-            event.target.value = ""
             self.input.set_suggestion(None)
-            self.print_terminal_output(f"{value!r} is not a valid command", color="red")
+            if self.terminal:
+                self.terminal.run_str(value)
+            else:
+                print(f"Terminal_gui has no Terminal: {value}")
+
+            event.target.value = ""
 
         def on_input(event: Any) -> None:  # noqa: ANN401
             self.input.set_suggestion(self.get_suggestion(event.target.value))

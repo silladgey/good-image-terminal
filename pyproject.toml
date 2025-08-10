@@ -71,3 +71,7 @@ ignore = [
     "TD003",
     "FIX",
 ]
+
+[tool.ruff.lint.per-file-ignores]
+# ignore Magic value and ambigus variable names when handling colors and color space conversions
+"src/utils/color.py" = ["E741", "PLR2004"]
