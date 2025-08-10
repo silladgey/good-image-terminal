@@ -39,6 +39,19 @@ body {
     overflow-x: hidden;
 }
 
+#image-preview {
+    cursor: pointer;
+}
+
+#image-preview:hover {
+    background-color: #b8b8b8;
+}
+
+#image-preview.drag-over {
+    background-color: #e3f2fd !important;
+    border-color: #2196f3 !important;
+}
+
 #terminal::selection,
 #terminal-input::selection,
 #terminal-input-field::selection,

@@ -1,12 +1,15 @@
 from typing import Any
 
+import js  # type: ignore[import]
+
 from gui.element import Element, HTMLElement
 
 
 class ImagePreview(Element):
-    """A component for displaying an image preview with a draggable separator."""
+    """A component for displaying an image preview with a draggable separator and drag-drop upload functionality."""
 
     is_dragging = False
+    current_image_src = None
 
     def __init__(self, parent: HTMLElement | Element | None = None) -> None:
         super().__init__(
@@ -21,10 +24,90 @@ class ImagePreview(Element):
             justify-content: center;
             align-items: center;
             flex-shrink: 0;
+            position: relative;
+            border: 2px dashed transparent;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
         """,
         )
         self.class_name = "image-preview"
-        self.text = "[Placeholder Image]"
+
+        # Create container for image or placeholder
+        self.image_container = Element(
+            "div",
+            parent=self,
+            style="""
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        """,
+        )
+
+        # Create image element (initially hidden)
+        self.image_element = Element(
+            "img",
+            parent=self.image_container,
+            style="""
+            max-width: 100%;
+            max-height: 100%;
+            display: none;
+            object-fit: contain;
+        """,
+        )
+
+        # Create placeholder text
+        self.placeholder_text = Element(
+            "div",
+            parent=self.image_container,
+            style="""
+            font-size: 18px;
+            color: #666;
+            text-align: center;
+            user-select: none;
+        """,
+        )
+        self.placeholder_text.text = "Drop an image here or click to upload"
+
+        # Create drag overlay
+        self.drag_overlay = Element(
+            "div",
+            parent=self,
+            style="""
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 123, 255, 0.1);
+            border: 2px dashed #007bff;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        """,
+        )
+
+        overlay_text = Element(
+            "div",
+            parent=self.drag_overlay,
+            style="""
+            font-size: 24px;
+            color: #007bff;
+            font-weight: bold;
+            text-align: center;
+            user-select: none;
+        """,
+        )
+        overlay_text.text = "Drop image here"
+
+        # Add drag and drop event listeners
+        self._setup_drag_and_drop()
+
+        # Add click to upload functionality
+        self.on("click", self._handle_click_upload)
+
         separator = Element(
             "div",
             parent=parent,
