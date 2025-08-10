@@ -1,5 +1,9 @@
-from commands import BaseCommand
-from terminal import Terminal
+from typing import TYPE_CHECKING
+
+from commands.base_command import BaseCommand
+
+if TYPE_CHECKING:
+    from terminal import Terminal
 
 
 class LoadImage(BaseCommand):
@@ -18,7 +22,7 @@ class LoadImage(BaseCommand):
         """,
     )
 
-    def __call__(self, terminal: Terminal, *args: str) -> bool:
+    def __call__(self, terminal: "Terminal", *args: str) -> bool:
         """Load an image to program memory.
 
         :param terminal: The terminal instance.

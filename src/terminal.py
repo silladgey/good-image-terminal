@@ -1,4 +1,4 @@
-import commands
+from commands import all_commands
 from gui.components.terminal_gui import TerminalGui
 from image import PaintImage
 from utils.color import Color
@@ -31,8 +31,8 @@ class Terminal:
         command_str = command_str.strip()
         command, *args = command_str.split()
 
-        if command in commands.all_commands:
-            commands.all_commands[command](self, *args)
+        if command in all_commands:
+            all_commands[command](self, *args)
         else:
             self.output_error(f"`{command_str}` is not a valid command.")
             self.output_error("use `help` to see list of available commands`")
@@ -69,9 +69,3 @@ class Terminal:
         @author Philip
         """
         print(output)
-
-
-if __name__ == "__main__":
-    test_terminal = Terminal()
-    while test_terminal.run_str(input("> ")):
-        pass

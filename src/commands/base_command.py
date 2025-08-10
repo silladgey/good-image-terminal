@@ -1,4 +1,7 @@
-import terminal
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from terminal import Terminal
 
 
 class BaseCommand:
@@ -20,7 +23,7 @@ class BaseCommand:
         """,
     )
 
-    def __call__(self, terminal: terminal.Terminal, *args: str) -> bool:
+    def __call__(self, terminal: "Terminal", *args: str) -> bool:
         """Preforms the command being called using `*args`.
 
         This function should be overridden by subclasses.
