@@ -19,7 +19,7 @@ class LoadImage(BaseCommand):
     )
 
     def __call__(self, terminal: Terminal, *args: str) -> bool:
-        """Loads an image to program memory.
+        """Load an image to program memory.
 
         :param terminal: The terminal instance.
         :param args: Arguments to be passed to the command.
