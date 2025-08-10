@@ -5,6 +5,9 @@ import js  # type: ignore[import]
 
 from gui.element import Element, HTMLElement, Input
 
+KEYCODE_TAB = 9
+KEYCODE_ENTER = 13
+
 
 class _UserInput(Element):
     def __init__(self, text: str, parent: HTMLElement | Element | None = None) -> None:
@@ -15,10 +18,7 @@ class _UserInput(Element):
 
 class _TerminalOutput(Element):
     def __init__(self, text: str, color: str | None = None, parent: HTMLElement | Element | None = None) -> None:
-        if color is not None:
-            style = f"--terminal-output-color: {color};"
-        else:
-            style = ""
+        style = f"--terminal-output-color: {color};" if color is not None else ""
         super().__init__(tag_name="div", parent=parent, style=style)
         self.class_name = "terminal-output"
         self.text = text
@@ -39,10 +39,17 @@ class _TerminalHistory(Element):
             # Scroll to the bottom
             self["parentElement"].scrollTop = self["parentElement"].scrollHeight
 
+    def clear_history(self) -> None:
+        """Clear the terminal history."""
+        for element in self._elements:
+            self.remove_child(element)
+        self._elements.clear()
+
 
 class _TerminalInput(Element):
     text_input: Input
     suggestion_span: Element
+    _input_wrapper: Element
 
     def __init__(self, parent: HTMLElement | Element | None = None) -> None:
         super().__init__(
@@ -60,7 +67,17 @@ class _TerminalInput(Element):
         self.text = "$ "
 
         # Wrapper for suggestion and input, to allow overlap
-        self._input_wrapper = Element(
+        self._input_wrapper = self._make_input_wrapper()
+
+        self.suggestion_span = self._make_suggestion_span()
+        self.suggestion_span.class_name = "suggestion-span"
+        self.suggestion_span.text = ""
+
+        self.text_input = self._make_text_input()
+
+    def _make_input_wrapper(self) -> Element:
+        """Create the input wrapper element."""
+        return Element(
             "div",
             parent=self,
             style="""
@@ -72,7 +89,9 @@ class _TerminalInput(Element):
             """,
         )
 
-        self.suggestion_span = Element(
+    def _make_suggestion_span(self) -> Element:
+        """Create the suggestion span element."""
+        return Element(
             "span",
             parent=self._input_wrapper,
             style="""
@@ -89,10 +108,10 @@ class _TerminalInput(Element):
             """,
             id="suggestion-span",
         )
-        self.suggestion_span.class_name = "suggestion-span"
-        self.suggestion_span.text = ""
 
-        self.text_input = Input(
+    def _make_text_input(self) -> Input:
+        """Create the text input element."""
+        return Input(
             parent=self._input_wrapper,
             id="terminal-input-field",
             style="""
@@ -123,17 +142,27 @@ class TerminalGui(Element):
     max_previous_commands: int = 20
     previous_commands: deque[str]
 
+    # For navigating through previous commands
+    # This is used to allow the user to cycle through previous commands with the up/down arrow
+    current_command_idx: int | None = None
+
     def get_suggestion(self, command: str | None) -> str | None:
         """Get a suggestion for the given command. If no suggestion is found, return None."""
         if not command:
             return None
-        suggestions = ("help", "ping", "pong", "clear", *self.previous_commands)
+        suggestions = ("help", "ping", "pong", "clear", "clear-terminal", *self.previous_commands)
         return next((suggestion for suggestion in suggestions if suggestion.startswith(command)), None)
 
     def print_terminal_output(self, text: str, color: str | None = None) -> None:
         """Print the given text to the terminal output with an optional color. If no color is given, white is used."""
         output = _TerminalOutput(text, color=color)
         self.history.add_history(output)
+
+    def clear_terminal_history(self) -> None:
+        """Clear the terminal history."""
+        self.history.clear_history()
+        self.input.text_input["value"] = ""
+        self.input.set_suggestion(None)
 
     def __init__(self, parent: HTMLElement | Element | None = None) -> None:
         super().__init__(
@@ -159,30 +188,67 @@ class TerminalGui(Element):
         self.history = _TerminalHistory(parent=self)
         self.input = _TerminalInput(parent=self)
 
-        def submit_input(event: Any) -> None:  # noqa: ANN401
-            value = event.target.value
-            self.history.add_history(_UserInput(value))
-            if value:
-                self.previous_commands.appendleft(value)
-            event.target.value = ""
-            self.input.set_suggestion(None)
-            self.print_terminal_output(f"{value!r} is not a valid command", color="red")
+        self.input.text_input.on("keydown", self._on_input_control_keydown)
+        self.input.text_input.on("input", self._on_input)
+        self.on("click", self._focus_input)
 
-        def on_input(event: Any) -> None:  # noqa: ANN401
-            self.input.set_suggestion(self.get_suggestion(event.target.value))
+    def _submit_input(self, event: Any) -> None:  # noqa: ANN401
+        value = event.target.value
+        self.history.add_history(_UserInput(value))
 
-        def confirm_suggestion(event: Any) -> None:  # noqa: ANN401
-            value = event.target.value
-            event.target.value = self.get_suggestion(value) or value
+        last_command = self.previous_commands[-1] if self.previous_commands else None
+        if value and (last_command is None or value != last_command):
+            self.previous_commands.append(value)
 
-        self.input.text_input.on_enter(submit_input)
-        self.input.text_input.on_input(on_input)
-        self.input.text_input.on_tab(confirm_suggestion)
+        event.target.value = ""
+        self.input.set_suggestion(None)
 
-        def focus_input(event: Any) -> None:  # noqa: ANN401
-            if event.target != event.currentTarget or len(js.window.getSelection().toString()) > 0:
-                # If text is selected, do not steal focus
-                return
-            self.input.text_input["focus"]()
+    def _confirm_suggestion(self, event: Any) -> None:  # noqa: ANN401
+        value = event.target.value
+        event.target.value = self.get_suggestion(value) or value
 
-        self.on("click", focus_input)
+    def _navigate_commands(self, offset: int) -> None:
+        """Navigate through previous commands based on the offset."""
+        if not self.previous_commands:
+            return
+
+        if self.current_command_idx is None:
+            self.current_command_idx = len(self.previous_commands)
+
+        self.current_command_idx = max(0, self.current_command_idx + offset)
+        if self.current_command_idx >= len(self.previous_commands):
+            self.current_command_idx = None
+
+        if self.current_command_idx is None:
+            self.input.text_input["value"] = ""
+        else:
+            self.input.text_input["value"] = self.previous_commands[self.current_command_idx]
+
+    def _on_input_control_keydown(self, event: Any) -> None:  # noqa: ANN401
+        """Handle keydown events on the terminal input field if a control key was pressed."""
+        if event.keyCode == KEYCODE_ENTER:
+            self._submit_input(event)
+            self.current_command_idx = None
+            event.preventDefault()
+        elif event.keyCode == KEYCODE_TAB:
+            self._confirm_suggestion(event)
+            self.current_command_idx = None
+            event.preventDefault()
+        elif event.key == "ArrowUp":
+            self._navigate_commands(-1)
+            event.preventDefault()
+        elif event.key == "ArrowDown":
+            self._navigate_commands(1)
+            event.preventDefault()
+
+    def _on_input(self, event: Any) -> None:  # noqa: ANN401
+        """Handle input events on the terminal input field."""
+        self.input.set_suggestion(self.get_suggestion(event.target.value))
+        self.current_command_idx = None
+
+    def _focus_input(self, _event: Any) -> None:  # noqa: ANN401
+        """Focus the input field."""
+        if len(js.window.getSelection().toString()) > 0:
+            # If text is selected, do not steal focus
+            return
+        self.input.text_input["focus"]()

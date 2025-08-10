@@ -14,9 +14,6 @@ from pyodide.ffi import create_proxy
 # done for classes and functions that directly
 # interact with or reflect the JS API
 
-ENTER_KEY_CODE = 13
-TAB_KEY_CODE = 9
-
 
 class HTMLElement(Protocol):
     """Define a protocol for HTML elements to allow for type checking. This is a subset of the DOM API."""
@@ -180,22 +177,3 @@ class Input(Element):
     def on_input(self, handler: Callable[[Any], None]) -> None:
         """Add an input event handler to the input."""
         self.on("input", handler)
-
-    def on_enter(self, handler: Callable[[Any], None]) -> None:
-        """Add an enter key event handler to the input."""
-
-        def on_keydown(event: Any) -> None:  # noqa: ANN401
-            if event.keyCode == ENTER_KEY_CODE:
-                handler(event)
-
-        self.on("keydown", on_keydown)
-
-    def on_tab(self, handler: Callable[[Any], None]) -> None:
-        """Add a tab key event handler to the input."""
-
-        def on_keydown(event: Any) -> None:  # noqa: ANN401
-            if event.keyCode == TAB_KEY_CODE:
-                handler(event)
-                event.preventDefault()
-
-        self.on("keydown", on_keydown)
