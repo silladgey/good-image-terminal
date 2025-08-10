@@ -23,10 +23,11 @@ class Help(BaseCommand):
     def __call__(self, terminal: Terminal, *args: str) -> bool:
         """Pushes the text present in the help_pages of each command.
 
+        :param terminal: The terminal instance.
+        :param args: Arguments to be passed to the command.
+        :return: True if command was executed successfully.
+
         @author Philip
-        @param terminal: The terminal instance.
-        @param args: Arguments to be passed to the command.
-        @return True if command was executed successfully.
         """
         page = 1
         match len(args):

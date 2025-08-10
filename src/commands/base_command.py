@@ -27,10 +27,11 @@ class BaseCommand:
 
         The subclasses implementation should handle argument handling.
 
+        :param terminal: The terminal instance.
+        :param args: Arguments to be passed to the command.
+        :return: True if command was executed successfully.
+
         @author Philip
-        @param terminal: The terminal instance.
-        @param args: Arguments to be passed to the command.
-        @return True if command was executed successfully.
         """
         msg = "BaseCommand should not be called and should be overridden"
         raise NotImplementedError(msg)

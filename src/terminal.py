@@ -1,5 +1,5 @@
 from src import commands
-from src.image import Image
+from src.image import PaintImage
 
 
 class Terminal:
@@ -12,16 +12,17 @@ class Terminal:
     success_colour = (0, 255, 0)
     error_colour = (255, 0, 0)
 
-    def __init__(self, image: Image) -> None:
+    def __init__(self, image: PaintImage) -> None:
         self.image = image
         self.terminal_display = None
 
     def run_str(self, command_str: str) -> bool:
         """Parse and then run the given command.
 
+        :param command_str: String of command to be executed
+        :return: success of command execution
+        
         @author Philip
-        @param command_str: String of command to be executed
-        @return success of command execution
         """
         command_str = command_str.strip()
         command, *args = command_str.split()
@@ -38,27 +39,30 @@ class Terminal:
     def output_info(self, output: str) -> None:
         """Output the given input to the display with `info_colour`.
 
-        @author Philip
-        @param output: Text to be printed
-        @return None
+        :param output: Text to be printed
+        :return: None
+        
+        @authors Philip
         """
         print(output)
 
     def output_success(self, output: str) -> None:
         """Output the given input to the display with `success_colour`.
 
+        :param output: Text to be printed
+        :return: None
+        
         @author Philip
-        @param output: Text to be printed
-        @return None
         """
         print(output)
 
     def output_error(self, output: str) -> None:
         """Output the given input to the display with `error_colour`.
 
+        :param output: Text to be printed
+        :return: None
+        
         @author Philip
-        @param output: Text to be printed
-        @return None
         """
         print(output)
 
