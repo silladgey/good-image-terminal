@@ -180,9 +180,8 @@ class TerminalGui(Element):
         self.input.text_input.on_tab(confirm_suggestion)
 
         def focus_input(event: Any) -> None:  # noqa: ANN401
-            if event.target != event.currentTarget or js.window.getSelection().anchorNode == self.html_element:
-                # If the click is on the terminal element itself, focus the input
-                # Otherwise, do nothing
+            if event.target != event.currentTarget or len(js.window.getSelection().toString()) > 0:
+                # If text is selected, do not steal focus
                 return
             self.input.text_input["focus"]()
 

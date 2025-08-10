@@ -49,13 +49,13 @@ body {
 }
 
 #terminal, #terminal * {
-    color: black;
-    background-color: var(--terminal-output-color);
+    color: var(--terminal-output-color);
+    background-color: var(--terminal-background-color);
 }
 
-#terminal, #terminal * {
-    color: var(--terminal-output-color);
-    background-color: black;
+#terminal::selection, #terminal *::selection {
+    color: var(--terminal-background-color);
+    background-color: var(--terminal-output-color);
 }
 """
 
