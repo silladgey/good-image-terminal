@@ -55,9 +55,9 @@ class ImagePreview(Element):
         if event.button != 0:
             return
         self.is_dragging = True
-        self["style"].userSelect = "none"
+        self["parentElement"].style.userSelect = "none"
 
     def on_separator_mouse_up(self, _event: Any) -> None:  # noqa: ANN401
         """Handle mouse up on the separator to stop dragging."""
         self.is_dragging = False
-        self["style"].userSelect = "auto"
+        self["parentElement"].style.userSelect = "auto"
