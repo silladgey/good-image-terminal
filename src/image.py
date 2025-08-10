@@ -21,12 +21,11 @@ class PaintImage:
         self._custom_image = False
 
     def load(self, image_name: str = "default.png") -> int:
-        '''
-        Load image from images.
+        """Load image from images.
 
         params image_name: name of an image with .ext
         return returns 0 if image has loaded 1 if the image wasn't located
-        '''
+        """
         if (IMAGES_DIR / image_name).exists():
             self.img = _Image.open(IMAGES_DIR / image_name, "r").copy()
             self.img_name = image_name
@@ -66,9 +65,8 @@ class PaintImage:
 
     def set_pixel(self, x: int, y: int, color) -> None:
         """Set an image pixel."""
-        self.img.putpixel((x,y), color)
-        return
-    
-    def get_pixel(self, x:int, y:int) -> tuple[int, ...]:
+        self.img.putpixel((x, y), color)
+
+    def get_pixel(self, x: int, y: int) -> tuple[int, ...]:
         """Get an image pixel."""
-        return self.img.getpixel((x,y))
+        return self.img.getpixel((x, y))
