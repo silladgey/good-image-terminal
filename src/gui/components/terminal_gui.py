@@ -1,13 +1,15 @@
 from collections import deque
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import js  # type: ignore[import]
 
 from gui.element import Element, HTMLElement, Input
 
+if TYPE_CHECKING:
+    from terminal import Terminal
+
 KEYCODE_TAB = 9
 KEYCODE_ENTER = 13
-
 
 class _UserInput(Element):
     def __init__(self, text: str, parent: HTMLElement | Element | None = None) -> None:
@@ -150,7 +152,8 @@ class TerminalGui(Element):
         """Get a suggestion for the given command. If no suggestion is found, return None."""
         if not command:
             return None
-        suggestions = ("help", "ping", "pong", "clear", "clear-terminal", *self.previous_commands)
+        return None
+        suggestions = ("help", "ping", "pong", "clear", *self.previous_commands)
         return next((suggestion for suggestion in suggestions if suggestion.startswith(command)), None)
 
     def print_terminal_output(self, text: str, color: str | None = None) -> None:
@@ -187,7 +190,7 @@ class TerminalGui(Element):
 
         self.history = _TerminalHistory(parent=self)
         self.input = _TerminalInput(parent=self)
-
+        
         self.input.text_input.on("keydown", self._on_input_control_keydown)
         self.input.text_input.on("input", self._on_input)
         self.on("click", self._focus_input)

@@ -40,8 +40,8 @@
         await response.unpack_archive()
         `);
         await pyodide.runPythonAsync(`
-        from image import Image
-        img = Image()
+        from image import PaintImage
+        img = PaintImage()
         print(img.load())
         `);
         let pyImgUrl = await pyodide.runPythonAsync(`img.get_js_link()`);

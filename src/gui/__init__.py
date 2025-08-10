@@ -4,6 +4,8 @@ from gui.components.description import Description
 from gui.components.image_preview import ImagePreview
 from gui.components.terminal_gui import TerminalGui
 from gui.element import Element
+from image import PaintImage
+from terminal import Terminal
 
 _base_style = """
 html,
@@ -70,11 +72,15 @@ def init_gui() -> Element:
     js.document.head.appendChild(base_style.html_element)
 
     image_preview = ImagePreview(parent=body)
-    TerminalGui(parent=body)
+    terminal_gui = TerminalGui(parent=body)
     description = Description(parent=body)
 
     body.on("click", lambda _: description["classList"].remove("open"))
     body.on("mouseup", image_preview.on_separator_mouse_up)
     body.on("mousemove", image_preview.on_separator_mouse_move)
+
+    # Set up objects
+    image = PaintImage()
+    Terminal(image, terminal_gui)
 
     return body
