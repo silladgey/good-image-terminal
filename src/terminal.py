@@ -1,5 +1,5 @@
 from src import commands
-
+from src.image import Image
 
 class Terminal:
     """Terminal manages a custom command environment.
@@ -11,8 +11,8 @@ class Terminal:
     success_colour = (0, 255, 0)
     error_colour = (255, 0, 0)
 
-    def __init__(self) -> None:
-        self.image = None
+    def __init__(self, image: Image) -> None:
+        self.image = image
         self.terminal_display = None
 
     def run_str(self, command_str: str) -> bool:
