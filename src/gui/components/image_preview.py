@@ -43,6 +43,120 @@ class ImagePreview(Element):
         separator.on("mousedown", self.on_separator_mouse_down)
         separator.on("mouseup", self.on_separator_mouse_up)
 
+    def _setup_drag_and_drop(self) -> None:
+        """Set up drag and drop event handlers."""
+        self.on("dragover", self._handle_drag_over)
+        self.on("dragenter", self._handle_drag_enter)
+        self.on("dragleave", self._handle_drag_leave)
+        self.on("drop", self._handle_drop)
+
+    def _handle_drag_over(self, event: Any) -> None:  # noqa: ANN401
+        """Handle drag over event."""
+        event.preventDefault()
+        event.stopPropagation()
+
+    def _handle_drag_enter(self, event: Any) -> None:  # noqa: ANN401
+        """Handle drag enter event."""
+        event.preventDefault()
+        event.stopPropagation()
+        self.drag_overlay["style"].display = "flex"
+        self["style"].borderColor = "#007bff"
+
+    def _handle_drag_leave(self, event: Any) -> None:  # noqa: ANN401
+        """Handle drag leave event."""
+        event.preventDefault()
+        event.stopPropagation()
+        # Only hide overlay if we're leaving the image preview container
+        if not self.html_element.contains(event.relatedTarget):
+            self.drag_overlay["style"].display = "none"
+            self["style"].borderColor = "transparent"
+
+    def _handle_drop(self, event: Any) -> None:  # noqa: ANN401
+        """Handle file drop event."""
+        event.preventDefault()
+        event.stopPropagation()
+
+        self.drag_overlay["style"].display = "none"
+        self["style"].borderColor = "transparent"
+
+        files = event.dataTransfer.files
+        if files.length > 0:
+            file = files[0]
+            if file.type.startswith("image/"):
+                self._handle_file_upload(file)
+            else:
+                self._show_error("Please drop an image file (PNG, JPG, etc.)")
+
+    def _handle_click_upload(self, event: Any) -> None:  # noqa: ANN401
+        """Handle click to upload functionality."""
+        # Create a hidden file input
+        file_input = js.document.createElement("input")
+        file_input.type = "file"
+        file_input.accept = "image/*"
+        file_input.style.display = "none"
+
+        # Handle file selection
+        def handle_file_select(e):
+            files = e.target.files
+            if files.length > 0:
+                self._handle_file_upload(files[0])
+
+        file_input.addEventListener("change", handle_file_select)
+        js.document.body.appendChild(file_input)
+        file_input.click()
+        js.document.body.removeChild(file_input)
+
+    def _handle_file_upload(self, file: Any) -> None:  # noqa: ANN401
+        """Handle the uploaded file."""
+        # Create FileReader to read the file
+        reader = js.FileReader.new()
+
+        def on_load(event):
+            # Get the file data
+            array_buffer = event.target.result
+            uint8_array = js.Uint8Array.new(array_buffer)
+
+            # Convert to Python bytes
+            image_bytes = bytes(uint8_array.to_py())
+
+            # Load into our Image class
+            try:
+                from image import Image
+
+                img = Image()
+                if img.load_from_bytes(image_bytes, file.name) == 0:
+                    # Successfully loaded, display the image
+                    self.display_image(img.get_js_link())
+                    print(f"Successfully loaded image: {file.name}")
+                    print(f"Image size: {img.get_image_info()['size']}")
+                else:
+                    self._show_error("Failed to load image")
+            except Exception as e:
+                self._show_error(f"Error processing image: {str(e)}")
+
+        reader.addEventListener("load", on_load)
+        reader.readAsArrayBuffer(file)
+
+    def display_image(self, image_src: str) -> None:
+        """Display an image in the preview area."""
+        self.current_image_src = image_src
+        self.image_element["src"] = image_src
+        self.image_element["style"].display = "block"
+        self.placeholder_text["style"].display = "none"
+
+    def _show_error(self, message: str) -> None:
+        """Show an error message."""
+        self.placeholder_text.text = f"Error: {message}"
+        self.placeholder_text["style"].color = "red"
+        # Reset after 3 seconds
+        js.setTimeout(lambda: self._reset_placeholder(), 3000)
+
+    def _reset_placeholder(self) -> None:
+        """Reset placeholder to original state."""
+        if not self.current_image_src:
+            self.placeholder_text.text = "Drop an image here or click to upload"
+            self.placeholder_text["style"].color = "#666"
+
     def on_separator_mouse_move(self, event: Any) -> None:  # noqa: ANN401
         """Handle mouse movement over the separator to adjust the height of the image preview."""
         if not self.is_dragging:
