@@ -60,7 +60,7 @@ body {
     background-color: var(--terminal-output-color);
 }
 
-.command-verb-span {
+.terminal-input-verb-text, .command-verb-span {
     text-decoration: underline;
 }
 """
