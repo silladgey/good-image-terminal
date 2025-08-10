@@ -48,7 +48,7 @@ class Terminal:
 
         @authors Philip
         """
-        print(output)
+        self.terminal_display.print_terminal_output(output, self.info_colour.hex)
 
     def output_success(self, output: str) -> None:
         """Output the given input to the display with `success_colour`.
@@ -58,7 +58,7 @@ class Terminal:
 
         @author Philip
         """
-        print(output)
+        self.terminal_display.print_terminal_output(output, self.success_colour.hex)
 
     def output_error(self, output: str) -> None:
         """Output the given input to the display with `error_colour`.
@@ -68,4 +68,4 @@ class Terminal:
 
         @author Philip
         """
-        print(output)
+        self.terminal_display.print_terminal_output(output, self.error_colour.hex)
