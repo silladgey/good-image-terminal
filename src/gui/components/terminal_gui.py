@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections import deque
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import js  # type: ignore[import]
 
@@ -12,6 +12,7 @@ if TYPE_CHECKING:
 
 KEYCODE_TAB = 9
 KEYCODE_ENTER = 13
+
 
 class _UserInput(Element):
     def __init__(self, text: str, parent: HTMLElement | Element | None = None) -> None:
@@ -206,12 +207,12 @@ class TerminalGui(Element):
         last_command = self.previous_commands[-1] if self.previous_commands else None
         if value and (last_command is None or value != last_command):
             self.previous_commands.append(value)
-        
+
         if self.terminal is not None:
             self.terminal.run_str(value)
-        else: 
+        else:
             print("Warning: TerminalGui has no Terminal instance assigned.")
-        
+
         event.target.value = ""
         self.input.set_suggestion(None)
 
