@@ -1,7 +1,8 @@
-from typing import Protocol
-
 import js  # type: ignore[import]
 
+from gui.components.description import Description
+from gui.components.image_preview import ImagePreview
+from gui.components.terminal_gui import TerminalGui
 from gui.element import Element
 
 _base_style = """
@@ -13,35 +14,10 @@ body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    font-family: monospace, serif;
+    font-family: monospace;
 }
 
-.image {
-    background-color: #adadad;
-    height: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.separator {
-    background-color: rgb(119, 119, 119);
-    width: 100%;
-    height: 1%;
-    cursor: pointer;
-}
-
-.terminal {
-    font-size: 1.5em;
-    padding: 20px;
-    background-color: black;
-    color: white;
-    flex-grow: 1;
-    overflow-y: scroll;
-}
-
-.document-panel {
+#description {
     position:fixed;
     top: 0;
     right: 0;
@@ -56,32 +32,31 @@ body {
     align-items: center;
 }
 
-.document-panel.open {
+#description.open {
     width: 40%;
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
-.expand-btn {
-    background-color: rgb(119, 119, 119);
-    cursor: pointer;
-    width: 100%;
-    text-align: center;
-    user-select: none;
+#terminal::selection,
+#terminal-input::selection,
+#terminal-input-field::selection,
+.user-input::selection {
+    background-color: white;
+    color: black;
 }
 
-.documents {
-    text-align: left;
-    padding: 10%;
+.terminal-output::selection {
+    color: black;
+    background-color: var(--terminal-output-color, white);
+}
+
+.terminal-output {
+    color: var(--terminal-output-color, white);
+    background-color: black;
 }
 """
-
-
-class _MouseEvent(Protocol):
-    button: int
-    clientX: int  # noqa: N815
-    clientY: int  # noqa: N815
 
 
 def init_gui() -> Element:
@@ -93,58 +68,12 @@ def init_gui() -> Element:
     base_style.text = _base_style
     js.document.head.appendChild(base_style.html_element)
 
-    image = Element("div", parent=body, id="image")
-    image.text = "[Placeholder Image]"
-    image.class_name = "image"
+    image_preview = ImagePreview(parent=body)
+    TerminalGui(parent=body)
+    description = Description(parent=body)
 
-    is_dragging = False
-
-    def move_separator_to_mouse(event: _MouseEvent) -> None:
-        if not is_dragging:
-            return
-        mouse_y = event.clientY
-        image["style"].height = str(mouse_y) + "px"
-
-    def attach_separator_to_mouse(event: _MouseEvent) -> None:
-        if event.button != 0:
-            return
-        nonlocal is_dragging
-        is_dragging = True
-        body["style"].userSelect = "none"
-
-    def release_separator(_event: _MouseEvent) -> None:
-        nonlocal is_dragging
-        is_dragging = False
-        body["style"].userSelect = "auto"
-
-    def on_body_mousemove(event: _MouseEvent) -> None:
-        if is_dragging:
-            move_separator_to_mouse(event)
-
-    body.on("mouseup", release_separator)
-    body.on("mousemove", on_body_mousemove)
-
-    separator = Element("div", parent=body, id="separator")
-    separator.class_name = "separator"
-
-    separator.on("mousedown", attach_separator_to_mouse)
-    separator.on("mouseup", release_separator)
-
-    terminal = Element("div", parent=body, id="terminal")
-    terminal.class_name = "terminal"
-    terminal.text = "Image editor v2.1 $ ping\npong!\nImage editor v2.1 $"
-
-    document_panel = Element("div", parent=body, id="DocumentPanel")
-    document_panel.class_name = "document-panel"
-
-    expand_btn = Element("div", parent=document_panel, id="ExpandBtn")
-    expand_btn.class_name = "expand-btn"
-    expand_btn.text = "☰"
-
-    expand_btn.on("click", lambda _: document_panel["classList"].toggle("open"))
-
-    documents = Element("div", parent=document_panel, id="Documents")
-    documents.class_name = "documents"
-    documents.text = "How to use the app:"
+    body.on("click", lambda _: description["classList"].remove("open"))
+    body.on("mouseup", image_preview.on_separator_mouse_up)
+    body.on("mousemove", image_preview.on_separator_mouse_move)
 
     return body
