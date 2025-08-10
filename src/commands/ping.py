@@ -29,5 +29,5 @@ class Ping(BaseCommand):
 
         @author Philip
         """
-        terminal.output_success("pong" + f": {', '.join(args)}" if args else "")
+        terminal.output_success("pong" + (f": {', '.join(args)}" if args else ""))
         return True
