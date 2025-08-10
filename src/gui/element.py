@@ -170,8 +170,16 @@ class Input(Element):
         self.on("input", handler)
     
     def on_enter(self, handler: Callable[[Any], None]) -> None:
-        """Add an input event handler to the input."""
+        """Add an enter key event handler to the input."""
         def on_keydown(event: Any) -> None:  # noqa: ANN401
             if event.keyCode == 13:
                 handler(event)        
+        self.on("keydown", on_keydown)
+    
+    def on_tab(self, handler: Callable[[Any], None]) -> None:
+        """Add a tab key event handler to the input."""
+        def on_keydown(event: Any) -> None:  # noqa: ANN401
+            if event.keyCode == 9:
+                handler(event)
+                event.preventDefault()
         self.on("keydown", on_keydown)
