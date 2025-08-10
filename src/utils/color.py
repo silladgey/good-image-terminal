@@ -15,3 +15,4 @@ class Color:
     @property
     def rgba(self):
         return self.r, self.g, self.b, self.a
+

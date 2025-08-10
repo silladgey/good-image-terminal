@@ -1,6 +1,7 @@
 import commands
 from gui.components.terminal_gui import TerminalGui
 from image import PaintImage
+from utils.color import Color
 
 
 class Terminal:
@@ -9,13 +10,15 @@ class Terminal:
     @author Philip
     """
 
-    info_colour = (255, 255, 255)
-    success_colour = (0, 255, 0)
-    error_colour = (255, 0, 0)
+    info_colour: Color = Color(255, 255, 255)
+    success_colour: Color = Color(0, 255, 0)
+    error_colour: Color = Color(255, 0, 0)
 
-    def __init__(self, image: PaintImage) -> None:
+    def __init__(self, image: PaintImage, display: TerminalGui) -> None:
         self.image = image
-        self.terminal_display = None
+
+        self.terminal_display = display
+        display.terminal = self
 
     def run_str(self, command_str: str) -> bool:
         """Parse and then run the given command.

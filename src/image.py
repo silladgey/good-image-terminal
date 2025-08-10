@@ -4,6 +4,8 @@ import pathlib
 
 from PIL import Image as _Image
 
+from utils.color import Color
+
 IMAGES_DIR = pathlib.Path(__file__).parent.resolve() / "images"
 
 
@@ -63,7 +65,7 @@ class PaintImage:
             "format": self.img.format,
         }
 
-    def set_pixel(self, x: int, y: int, color) -> None:
+    def set_pixel(self, x: int, y: int, color: Color) -> None:
         """Set an image pixel."""
         self.img.putpixel((x, y), color)
 
