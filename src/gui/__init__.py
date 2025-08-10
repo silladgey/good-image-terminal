@@ -81,6 +81,6 @@ def init_gui() -> Element:
 
     # Set up objects
     image = PaintImage()
-    Terminal(image, terminal_gui)
+    terminal_gui.terminal = Terminal(image, terminal_gui)
 
     return body

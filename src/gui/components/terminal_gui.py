@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections import deque
-from typing import TYPE_CHECKING, Any
+from typing import Any, TYPE_CHECKING
 
 import js  # type: ignore[import]
 
@@ -51,7 +53,7 @@ class _TerminalHistory(Element):
 class _TerminalInput(Element):
     text_input: Input
     suggestion_span: Element
-    _input_wrapper: Element
+    input_wrapper: Element
 
     def __init__(self, parent: HTMLElement | Element | None = None) -> None:
         super().__init__(
@@ -69,7 +71,7 @@ class _TerminalInput(Element):
         self.text = "$ "
 
         # Wrapper for suggestion and input, to allow overlap
-        self._input_wrapper = self._make_input_wrapper()
+        self.input_wrapper = self._make_input_wrapper()
 
         self.suggestion_span = self._make_suggestion_span()
         self.suggestion_span.class_name = "suggestion-span"
@@ -95,7 +97,7 @@ class _TerminalInput(Element):
         """Create the suggestion span element."""
         return Element(
             "span",
-            parent=self._input_wrapper,
+            parent=self.input_wrapper,
             style="""
                 background-color: transparent;
                 color: var(--terminal-suggestion-color);
@@ -114,7 +116,7 @@ class _TerminalInput(Element):
     def _make_text_input(self) -> Input:
         """Create the text input element."""
         return Input(
-            parent=self._input_wrapper,
+            parent=self.input_wrapper,
             id="terminal-input-field",
             style="""
                 background-color: transparent;
@@ -147,6 +149,8 @@ class TerminalGui(Element):
     # For navigating through previous commands
     # This is used to allow the user to cycle through previous commands with the up/down arrow
     current_command_idx: int | None = None
+
+    terminal: Terminal | None = None
 
     def get_suggestion(self, command: str | None) -> str | None:
         """Get a suggestion for the given command. If no suggestion is found, return None."""
@@ -190,7 +194,7 @@ class TerminalGui(Element):
 
         self.history = _TerminalHistory(parent=self)
         self.input = _TerminalInput(parent=self)
-        
+
         self.input.text_input.on("keydown", self._on_input_control_keydown)
         self.input.text_input.on("input", self._on_input)
         self.on("click", self._focus_input)
@@ -202,7 +206,12 @@ class TerminalGui(Element):
         last_command = self.previous_commands[-1] if self.previous_commands else None
         if value and (last_command is None or value != last_command):
             self.previous_commands.append(value)
-
+        
+        if self.terminal is not None:
+            self.terminal.run_str(value)
+        else: 
+            print("Warning: TerminalGui has no Terminal instance assigned.")
+        
         event.target.value = ""
         self.input.set_suggestion(None)
 
