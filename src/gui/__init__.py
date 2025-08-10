@@ -17,13 +17,22 @@ body {
     font-family: monospace;
 }
 
+:root {
+    --terminal-background-color: black;
+    --terminal-output-color: white;
+    --terminal-suggestion-color: rgb(119, 119, 119);
+    --description-background-color: #d3d3d3;
+    --image-preview-background-color: #f0f0f0;
+    --separator-color: #ccc;
+}
+
 #description {
     position:fixed;
     top: 0;
     right: 0;
     width: 50px;
     height: 5%;
-    background-color: grey;
+    background-color: var(--description-background-color);
     transition: width 0.3s ease, height 0.3s ease;
     z-index: 100;
     overflow: hidden;
@@ -39,21 +48,13 @@ body {
     overflow-x: hidden;
 }
 
-#terminal::selection,
-#terminal-input::selection,
-#terminal-input-field::selection,
-.user-input::selection {
-    background-color: white;
+#terminal, #terminal * {
     color: black;
+    background-color: var(--terminal-output-color);
 }
 
-.terminal-output::selection {
-    color: black;
-    background-color: var(--terminal-output-color, white);
-}
-
-.terminal-output {
-    color: var(--terminal-output-color, white);
+#terminal, #terminal * {
+    color: var(--terminal-output-color);
     background-color: black;
 }
 """

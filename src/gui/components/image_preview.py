@@ -14,7 +14,7 @@ class ImagePreview(Element):
             parent=parent,
             id="image-preview",
             style="""
-            background-color: #adadad;
+            background-color: var(--image-preview-background-color);
             height: 50%;
             display: flex;
             flex-direction: column;
@@ -30,7 +30,7 @@ class ImagePreview(Element):
             parent=parent,
             id="separator",
             style="""
-            background-color: rgb(119, 119, 119);
+            background-color: var(--separator-color);
             width: 100%;
             height: 1%;
             cursor: pointer;

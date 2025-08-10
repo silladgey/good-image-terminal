@@ -15,9 +15,11 @@ class _UserInput(Element):
 
 class _TerminalOutput(Element):
     def __init__(self, text: str, color: str | None = None, parent: HTMLElement | Element | None = None) -> None:
-        if not color:
-            color = "white"
-        super().__init__(tag_name="div", parent=parent, style=f"--terminal-output-color: {color};")
+        if color is not None:
+            style = f"--terminal-output-color: {color};"
+        else:
+            style = ""
+        super().__init__(tag_name="div", parent=parent, style=style)
         self.class_name = "terminal-output"
         self.text = text
 
@@ -75,7 +77,7 @@ class _TerminalInput(Element):
             parent=self._input_wrapper,
             style="""
                 background-color: transparent;
-                color: rgb(119, 119, 119);
+                color: var(--terminal-suggestion-color);
                 font-family: monospace;
                 position: absolute;
                 left: 0;
@@ -95,7 +97,7 @@ class _TerminalInput(Element):
             id="terminal-input-field",
             style="""
                 background-color: transparent;
-                color: white;
+                color: var(--terminal-output-color);
                 width: 100%;
                 font-family: monospace;
                 border: 0;
@@ -139,8 +141,8 @@ class TerminalGui(Element):
             id="terminal",
             parent=parent,
             style="""
-            background-color: black;
-            color: white;
+            background-color: var(--terminal-background-color);
+            color: var(--terminal-output-color);
             flex-grow: 1;
             overflow-y: scroll;
             font-family: monospace;
