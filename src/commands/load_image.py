@@ -7,15 +7,14 @@ if TYPE_CHECKING:
 
 
 class LoadImage(BaseCommand):
-    """Help is a command that displays the help documentation of the command given.
+    """load_image is a command that loads the given image.
 
     @author Mira
     """
 
     name: str = "load_image"
     help_pages: tuple[str, ...] = (
-        """help is a command that displays the help documentation of the command given.
-
+        """
         Usage: load_image <image.name>
 
         Default image loading: load_image default
