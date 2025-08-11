@@ -128,9 +128,7 @@ class TerminalGui(Element):
         """Get a suggestion for the given command. If no suggestion is found, return None."""
         if not command:
             return None
-        return None
-        suggestions = ("help", "ping", "pong", "clear", *self.previous_commands)
-        return next((suggestion for suggestion in suggestions if suggestion.startswith(command)), None)
+        return self.terminal.predict_command(command)
 
     def print_terminal_output(self, text: str, color: str | None = None) -> None:
         """Print the given text to the terminal output with an optional color. If no color is given, white is used."""
