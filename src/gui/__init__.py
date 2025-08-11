@@ -3,8 +3,6 @@ import js  # type: ignore[import]
 from gui.components.description import Description
 from gui.element import Element
 from gui.layout import Layout
-from image import PaintImage
-from terminal import Terminal
 
 _base_style = """
 html,
@@ -114,7 +112,7 @@ def init_gui() -> Element:
 
     # Set up global event handlers
     body.on("click", lambda _: description["classList"].remove("open"))
-    body.on("mouseup", image_preview.on_separator_mouse_up)
-    body.on("mousemove", image_preview.on_separator_mouse_move)
+    body.on("mouseup", layout.handle_global_mouse_up)
+    body.on("mousemove", layout.handle_global_mouse_move)
 
     return body

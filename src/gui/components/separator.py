@@ -30,7 +30,7 @@ class Separator(Element):
             parent=parent,
             id="separator",
             style="""
-            background-color: rgb(119, 119, 119);
+            background-color: var(--separator-color);;
             width: 100%;
             height: 1%;
             cursor: ns-resize;
@@ -61,10 +61,12 @@ class Separator(Element):
         if event.button != 0:  # Only handle left mouse button
             return
         self._is_dragging = True
+        self["parentElement"].style.userSelect = "none"
 
     def _handle_mouse_up(self, _event: Any) -> None:  # noqa: ANN401
         """Handle mouse up to stop dragging."""
         self._is_dragging = False
+        self["parentElement"].style.userSelect = "auto"
 
     @property
     def is_dragging(self) -> bool:

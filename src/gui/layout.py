@@ -6,6 +6,8 @@ from gui.element import Element, HTMLElement
 from gui.components.image_preview import ImagePreview
 from gui.components.separator import Separator
 from gui.components.terminal_gui import TerminalGui
+from image import PaintImage
+from terminal import Terminal
 
 
 class Layout(Element):
@@ -13,6 +15,7 @@ class Layout(Element):
     Main layout component that manages image preview and terminal sections with a resizable separator.
 
     Authors:
+        Jont
         Ricky
     """
 
@@ -32,6 +35,10 @@ class Layout(Element):
         self.image_preview = ImagePreview(parent=self)
         self.separator = Separator(parent=self, on_resize=self._handle_resize)
         self.terminal_gui = TerminalGui(parent=self)
+
+        # Set up objects
+        image = PaintImage()
+        self.terminal = Terminal(image, self.terminal_gui)
 
     def _handle_resize(self, mouse_y: int) -> None:
         """
