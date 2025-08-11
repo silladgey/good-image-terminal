@@ -72,7 +72,13 @@ body {
 
 
 def init_gui() -> Element:
-    """Initialize the GUI."""
+    """
+    Initialize the GUI.
+
+    Authors:
+        Jont
+        Ricky
+    """
     body = Element(element=js.document.body)
 
     # Set the base style for the app
