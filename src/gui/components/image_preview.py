@@ -6,7 +6,7 @@ from gui.element import Element, HTMLElement
 
 
 class ImagePreview(Element):
-    """A component for displaying an image preview with a draggable separator and drag-drop upload functionality."""
+    """A component for displaying an image preview with a drag-drop upload functionality."""
 
     is_dragging = False
     current_image_src = None
@@ -68,7 +68,7 @@ class ImagePreview(Element):
             user-select: none;
         """,
         )
-        self.placeholder_text.text = "Drop an image here or click to upload"
+        self.placeholder_text.text = "Loading default image..."
 
         # Create drag overlay
         self.drag_overlay = Element(
@@ -126,6 +126,32 @@ class ImagePreview(Element):
         separator.on("mousedown", self.on_separator_mouse_down)
         separator.on("mouseup", self.on_separator_mouse_up)
 
+        self._load_default_image()
+
+    def _load_default_image(self) -> None:
+        """Load and display the default.png image from the images folder."""
+        try:
+            from image import Image
+
+            img = Image()
+            result = img.load("default.png")
+
+            if result == 0:  # success
+                js_link = img.get_js_link()
+                self.display_image(js_link)
+            else:
+                # Update placeholder to show drag/drop functionality
+                self.placeholder_text.text = "Drop an image here or click to upload"
+        except ImportError as e:
+            print(f"Import error loading image module: {str(e)}")
+            self.placeholder_text.text = "Drop an image here or click to upload"
+        except Exception as e:
+            print(f"Error loading default image: {str(e)}")
+            self.placeholder_text.text = "Drop an image here or click to upload"
+            import traceback
+
+            traceback.print_exc()
+
     def _setup_drag_and_drop(self) -> None:
         """Set up drag and drop event handlers."""
         self.on("dragover", self._handle_drag_over)
@@ -145,14 +171,30 @@ class ImagePreview(Element):
         self.drag_overlay["style"].display = "flex"
         self["style"].borderColor = "#007bff"
 
+        # Hide the current image when dragging over
+        if self.current_image_src:
+            self.image_element["style"].display = "none"
+
     def _handle_drag_leave(self, event: Any) -> None:  # noqa: ANN401
         """Handle drag leave event."""
         event.preventDefault()
         event.stopPropagation()
         # Only hide overlay if we're leaving the image preview container
-        if not self.html_element.contains(event.relatedTarget):
+        try:
+            related_target = event.relatedTarget
+            if related_target is None or not self.html_element.contains(related_target):
+                self.drag_overlay["style"].display = "none"
+                self["style"].borderColor = "transparent"
+
+                # Show the image again when drag leaves
+                if self.current_image_src:
+                    self.image_element["style"].display = "block"
+        except (AttributeError, TypeError):
+            # If there's any issue accessing relatedTarget, just hide the overlay
             self.drag_overlay["style"].display = "none"
             self["style"].borderColor = "transparent"
+            if self.current_image_src:
+                self.image_element["style"].display = "block"
 
     def _handle_drop(self, event: Any) -> None:  # noqa: ANN401
         """Handle file drop event."""
