@@ -44,6 +44,7 @@ class Layout(Element):
 
         Args:
             mouse_y: Mouse Y position for calculating new height
+
         """
         self.image_preview["style"].height = f"{mouse_y}px"
 

@@ -24,6 +24,7 @@ class Separator(Element):
         Args:
             parent: Parent element to attach to
             on_resize: Callback function called with mouse Y position during resize
+
         """
         super().__init__(
             tag_name="div",

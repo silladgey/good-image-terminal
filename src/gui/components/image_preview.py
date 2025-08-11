@@ -121,7 +121,6 @@ class ImagePreview(Element):
     def _load_default_image(self) -> None:
         """Load and display the default.png image from the images folder."""
         try:
-
             img = PaintImage()
             result = img.load("default.png")
 
