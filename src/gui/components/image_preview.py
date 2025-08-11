@@ -1,6 +1,7 @@
 from typing import Any
 
 import js  # type: ignore[import]
+from pyodide.ffi import create_proxy
 
 from gui.element import Element, HTMLElement
 
@@ -206,13 +207,20 @@ class ImagePreview(Element):
 
         files = event.dataTransfer.files
         if files.length > 0:
-            file = files[0]
+            file = files.item(0)
             if file.type.startswith("image/"):
                 self._handle_file_upload(file)
             else:
                 self._show_error("Please drop an image file (PNG, JPG, etc.)")
+                # Show the previous image again if drop failed
+                if self.current_image_src:
+                    self.image_element["style"].display = "block"
+        else:
+            # Show the previous image again if no files were dropped
+            if self.current_image_src:
+                self.image_element["style"].display = "block"
 
-    def _handle_click_upload(self, event: Any) -> None:  # noqa: ANN401
+    def _handle_click_upload(self, _event: Any) -> None:  # noqa: ANN401
         """Handle click to upload functionality."""
         # Create a hidden file input
         file_input = js.document.createElement("input")
@@ -220,13 +228,15 @@ class ImagePreview(Element):
         file_input.accept = "image/*"
         file_input.style.display = "none"
 
-        # Handle file selection
+        # Handle file selection - use create_proxy to ensure the handler persists
         def handle_file_select(e):
             files = e.target.files
             if files.length > 0:
-                self._handle_file_upload(files[0])
+                self._handle_file_upload(files.item(0))
 
-        file_input.addEventListener("change", handle_file_select)
+        # Create a persistent proxy for the event handler
+        file_select_proxy = create_proxy(handle_file_select)
+        file_input.addEventListener("change", file_select_proxy)
         js.document.body.appendChild(file_input)
         file_input.click()
         js.document.body.removeChild(file_input)
@@ -273,7 +283,7 @@ class ImagePreview(Element):
         """Show an error message."""
         self.placeholder_text.text = f"Error: {message}"
         self.placeholder_text["style"].color = "red"
-        js.setTimeout(self._reset_placeholder(), 3000)
+        js.setTimeout(self._reset_placeholder, 3000)
 
     def _reset_placeholder(self) -> None:
         """Reset placeholder to original state."""
