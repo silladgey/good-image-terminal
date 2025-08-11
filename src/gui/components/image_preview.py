@@ -1,9 +1,9 @@
 import base64
+import traceback
 from typing import Any
 
 import js  # type: ignore[import]
 from pyodide.ffi import create_proxy
-import traceback
 
 from gui.element import Element, HTMLElement
 from image import PaintImage
