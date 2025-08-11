@@ -203,9 +203,8 @@ class ImagePreview(Element):
                 if self.current_image_src:
                     self.image_element["style"].display = "block"
         # Show the previous image again if no files were dropped
-        else:
-            if self.current_image_src:
-                self.image_element["style"].display = "block"
+        elif self.current_image_src:
+            self.image_element["style"].display = "block"
 
     def _handle_click_upload(self, _event: Any) -> None:  # noqa: ANN401
         """Handle click to upload functionality."""
