@@ -66,3 +66,29 @@ class Help(BaseCommand):
             terminal.output_info(line.strip())
 
         return True
+
+    def predict_args(self, _terminal: "Terminal", *args: str) -> str | None:
+        """Predicts the next argument for help.
+
+        :param _terminal: The terminal instance.
+        :param args: Arguments already passed to the command.
+        :return: The predicted continuance of the arguments for the command. If new argument, start with space.
+                 If no more arguments "". If error in arguments, return None.
+
+        @author Philip
+        """
+        match len(args):
+            case 0:
+                return "help"
+            case 1:
+                if args[0] not in commands.all_commands:
+                    for command in commands.all_commands:
+                        if command.startswith(args[0]):
+                            return command
+                    return None  # invalid command
+                return " 1"
+            case 2:
+                if args[1].isdigit():
+                    return ""
+
+        return None
