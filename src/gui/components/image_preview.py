@@ -246,30 +246,41 @@ class ImagePreview(Element):
         # Create FileReader to read the file
         reader = js.FileReader.new()
 
+        # Create a persistent proxy for the load event handler
         def on_load(event):
             # Get the file data
             array_buffer = event.target.result
-            uint8_array = js.Uint8Array.new(array_buffer)
 
-            # Convert to Python bytes
-            image_bytes = bytes(uint8_array.to_py())
-
-            # Load into our Image class
+            # Convert to data URL for display
+            # Since our Image class doesn't handle binary data directly,
+            # we'll create a data URL to display the image
             try:
-                from image import Image
+                # Convert array buffer to bytes
+                uint8_array = js.Uint8Array.new(array_buffer)
+                file_bytes = bytes(uint8_array.to_py())
 
-                img = Image()
-                if img.load_from_bytes(image_bytes, file.name) == 0:
-                    # Successfully loaded, display the image
-                    self.display_image(img.get_js_link())
-                    print(f"Successfully loaded image: {file.name}")
-                    print(f"Image size: {img.get_image_info()['size']}")
-                else:
-                    self._show_error("Failed to load image")
-            except Exception as e:
-                self._show_error(f"Error processing image: {str(e)}")
+                # Create base64 data URL
+                import base64
 
-        reader.addEventListener("load", on_load)
+                file_b64 = base64.b64encode(file_bytes).decode("utf-8")
+
+                # Determine MIME type based on file type
+                mime_type = "image/png"  # Default
+                if hasattr(file, "type") and file.type:
+                    mime_type = str(file.type)
+
+                data_url = f"data:{mime_type};base64,{file_b64}"
+                self.display_image(data_url)
+                print(f"Successfully loaded uploaded image: {file.name}")
+
+            except ImportError as e:
+                self._show_error(f"Error importing required modules: {str(e)}")
+            except (AttributeError, TypeError, ValueError) as e:
+                self._show_error(f"Error processing image data: {str(e)}")
+
+        # Use create_proxy to ensure the event handler persists
+        load_proxy = create_proxy(on_load)
+        reader.addEventListener("load", load_proxy)
         reader.readAsArrayBuffer(file)
 
     def display_image(self, image_src: str) -> None:
