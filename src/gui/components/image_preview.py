@@ -23,7 +23,7 @@ class ImagePreview(Element):
             parent=parent,
             id="image-preview",
             style="""
-            background-color: #adadad;
+            background-color: var(--image-preview-background-color);
             height: 50%;
             display: flex;
             flex-direction: column;

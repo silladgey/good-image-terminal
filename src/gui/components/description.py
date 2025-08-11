@@ -14,7 +14,7 @@ class Description(Element):
             parent=self,
             id="expand-btn",
             style="""
-            background-color: rgb(119, 119, 119);
+            background-color: var(--description-background-color);
             width: 100%;
             text-align: center;
             user-select: none;

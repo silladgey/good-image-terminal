@@ -1,5 +1,7 @@
-from src import commands
-from src.image import Image
+from commands import all_commands
+from gui.components.terminal_gui import TerminalGui
+from image import PaintImage
+from utils.color import Color
 
 
 class Terminal:
@@ -8,26 +10,29 @@ class Terminal:
     @author Philip
     """
 
-    info_colour = (255, 255, 255)
-    success_colour = (0, 255, 0)
-    error_colour = (255, 0, 0)
+    info_colour: Color = Color(255, 255, 255)
+    success_colour: Color = Color(0, 255, 0)
+    error_colour: Color = Color(255, 0, 0)
 
-    def __init__(self, image: Image) -> None:
+    def __init__(self, image: PaintImage, display: TerminalGui) -> None:
         self.image = image
-        self.terminal_display = None
+
+        self.terminal_display = display
+        display.terminal = self
 
     def run_str(self, command_str: str) -> bool:
         """Parse and then run the given command.
 
+        :param command_str: String of command to be executed
+        :return: success of command execution
+
         @author Philip
-        @param command_str: String of command to be executed
-        @return success of command execution
         """
         command_str = command_str.strip()
         command, *args = command_str.split()
 
-        if command in commands.all_commands:
-            commands.all_commands[command](self, *args)
+        if command in all_commands:
+            all_commands[command](self, *args)
         else:
             self.output_error(f"`{command_str}` is not a valid command.")
             self.output_error("use `help` to see list of available commands`")
@@ -38,32 +43,29 @@ class Terminal:
     def output_info(self, output: str) -> None:
         """Output the given input to the display with `info_colour`.
 
-        @author Philip
-        @param output: Text to be printed
-        @return None
+        :param output: Text to be printed
+        :return: None
+
+        @authors Philip
         """
-        print(output)
+        self.terminal_display.print_terminal_output(output, self.info_colour.hex)
 
     def output_success(self, output: str) -> None:
         """Output the given input to the display with `success_colour`.
 
+        :param output: Text to be printed
+        :return: None
+
         @author Philip
-        @param output: Text to be printed
-        @return None
         """
-        print(output)
+        self.terminal_display.print_terminal_output(output, self.success_colour.hex)
 
     def output_error(self, output: str) -> None:
         """Output the given input to the display with `error_colour`.
 
+        :param output: Text to be printed
+        :return: None
+
         @author Philip
-        @param output: Text to be printed
-        @return None
         """
-        print(output)
-
-
-if __name__ == "__main__":
-    test_terminal = Terminal()
-    while test_terminal.run_str(input("> ")):
-        pass
+        self.terminal_display.print_terminal_output(output, self.error_colour.hex)

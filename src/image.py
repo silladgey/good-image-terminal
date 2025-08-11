@@ -4,34 +4,32 @@ import pathlib
 
 from PIL import Image as _Image
 
+from utils.color import Color
+
 IMAGES_DIR = pathlib.Path(__file__).parent.resolve() / "images"
 
 
-class Image:
+class PaintImage:
     """Image for creation of image objects.
 
-    @author Mira
+    :author: Mira
     """
 
     def __init__(self) -> None:
-        """Create an image object.
-
-        @author Mira
-        """
+        """Create an image object."""
         self.buf = io.BytesIO()
         self.img_name = ""
         self.img = _Image.new("RGB", (400, 250), (0, 0, 0))
         self._custom_image = False
 
     def load(self, image_name: str = "default.png") -> int:
-        """Load image from images/.
+        """Load image from images.
 
-        @author Mira
-        @params image_name: name of an image with .ext
-        @return returns 0 if image has loaded 1 if the image wasn't located
+        params image_name: name of an image with .ext
+        return returns 0 if image has loaded 1 if the image wasn't located
         """
         if (IMAGES_DIR / image_name).exists():
-            self.img = _Image.open(IMAGES_DIR / image_name, "r")
+            self.img = _Image.open(IMAGES_DIR / image_name, "r").copy()
             self.img_name = image_name
             return 0
         return 1
@@ -39,8 +37,7 @@ class Image:
     def save(self) -> int:
         """Save image to images/.
 
-        @author Mira
-        @return returns 0 if image has saved 1 if the image wasn't
+        return returns 0 if image has saved 1 if the image wasn't
         """
         if self.img_name:
             self.img.save(IMAGES_DIR / self.img_name, format="PNG")
@@ -52,8 +49,7 @@ class Image:
     def get_js_link(self) -> str:
         """Return base64 link for an image file.
 
-        @author Mira
-        @return string - image src link
+        return string - image src link
         """
         self.img.save(self.buf, format="PNG")
         data = base64.b64encode(self.buf.getvalue()).decode("utf-8")
@@ -62,10 +58,17 @@ class Image:
     def get_image_info(self) -> dict:
         """Return image information dictionary.
 
-        @author Mira
-        @return dictionary
+        return dictionary
         """
         return {
             "size": self.img.size,
             "format": self.img.format,
         }
+
+    def set_pixel(self, x: int, y: int, color: Color) -> None:
+        """Set an image pixel."""
+        self.img.putpixel((x, y), color)
+
+    def get_pixel(self, x: int, y: int) -> tuple[int, ...]:
+        """Get an image pixel."""
+        return self.img.getpixel((x, y))

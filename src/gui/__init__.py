@@ -3,6 +3,8 @@ import js  # type: ignore[import]
 from gui.components.description import Description
 from gui.element import Element
 from gui.layout import Layout
+from image import PaintImage
+from terminal import Terminal
 
 _base_style = """
 html,
@@ -16,13 +18,22 @@ body {
     font-family: monospace;
 }
 
+:root {
+    --terminal-background-color: black;
+    --terminal-output-color: white;
+    --terminal-suggestion-color: rgb(119, 119, 119);
+    --description-background-color: #d3d3d3;
+    --image-preview-background-color: #f0f0f0;
+    --separator-color: #ccc;
+}
+
 #description {
     position:fixed;
     top: 0;
     right: 0;
     width: 50px;
     height: 5%;
-    background-color: grey;
+    background-color: var(--description-background-color);
     transition: width 0.3s ease, height 0.3s ease;
     z-index: 100;
     overflow: hidden;
@@ -51,22 +62,31 @@ body {
     border-color: #2196f3 !important;
 }
 
-#terminal::selection,
-#terminal-input::selection,
-#terminal-input-field::selection,
-.user-input::selection {
-    background-color: white;
-    color: black;
+#image-preview {
+    cursor: pointer;
 }
 
-.terminal-output::selection {
-    color: black;
-    background-color: var(--terminal-output-color, white);
+#image-preview:hover {
+    background-color: #b8b8b8;
 }
 
-.terminal-output {
-    color: var(--terminal-output-color, white);
-    background-color: black;
+#image-preview.drag-over {
+    background-color: #e3f2fd !important;
+    border-color: #2196f3 !important;
+}
+
+#terminal, #terminal * {
+    color: var(--terminal-output-color);
+    background-color: var(--terminal-background-color);
+}
+
+#terminal::selection, #terminal *::selection {
+    color: var(--terminal-background-color);
+    background-color: var(--terminal-output-color);
+}
+
+.terminal-input-verb-text, .command-verb-span {
+    text-decoration: underline;
 }
 """
 
@@ -94,7 +114,7 @@ def init_gui() -> Element:
 
     # Set up global event handlers
     body.on("click", lambda _: description["classList"].remove("open"))
-    body.on("mouseup", layout.handle_global_mouse_up)
-    body.on("mousemove", layout.handle_global_mouse_move)
+    body.on("mouseup", image_preview.on_separator_mouse_up)
+    body.on("mousemove", image_preview.on_separator_mouse_move)
 
     return body

@@ -61,16 +61,19 @@ pre-commit run check-toml --all-files
 
 ```py
 class ClassName:
-    '''
-    Handle user input and validation.
+    '''Handle user input and validation.
+
     @author Mira
     '''
     ...
 
-# Short function description - Author
+# Short function description
 def do_something():
-    '''
-    Perform a single-step operation.
+    '''Perform a single-step operation.
+
+    :param paramname: does something
+    :return: None
+
     @author Mira
     '''
     ...
