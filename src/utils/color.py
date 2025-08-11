@@ -46,7 +46,7 @@ class Color:
             h = (60 * ((self.r - self.g) / df) + 240) % 360
         s = 0 if mx == 0 else df / mx
         v = mx
-        return h, s * 100, v * 100
+        return h, s * 100, v / 255
 
     @property
     def xyz(self) -> tuple[float, float, float]:
