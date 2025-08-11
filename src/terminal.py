@@ -34,7 +34,7 @@ class Terminal:
         if command in all_commands:
             all_commands[command](self, *args)
         else:
-            self.output_error(f"`{command_str}` is not a valid command.")
+            self.output_error(f"`{command}` is not a valid command.")
             self.output_error("use `help` to see list of available commands`")
             return False
 
