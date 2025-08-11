@@ -40,6 +40,26 @@ class Terminal:
 
         return True
 
+    def predict_command(self, command_str: str) -> str | None:
+        """Predicts the command and arguments the user is typing.
+
+        Argument handling is offloaded to commands predict_args.
+
+        :param command_str: Currently typed text in terminal.
+        :return: The full predicted command with next argument. Returns None on error.
+
+        @author Philip
+        """
+        if command_str == "":
+            return ""
+
+        command, *args = command_str.split()
+
+        for full_command in all_commands:
+            if full_command.startswith(command):
+                return full_command
+        return None
+
     def output_info(self, output: str) -> None:
         """Output the given input to the display with `info_colour`.
 
