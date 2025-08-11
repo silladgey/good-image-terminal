@@ -79,7 +79,7 @@ class Help(BaseCommand):
         """
         match len(args):
             case 0:
-                return "help"
+                return " help"
             case 1:
                 if args[0] not in commands.all_commands:
                     for command in commands.all_commands:
