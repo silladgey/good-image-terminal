@@ -52,6 +52,10 @@ class Separator(Element):
         if not self._is_dragging:
             return
 
+        # Prevent default to avoid interfering with other behaviors
+        event.preventDefault()
+        event.stopPropagation()
+
         mouse_y = event.clientY
         if self._on_resize:
             self._on_resize(mouse_y)
@@ -62,11 +66,15 @@ class Separator(Element):
             return
         self._is_dragging = True
         self["parentElement"].style.userSelect = "none"
+        # Prevent default to avoid interfering with other drag behaviors
+        event.preventDefault()
+        event.stopPropagation()
 
     def _handle_mouse_up(self, _event: Any) -> None:  # noqa: ANN401
         """Handle mouse up to stop dragging."""
-        self._is_dragging = False
-        self["parentElement"].style.userSelect = "auto"
+        if self._is_dragging:
+            self._is_dragging = False
+            self["parentElement"].style.userSelect = "auto"
 
     @property
     def is_dragging(self) -> bool:
