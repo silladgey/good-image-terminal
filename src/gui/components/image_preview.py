@@ -7,9 +7,14 @@ from gui.element import Element, HTMLElement
 
 
 class ImagePreview(Element):
-    """A component for displaying an image preview with a drag-drop upload functionality."""
+    """
+    A component for displaying an image preview with a drag-drop upload functionality.
 
-    is_dragging = False
+    Authors:
+        Jont
+        Ricky
+    """
+
     current_image_src = None
 
     def __init__(self, parent: HTMLElement | Element | None = None) -> None:
@@ -109,24 +114,6 @@ class ImagePreview(Element):
         # Add click to upload functionality
         self.on("click", self._handle_click_upload)
 
-        separator = Element(
-            "div",
-            parent=parent,
-            id="separator",
-            style="""
-            background-color: rgb(119, 119, 119);
-            width: 100%;
-            height: 1%;
-            cursor: pointer;
-            flex-shrink: 0;
-        """,
-        )
-        separator.class_name = "separator"
-
-        separator.on("mousemove", self.on_separator_mouse_move)
-        separator.on("mousedown", self.on_separator_mouse_down)
-        separator.on("mouseup", self.on_separator_mouse_up)
-
         self._load_default_image()
 
     def _load_default_image(self) -> None:
@@ -146,7 +133,7 @@ class ImagePreview(Element):
         except ImportError as e:
             print(f"Import error loading image module: {str(e)}")
             self.placeholder_text.text = "Drop an image here or click to upload"
-        except Exception as e:
+        except (AttributeError, OSError, ValueError) as e:
             print(f"Error loading default image: {str(e)}")
             self.placeholder_text.text = "Drop an image here or click to upload"
             import traceback
@@ -301,20 +288,3 @@ class ImagePreview(Element):
         if not self.current_image_src:
             self.placeholder_text.text = "Drop an image here or click to upload"
             self.placeholder_text["style"].color = "#666"
-
-    def on_separator_mouse_move(self, event: Any) -> None:  # noqa: ANN401
-        """Handle mouse movement over the separator to adjust the height of the image preview."""
-        if not self.is_dragging:
-            return
-        mouse_y = event.clientY
-        self["style"].height = str(mouse_y) + "px"
-
-    def on_separator_mouse_down(self, event: Any) -> None:  # noqa: ANN401
-        """Handle mouse down on the separator to start dragging."""
-        if event.button != 0:
-            return
-        self.is_dragging = True
-
-    def on_separator_mouse_up(self, _event: Any) -> None:  # noqa: ANN401
-        """Handle mouse up on the separator to stop dragging."""
-        self.is_dragging = False
