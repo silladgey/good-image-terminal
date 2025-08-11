@@ -38,3 +38,20 @@ class BaseCommand:
         """
         msg = "BaseCommand should not be called and should be overridden"
         raise NotImplementedError(msg)
+
+    def predict_args(self, terminal: "Terminal", *args: str) -> str | None:
+        """Predicts the next argument for the command.
+
+        This function should be overridden by subclasses.
+
+        The subclasses implementation should do error handling on incorrect arguments.
+
+        :param terminal: The terminal instance.
+        :param args: Arguments already passed to the command.
+        :return: The predicted continuance of the arguments for the command. If new argument, start with space.
+                 If no more arguments "". If error in arguments, return None.
+
+        @author Philip
+        """
+        msg = "BaseCommand should `predict_args` not be called and should be overridden"
+        raise NotImplementedError(msg)
