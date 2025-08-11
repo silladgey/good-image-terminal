@@ -1,9 +1,8 @@
 import js  # type: ignore[import]
 
 from gui.components.description import Description
-from gui.components.image_preview import ImagePreview
-from gui.components.terminal_gui import TerminalGui
 from gui.element import Element
+from gui.layout import Layout
 
 _base_style = """
 html,
@@ -81,12 +80,15 @@ def init_gui() -> Element:
     base_style.text = _base_style
     js.document.head.appendChild(base_style.html_element)
 
-    image_preview = ImagePreview(parent=body)
-    TerminalGui(parent=body)
+    # Create the main layout with image preview, separator, and terminal
+    layout = Layout(parent=body)
+
+    # Create the description component
     description = Description(parent=body)
 
+    # Set up global event handlers
     body.on("click", lambda _: description["classList"].remove("open"))
-    body.on("mouseup", image_preview.on_separator_mouse_up)
-    body.on("mousemove", image_preview.on_separator_mouse_move)
+    body.on("mouseup", layout.handle_global_mouse_up)
+    body.on("mousemove", layout.handle_global_mouse_move)
 
     return body
