@@ -1,11 +1,8 @@
 import js  # type: ignore[import]
 
 from gui.components.description import Description
-from gui.components.image_preview import ImagePreview
-from gui.components.terminal_gui import TerminalGui
 from gui.element import Element
-from image import PaintImage
-from terminal import Terminal
+from gui.layout import Layout
 
 _base_style = """
 html,
@@ -50,6 +47,32 @@ body {
     overflow-x: hidden;
 }
 
+#image-preview {
+    cursor: pointer;
+}
+
+#image-preview:hover {
+    background-color: #b8b8b8;
+}
+
+#image-preview.drag-over {
+    background-color: #e3f2fd !important;
+    border-color: #2196f3 !important;
+}
+
+#image-preview {
+    cursor: pointer;
+}
+
+#image-preview:hover {
+    background-color: #b8b8b8;
+}
+
+#image-preview.drag-over {
+    background-color: #e3f2fd !important;
+    border-color: #2196f3 !important;
+}
+
 #terminal, #terminal * {
     color: var(--terminal-output-color);
     background-color: var(--terminal-background-color);
@@ -67,7 +90,12 @@ body {
 
 
 def init_gui() -> Element:
-    """Initialize the GUI."""
+    """Initialize the GUI.
+
+    Authors:
+        Jont
+        Ricky
+    """
     body = Element(element=js.document.body)
 
     # Set the base style for the app
@@ -75,16 +103,15 @@ def init_gui() -> Element:
     base_style.text = _base_style
     js.document.head.appendChild(base_style.html_element)
 
-    image_preview = ImagePreview(parent=body)
-    terminal_gui = TerminalGui(parent=body)
+    # Create the main layout with image preview, separator, and terminal
+    layout = Layout(parent=body)
+
+    # Create the description component
     description = Description(parent=body)
 
+    # Set up global event handlers
     body.on("click", lambda _: description["classList"].remove("open"))
-    body.on("mouseup", image_preview.on_separator_mouse_up)
-    body.on("mousemove", image_preview.on_separator_mouse_move)
-
-    # Set up objects
-    image = PaintImage()
-    terminal_gui.terminal = Terminal(image, terminal_gui)
+    body.on("mouseup", layout.handle_global_mouse_up)
+    body.on("mousemove", layout.handle_global_mouse_move)
 
     return body

@@ -1,12 +1,18 @@
 from typing import Any
 
+from gui.components.drag_drop_handler import DragDropHandler
+from gui.components.file_upload_handler import FileUploadHandler
+from gui.components.image_display_manager import ImageDisplayManager
 from gui.element import Element, HTMLElement
 
 
 class ImagePreview(Element):
-    """A component for displaying an image preview with a draggable separator."""
+    """A component for displaying an image preview with a drag-drop upload functionality.
 
-    is_dragging = False
+    Authors:
+        Jont
+        Ricky
+    """
 
     def __init__(self, parent: HTMLElement | Element | None = None) -> None:
         super().__init__(
@@ -21,43 +27,50 @@ class ImagePreview(Element):
             justify-content: center;
             align-items: center;
             flex-shrink: 0;
+            position: relative;
+            border: 2px dashed transparent;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
         """,
         )
         self.class_name = "image-preview"
-        self.text = "[Placeholder Image]"
-        separator = Element(
-            "div",
-            parent=parent,
-            id="separator",
-            style="""
-            background-color: var(--separator-color);
-            width: 100%;
-            height: 1%;
-            cursor: pointer;
-            flex-shrink: 0;
-        """,
+
+        # Initialize the image display manager
+        self.image_manager = ImageDisplayManager(self)
+
+        # Initialize the file upload handler
+        self.file_handler = FileUploadHandler(
+            on_file_processed=self._on_file_processed,
+            on_error=self._on_error,
         )
-        separator.class_name = "separator"
 
-        separator.on("mousemove", self.on_separator_mouse_move)
-        separator.on("mousedown", self.on_separator_mouse_down)
-        separator.on("mouseup", self.on_separator_mouse_up)
+        # Initialize the drag drop handler
+        self.drag_handler = DragDropHandler(
+            element=self,
+            on_file_drop=self._on_file_drop,
+            on_drag_enter=self.image_manager.hide_image,
+            on_drag_leave=self.image_manager.show_image,
+            on_error=self._on_error,
+        )
 
-    def on_separator_mouse_move(self, event: Any) -> None:  # noqa: ANN401
-        """Handle mouse movement over the separator to adjust the height of the image preview."""
-        if not self.is_dragging:
-            return
-        mouse_y = event.clientY
-        self["style"].height = str(mouse_y) + "px"
+        # Set up drag overlay and events
+        self.drag_overlay = self.drag_handler.setup_drag_overlay()
+        self.drag_handler.setup_events()
 
-    def on_separator_mouse_down(self, event: Any) -> None:  # noqa: ANN401
-        """Handle mouse down on the separator to start dragging."""
-        if event.button != 0:
-            return
-        self.is_dragging = True
-        self["parentElement"].style.userSelect = "none"
+        # Add click to upload functionality
+        self.on("click", self.file_handler.handle_click_upload)
 
-    def on_separator_mouse_up(self, _event: Any) -> None:  # noqa: ANN401
-        """Handle mouse up on the separator to stop dragging."""
-        self.is_dragging = False
-        self["parentElement"].style.userSelect = "auto"
+    def _on_file_processed(self, data_url: str) -> None:
+        """Handle successfully processed file."""
+        self.image_manager.display_image(data_url)
+
+    def _on_error(self, error_message: str) -> None:
+        """Handle file processing error."""
+        self.image_manager.show_error(error_message)
+
+    def _on_file_drop(self, file: Any) -> None:  # noqa: ANN401
+        """Handle file drop from drag and drop."""
+        self.file_handler.process_file(file)
+
+    def display_image(self, image_src: str) -> None:
+        """Display an image in the preview area."""
+        self.image_manager.display_image(image_src)
