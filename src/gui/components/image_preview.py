@@ -273,8 +273,7 @@ class ImagePreview(Element):
         """Show an error message."""
         self.placeholder_text.text = f"Error: {message}"
         self.placeholder_text["style"].color = "red"
-        # Reset after 3 seconds
-        js.setTimeout(lambda: self._reset_placeholder(), 3000)
+        js.setTimeout(self._reset_placeholder(), 3000)
 
     def _reset_placeholder(self) -> None:
         """Reset placeholder to original state."""
