@@ -45,7 +45,7 @@ class Help(BaseCommand):
             case 2:
                 if not args[1].isdigit():
                     terminal.output_error("second argument must be an integer.")
-                page = args[1]
+                page = int(args[1])
             case _:
                 terminal.output_error("too many arguments.")
                 return False
