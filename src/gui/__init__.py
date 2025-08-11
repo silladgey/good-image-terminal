@@ -90,8 +90,7 @@ body {
 
 
 def init_gui() -> Element:
-    """
-    Initialize the GUI.
+    """Initialize the GUI.
 
     Authors:
         Jont

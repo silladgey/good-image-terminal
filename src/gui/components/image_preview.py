@@ -1,14 +1,16 @@
+import base64
 from typing import Any
 
 import js  # type: ignore[import]
 from pyodide.ffi import create_proxy
+import traceback
 
 from gui.element import Element, HTMLElement
+from image import PaintImage
 
 
 class ImagePreview(Element):
-    """
-    A component for displaying an image preview with a drag-drop upload functionality.
+    """A component for displaying an image preview with a drag-drop upload functionality.
 
     Authors:
         Jont
@@ -119,7 +121,6 @@ class ImagePreview(Element):
     def _load_default_image(self) -> None:
         """Load and display the default.png image from the images folder."""
         try:
-            from image import PaintImage
 
             img = PaintImage()
             result = img.load("default.png")
@@ -127,16 +128,15 @@ class ImagePreview(Element):
             if result == 0:  # success
                 js_link = img.get_js_link()
                 self.display_image(js_link)
+            # Update placeholder to show drag/drop functionality
             else:
-                # Update placeholder to show drag/drop functionality
                 self.placeholder_text.text = "Drop an image here or click to upload"
         except ImportError as e:
-            print(f"Import error loading image module: {str(e)}")
+            print(f"Import error loading image module: {e!s}")
             self.placeholder_text.text = "Drop an image here or click to upload"
         except (AttributeError, OSError, ValueError) as e:
-            print(f"Error loading default image: {str(e)}")
+            print(f"Error loading default image: {e!s}")
             self.placeholder_text.text = "Drop an image here or click to upload"
-            import traceback
 
             traceback.print_exc()
 
@@ -202,8 +202,8 @@ class ImagePreview(Element):
                 # Show the previous image again if drop failed
                 if self.current_image_src:
                     self.image_element["style"].display = "block"
+        # Show the previous image again if no files were dropped
         else:
-            # Show the previous image again if no files were dropped
             if self.current_image_src:
                 self.image_element["style"].display = "block"
 
@@ -216,7 +216,7 @@ class ImagePreview(Element):
         file_input.style.display = "none"
 
         # Handle file selection - use create_proxy to ensure the handler persists
-        def handle_file_select(e):
+        def handle_file_select(e: Any) -> None:
             files = e.target.files
             if files.length > 0:
                 self._handle_file_upload(files.item(0))
@@ -234,7 +234,7 @@ class ImagePreview(Element):
         reader = js.FileReader.new()
 
         # Create a persistent proxy for the load event handler
-        def on_load(event):
+        def on_load(event: Any) -> None:
             # Get the file data
             array_buffer = event.target.result
 
@@ -247,8 +247,6 @@ class ImagePreview(Element):
                 file_bytes = bytes(uint8_array.to_py())
 
                 # Create base64 data URL
-                import base64
-
                 file_b64 = base64.b64encode(file_bytes).decode("utf-8")
 
                 # Determine MIME type based on file type
@@ -261,9 +259,9 @@ class ImagePreview(Element):
                 print(f"Successfully loaded uploaded image: {file.name}")
 
             except ImportError as e:
-                self._show_error(f"Error importing required modules: {str(e)}")
+                self._show_error(f"Error importing required modules: {e!s}")
             except (AttributeError, TypeError, ValueError) as e:
-                self._show_error(f"Error processing image data: {str(e)}")
+                self._show_error(f"Error processing image data: {e!s}")
 
         # Use create_proxy to ensure the event handler persists
         load_proxy = create_proxy(on_load)

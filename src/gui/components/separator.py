@@ -1,13 +1,13 @@
 """A resizable separator component for dividing GUI sections."""
 
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 from gui.element import Element, HTMLElement
 
 
 class Separator(Element):
-    """
-    A draggable separator component for resizing adjacent elements.
+    """A draggable separator component for resizing adjacent elements.
 
     Authors:
         Jont

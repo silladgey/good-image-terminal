@@ -8,5 +8,5 @@ all_commands: dict[str, BaseCommand] = {
     Ping.name: Ping(),
     Help.name: Help(),
     LoadImage.name: LoadImage(),
-    Background.name: Background()
+    Background.name: Background(),
 }

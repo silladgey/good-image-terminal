@@ -2,17 +2,16 @@
 
 from typing import Any
 
-from gui.element import Element, HTMLElement
 from gui.components.image_preview import ImagePreview
 from gui.components.separator import Separator
 from gui.components.terminal_gui import TerminalGui
+from gui.element import Element, HTMLElement
 from image import PaintImage
 from terminal import Terminal
 
 
 class Layout(Element):
-    """
-    Main layout component that manages image preview and terminal sections with a resizable separator.
+    """Main layout component that manages image preview and terminal sections with a resizable separator.
 
     Authors:
         Jont
@@ -41,8 +40,7 @@ class Layout(Element):
         self.terminal = Terminal(image, self.terminal_gui)
 
     def _handle_resize(self, mouse_y: int) -> None:
-        """
-        Handle resizing of the image preview section.
+        """Handle resizing of the image preview section.
 
         Args:
             mouse_y: Mouse Y position for calculating new height
