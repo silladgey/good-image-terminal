@@ -214,7 +214,7 @@ class ImagePreview(Element):
         file_input.style.display = "none"
 
         # Handle file selection - use create_proxy to ensure the handler persists
-        def handle_file_select(e: Any) -> None:
+        def handle_file_select(e: Any) -> None:  # noqa: ANN401
             files = e.target.files
             if files.length > 0:
                 self._handle_file_upload(files.item(0))
@@ -232,7 +232,7 @@ class ImagePreview(Element):
         reader = js.FileReader.new()
 
         # Create a persistent proxy for the load event handler
-        def on_load(event: Any) -> None:
+        def on_load(event: Any) -> None:  # noqa: ANN401
             # Get the file data
             array_buffer = event.target.result
 
