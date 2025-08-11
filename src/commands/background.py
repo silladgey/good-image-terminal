@@ -62,7 +62,6 @@ class Background(BaseCommand):
 
         rgb = []
         for index in range(3):
-
             value = list_args[index].replace(",", "")
 
             if not value.isdigit():
@@ -90,11 +89,7 @@ class Background(BaseCommand):
             f"rgb{color.rgb}",
         )
 
-        text_color = (
-            Color(255, 255, 255)
-            if color.hsv[2] < self.BRIGHTNESS_THRESHOLD
-            else Color(0, 0, 0)
-        )
+        text_color = Color(255, 255, 255) if color.hsv[2] < self.BRIGHTNESS_THRESHOLD else Color(0, 0, 0)
         terminal.info_colour = text_color
         # changes the text color of all the users input
         terminal.terminal_display["style"].setProperty(
@@ -106,7 +101,6 @@ class Background(BaseCommand):
         old_elements = terminal.terminal_display.history.get_elements().copy()
         terminal.terminal_display.history.clear_history()
         for element in old_elements:
-
             if element.class_name == "terminal-output":
                 modified_output = _TerminalOutput(
                     element.text,

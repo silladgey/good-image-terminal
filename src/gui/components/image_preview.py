@@ -39,7 +39,8 @@ class ImagePreview(Element):
 
         # Initialize the file upload handler
         self.file_handler = FileUploadHandler(
-            on_file_processed=self._on_file_processed, on_error=self._on_error,
+            on_file_processed=self._on_file_processed,
+            on_error=self._on_error,
         )
 
         # Initialize the drag drop handler
