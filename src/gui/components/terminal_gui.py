@@ -180,6 +180,7 @@ class TerminalGui(Element):
         def confirm_suggestion(event: Any) -> None:  # noqa: ANN401
             value = event.target.value
             event.target.value = self.get_suggestion(value) or value
+            self.input.set_suggestion(self.get_suggestion(event.target.value))
 
         self.input.text_input.on_enter(submit_input)
         self.input.text_input.on_input(on_input)
