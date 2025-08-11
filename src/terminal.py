@@ -55,6 +55,7 @@ class Terminal:
 
         command, *args = command_str.split()
         if command in all_commands:
+            output = command
             prediction = all_commands[command].predict_args(self, *args)
             if prediction is None:
                 return None
@@ -62,7 +63,11 @@ class Terminal:
                 return command_str
             if not prediction.startswith(" "):
                 args.pop()
-            return f"{command} {' '.join(args)} {prediction}"
+                prediction = " " + prediction
+            if args:
+                output += " " + " ".join(args)
+            output += prediction
+            return output
 
         for full_command in all_commands:
             if full_command.startswith(command):
