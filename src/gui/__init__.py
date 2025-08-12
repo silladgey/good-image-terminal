@@ -75,11 +75,6 @@ body {
     border-color: #2196f3 !important;
 }
 
-#terminal span {
-    display: inline-block;
-    word-break: break-all;
-}
-
 .terminal-output, .user-input, .user-input > span {
     white-space: pre-wrap;
     word-break: break-all;
