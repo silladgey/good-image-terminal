@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr" lwt-newtab-brighttext="">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title></title>
-		<script src="https://cdn.jsdelivr.net/pyodide/v0.28.1/full/pyodide.js"></script>
-	</head>
-	<body>
-		<script type="text/javascript">
-			(async () => {
-				const pyodide = await loadPyodide();
-				await pyodide.loadPackage("pillow");
-				await pyodide.runPythonAsync(`
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.28.1/full/pyodide.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+      (async () => {
+        const pyodide = await loadPyodide();
+        await pyodide.loadPackage("pillow");
+        await pyodide.runPythonAsync(`
             from pyodide.http import pyfetch
             response = await pyfetch("src.zip")
             await response.unpack_archive()
           `);
-				const main = await pyodide.pyimport("main");
-				await main.main();
-			})();
-		</script>
-	</body>
+        const main = await pyodide.pyimport("main");
+        await main.main();
+      })();
+    </script>
+  </body>
 </html>
