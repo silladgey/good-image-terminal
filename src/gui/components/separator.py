@@ -31,7 +31,7 @@ class Separator(Element):
             parent=parent,
             id="separator",
             style="""
-            background-color: var(--separator-color);;
+            background-color: var(--separator-color);
             width: 100%;
             height: 1%;
             cursor: ns-resize;

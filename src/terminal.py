@@ -1,18 +1,15 @@
 from commands import all_commands
 from gui.components.terminal_gui import TerminalGui
 from image import PaintImage
-from utils.color import Color
 
+SUCCESS_COLOUR = "var(--terminal-success-color)"
+ERROR_COLOUR = "var(--terminal-error-color)"
 
 class Terminal:
     """Terminal manages a custom command environment.
 
     @author Philip
     """
-
-    info_colour: Color = Color(255, 255, 255)
-    success_colour: Color = Color(0, 255, 0)
-    error_colour: Color = Color(255, 0, 0)
 
     def __init__(self, image: PaintImage, display: TerminalGui) -> None:
         self.image = image
@@ -48,7 +45,7 @@ class Terminal:
 
         @authors Philip
         """
-        self.terminal_display.print_terminal_output(output, self.info_colour.hex)
+        self.terminal_display.print_terminal_output(output)
 
     def output_success(self, output: str) -> None:
         """Output the given input to the display with `success_colour`.
@@ -58,7 +55,7 @@ class Terminal:
 
         @author Philip
         """
-        self.terminal_display.print_terminal_output(output, self.success_colour.hex)
+        self.terminal_display.print_terminal_output(output, SUCCESS_COLOUR)
 
     def output_error(self, output: str) -> None:
         """Output the given input to the display with `error_colour`.
@@ -68,4 +65,4 @@ class Terminal:
 
         @author Philip
         """
-        self.terminal_display.print_terminal_output(output, self.error_colour.hex)
+        self.terminal_display.print_terminal_output(output, ERROR_COLOUR)

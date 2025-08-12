@@ -19,6 +19,8 @@ body {
 :root {
     --terminal-background-color: black;
     --terminal-output-color: white;
+    --terminal-error-color: red;
+    --terminal-success-color: green;
     --terminal-suggestion-color: rgb(119, 119, 119);
     --description-background-color: #d3d3d3;
     --image-preview-background-color: #f0f0f0;
@@ -71,6 +73,16 @@ body {
 #image-preview.drag-over {
     background-color: #e3f2fd !important;
     border-color: #2196f3 !important;
+}
+
+#terminal span {
+    display: inline-block;
+    word-break: break-all;
+}
+
+.terminal-output, .user-input, .user-input > span {
+    white-space: pre-wrap;
+    word-break: break-all;
 }
 
 #terminal, #terminal * {
