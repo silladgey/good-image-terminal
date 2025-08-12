@@ -17,19 +17,23 @@ KEYCODE_TAB = 9
 KEYCODE_ENTER = 13
 
 
-class CssVariables:
-    """A class for managing CSS variables for an Element."""
+class CssVariable:
+    """A class for managing a CSS variable for an Element."""
 
+    name: str
     element: Element
 
-    def __init__(self, element: Element) -> None:
+    def __init__(self, name: str, element: Element) -> None:
+        self.name = name
         self.element = element
 
-    def __getitem__(self, name: str) -> str:
-        return js.window.getComputedStyle(self.element.html_element).getPropertyValue(name)
+    def get(self) -> str:
+        """Get the value of the CSS variable."""
+        return js.document.getComputedStyle(self.element.html_element).getPropertyValue(self.name)
 
-    def __setitem__(self, name: str, value: str) -> None:
-        self.element.html_element.style.setProperty(name, value)
+    def set(self, value: str) -> None:
+        """Set the value of the CSS variable."""
+        self.element.html_element.style.setProperty(self.name, value)
 
 
 class TerminalGui(Element):
@@ -40,7 +44,11 @@ class TerminalGui(Element):
     current_command_idx: int | None = None
     terminal: Terminal | None = None
 
-    css_variables: CssVariables
+    _output_color_variable: CssVariable
+    _background_color_variable: CssVariable
+    _success_color_variable: CssVariable
+    _error_color_variable: CssVariable
+    _suggestion_color_variable: CssVariable
 
     def get_suggestion(self, command: str | None) -> str | None:
         """Get a suggestion for the given command."""
@@ -79,7 +87,13 @@ class TerminalGui(Element):
         """,
         )
 
-        self.css_variables = CssVariables(self)
+        # Initialize CSS variables for terminal colors
+        self._output_color_variable = CssVariable("--terminal-output-color", self)
+        self._background_color_variable = CssVariable("--terminal-background-color", self)
+        self._success_color_variable = CssVariable("--terminal-success-color", self)
+        self._error_color_variable = CssVariable("--terminal-error-color", self)
+        self._suggestion_color_variable = CssVariable("--terminal-suggestion-color", self)
+
         self.previous_commands = deque(maxlen=self.max_previous_commands)
         self.class_name = "terminal"
 
@@ -89,6 +103,51 @@ class TerminalGui(Element):
         self.input.text_input.on("keydown", self._on_input_control_keydown)
         self.input.text_input.on("input", self._on_input)
         self.on("click", self._focus_input)
+
+    @property
+    def output_color(self) -> str:
+        """The color of the terminal output."""
+        return self._output_color_variable.get()
+
+    @output_color.setter
+    def output_color(self, value: str) -> None:
+        self._output_color_variable.set(value)
+
+    @property
+    def background_color(self) -> str:
+        """The background color of the terminal."""
+        return self._background_color_variable.get()
+
+    @background_color.setter
+    def background_color(self, value: str) -> None:
+        self._background_color_variable.set(value)
+
+    @property
+    def success_color(self) -> str:
+        """The color used for successful terminal commands."""
+        return self._success_color_variable.get()
+
+    @success_color.setter
+    def success_color(self, value: str) -> None:
+        self._success_color_variable.set(value)
+
+    @property
+    def error_color(self) -> str:
+        """The color used for error terminal commands."""
+        return self._error_color_variable.get()
+
+    @error_color.setter
+    def error_color(self, value: str) -> None:
+        self._error_color_variable.set(value)
+
+    @property
+    def suggestion_color(self) -> str:
+        """The color used for terminal command suggestions."""
+        return self._suggestion_color_variable.get()
+
+    @suggestion_color.setter
+    def suggestion_color(self, value: str) -> None:
+        self._suggestion_color_variable.set(value)
 
     def _submit_input(self, event: Any) -> None:  # noqa: ANN401
         value = event.target.value
