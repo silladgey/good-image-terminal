@@ -86,7 +86,7 @@ class Background(BaseCommand):
         terminal.terminal_display.css_variables["--terminal-background-color"] = f"rgb{color.rgb}"
 
         text_color = Color(255, 255, 255) if color.hsv[2] < self.BRIGHTNESS_THRESHOLD else Color(0, 0, 0)
-        
+
         # changes the text color of all the users input
         terminal.terminal_display["style"].setProperty(
             "--terminal-output-color",

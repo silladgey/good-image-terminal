@@ -1,9 +1,15 @@
 """Terminal input widget for the terminal GUI."""
-from gui.element import Element, Input, HTMLElement
-from .terminal_io import TerminalInputVerb
+
 import re
 
+from gui.element import Element, HTMLElement, Input
+
+from .terminal_io import TerminalInputVerb
+
+
 class TerminalInput(Element):
+    """A terminal input component for user commands."""
+
     text_input: Input
     suggestion_span: Element
     input_wrapper: Element
@@ -47,6 +53,7 @@ class TerminalInput(Element):
         self.text_input.class_name = "terminal-text-input"
 
     def set_value(self, value: str) -> None:
+        """Set the value of the text input."""
         self.text_input["value"] = value
         command = re.search(r"^(\s*)(\S+\b)", value)
         if not command:
@@ -106,6 +113,7 @@ class TerminalInput(Element):
         )
 
     def set_suggestion(self, suggestion: str | None) -> None:
+        """Set the suggestion for the text input."""
         if not suggestion:
             self.suggestion_span.text = ""
             return

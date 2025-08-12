@@ -5,6 +5,7 @@ from image import PaintImage
 SUCCESS_COLOUR = "var(--terminal-success-color)"
 ERROR_COLOUR = "var(--terminal-error-color)"
 
+
 class Terminal:
     """Terminal manages a custom command environment.
 
