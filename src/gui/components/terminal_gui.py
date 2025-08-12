@@ -29,7 +29,7 @@ class CssVariables:
         return js.window.getComputedStyle(self.element.html_element).getPropertyValue(name)
 
     def __setitem__(self, name: str, value: str) -> None:
-        return self.element.html_element.style.setProperty(name, value)
+        self.element.html_element.style.setProperty(name, value)
 
 
 class TerminalGui(Element):
