@@ -1,4 +1,5 @@
-from commands import all_commands
+from commands import all_commands, image_refresh_needed
+from gui.components.image_preview import ImagePreview
 from gui.components.terminal_gui import TerminalGui
 from image import PaintImage
 
@@ -12,9 +13,10 @@ class Terminal:
     @author Philip
     """
 
-    def __init__(self, image: PaintImage, display: TerminalGui) -> None:
+    def __init__(self, image: PaintImage, display: TerminalGui, image_preview: ImagePreview) -> None:
         self.image = image
 
+        self.image_preview = image_preview
         self.terminal_display = display
         display.terminal = self
 
@@ -26,11 +28,15 @@ class Terminal:
 
         @author Philip
         """
-        command_str = command_str.strip()
-        command, *args = command_str.split()
+        if command_str.strip() == "":
+            return False
+
+        command, *args = command_str.strip().split()
 
         if command in all_commands:
             all_commands[command](self, *args)
+            if command in image_refresh_needed:
+                self.image_preview.display_image(self.image.get_js_link())
         else:
             self.output_error(f"`{command}` is not a valid command.")
             self.output_error("use `help` to see list of available commands`")
@@ -48,10 +54,11 @@ class Terminal:
 
         @author Philip
         """
-        if command_str == "":
+        if command_str.strip() == "":
             return ""
 
-        command, *args = command_str.split()
+        command, *args = command_str.strip().split()
+
         if command in all_commands:
             output = command
             prediction = all_commands[command].predict_args(self, *args)

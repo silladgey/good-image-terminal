@@ -4,6 +4,7 @@ from gui.components.drag_drop_handler import DragDropHandler
 from gui.components.file_upload_handler import FileUploadHandler
 from gui.components.image_display_manager import ImageDisplayManager
 from gui.element import Element, HTMLElement
+from image import PaintImage
 
 
 class ImagePreview(Element):
@@ -14,7 +15,7 @@ class ImagePreview(Element):
         Ricky
     """
 
-    def __init__(self, parent: HTMLElement | Element | None = None) -> None:
+    def __init__(self, image: PaintImage, parent: HTMLElement | Element | None = None) -> None:
         super().__init__(
             tag_name="div",
             parent=parent,
@@ -34,8 +35,11 @@ class ImagePreview(Element):
         )
         self.class_name = "image-preview"
 
+        # Remember PaintImage
+        self.image = image
+
         # Initialize the image display manager
-        self.image_manager = ImageDisplayManager(self)
+        self.image_manager = ImageDisplayManager(self, image)
 
         # Initialize the file upload handler
         self.file_handler = FileUploadHandler(
@@ -61,6 +65,7 @@ class ImagePreview(Element):
 
     def _on_file_processed(self, data_url: str) -> None:
         """Handle successfully processed file."""
+        self.image.load_from_image_link(data_url)
         self.image_manager.display_image(data_url)
 
     def _on_error(self, error_message: str) -> None:

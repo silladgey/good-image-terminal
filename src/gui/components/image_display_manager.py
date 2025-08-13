@@ -1,5 +1,3 @@
-import traceback
-
 import js  # type: ignore[import]
 
 from gui.element import Element
@@ -13,17 +11,18 @@ class ImageDisplayManager:
         Ricky
     """
 
-    def __init__(self, container: Element) -> None:
+    def __init__(self, container: Element, image: PaintImage) -> None:
         """Initialize image display manager.
 
         Args:
             container: The container element to create image display elements in
+            image: Python Image
 
         """
         self.container = container
         self.current_image_src: str | None = None
         self._setup_elements()
-        self._load_default_image()
+        self.display_image(image.get_js_link())
 
     def _setup_elements(self) -> None:
         """Create the image container, image element, and placeholder text."""
@@ -65,26 +64,6 @@ class ImageDisplayManager:
         """,
         )
         self.placeholder_text.text = "Loading default image..."
-
-    def _load_default_image(self) -> None:
-        """Load and display the default.png image from the images folder."""
-        try:
-            img = PaintImage()
-            result = img.load("default.png")
-
-            if result == 0:  # success
-                js_link = img.get_js_link()
-                self.display_image(js_link)
-            else:
-                # Update placeholder to show drag/drop functionality
-                self.placeholder_text.text = "Drop an image here or click to upload"
-        except ImportError as e:
-            print(f"Import error loading image module: {e!s}")
-            self.placeholder_text.text = "Drop an image here or click to upload"
-        except (AttributeError, OSError, ValueError) as e:
-            print(f"Error loading default image: {e!s}")
-            self.placeholder_text.text = "Drop an image here or click to upload"
-            traceback.print_exc()
 
     def display_image(self, image_src: str) -> None:
         """Display an image in the preview area."""
