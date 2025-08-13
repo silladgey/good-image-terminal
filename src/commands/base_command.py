@@ -23,7 +23,7 @@ class BaseCommand:
         """,
     )
 
-    def __call__(self, terminal: "Terminal", *args: str) -> bool:
+    def __call__(self, terminal: "Terminal", *args: str, **options: str) -> bool:
         """Preforms the command being called using `*args`.
 
         This function should be overridden by subclasses.
@@ -32,6 +32,7 @@ class BaseCommand:
 
         :param terminal: The terminal instance.
         :param args: Arguments passed to the command.
+        :param options: Options passed to the command with optional arguments with those options.
         :return: Was the command executed successfully?
 
         @author Philip
@@ -39,7 +40,7 @@ class BaseCommand:
         msg = "BaseCommand should not be called and should be overridden"
         raise NotImplementedError(msg)
 
-    def predict_args(self, terminal: "Terminal", *args: str) -> str | None:
+    def predict_args(self, terminal: "Terminal", *args: str, **options: str) -> str | None:
         """Predicts the next argument for the command.
 
         This function should be overridden by subclasses.
@@ -48,6 +49,7 @@ class BaseCommand:
 
         :param terminal: The terminal instance.
         :param args: Arguments already passed to the command.
+        :param options: Options passed to the command with optional arguments with those options.
         :return: The predicted continuance of the arguments for the command. If new argument, start with space.
                  If no more arguments "". If error in arguments, return None.
 

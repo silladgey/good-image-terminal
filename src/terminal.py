@@ -6,6 +6,23 @@ SUCCESS_COLOUR = "var(--terminal-success-color)"
 ERROR_COLOUR = "var(--terminal-error-color)"
 
 
+def get_options(args: list[str]) -> tuple[list[str], dict[str, str]]:
+    """Remove options from a given list of arguments."""
+    options_start: int = 0
+    while options_start < len(args) and not args[options_start].startswith("--"):
+        options_start += 1
+
+    options: dict[str, str] = {}
+    last_key: str | None = None
+    for arg in args[options_start:]:
+        if arg.startswith("--"):
+            last_key = arg[2:]
+            options[last_key] = ""
+            continue
+        options[arg] += arg
+    return args[:options_start], options
+
+
 class Terminal:
     """Terminal manages a custom command environment.
 
@@ -29,10 +46,14 @@ class Terminal:
         if command_str.strip() == "":
             return False
 
+        command: str
+        args: list[str]
         command, *args = command_str.strip().split()
 
+        args, options = get_options(args)
+
         if command in all_commands:
-            all_commands[command](self, *args)
+            all_commands[command](self, *args, **options)
         else:
             self.output_error(f"`{command}` is not a valid command.")
             self.output_error("use `help` to see list of available commands`")
@@ -55,9 +76,11 @@ class Terminal:
 
         command, *args = command_str.strip().split()
 
+        args, options = get_options(args)
+
         if command in all_commands:
             output = command
-            prediction = all_commands[command].predict_args(self, *args)
+            prediction = all_commands[command].predict_args(self, *args, **options)
             if prediction is None:
                 return None
             if prediction == "":

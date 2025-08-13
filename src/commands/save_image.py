@@ -28,11 +28,12 @@ class SaveImage(BaseCommand):
         """,
     )
 
-    def __call__(self, terminal: "Terminal", *args: str) -> bool:
+    def __call__(self, terminal: "Terminal", *args: str, **_options: str) -> bool:
         """...
 
         :param terminal: The terminal instance.
         :param args: Arguments to be passed to the command.
+        :param options: Options passed to the command with optional arguments with those options.
         :return: True if command was executed successfully.
 
         @author Mira
@@ -53,7 +54,7 @@ class SaveImage(BaseCommand):
         terminal.output_info(f"Image succesfully saved as `{path}`")
         return True
 
-    def predict_args(self, _terminal: "Terminal", *args: str) -> str | None:
+    def predict_args(self, _terminal: "Terminal", *args: str, **_options: str) -> str | None:
         """Argument predictor."""
         if len(args) > 2 or len(args) == 0:  # noqa: PLR2004
             return ""

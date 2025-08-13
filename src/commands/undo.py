@@ -22,11 +22,12 @@ class Undo(BaseCommand):
         """,
     )
 
-    def __call__(self, terminal: "Terminal", *args: str) -> bool:  # noqa: ARG002
+    def __call__(self, terminal: "Terminal", *_args: str, **_options: str) -> bool:
         """...
 
         :param terminal: The terminal instance.
         :param args: Arguments to be passed to the command.
+        :param options: Options passed to the command with optional arguments with those options.
         :return: True if command was executed successfully.
 
         @author Mira
@@ -37,6 +38,6 @@ class Undo(BaseCommand):
         terminal.output_success("Undone :)")
         return True
 
-    def predict_args(self, _terminal: "Terminal", *_args: str) -> str | None:
+    def predict_args(self, _terminal: "Terminal", *_args: str, **_options: str) -> str | None:
         """Argument predictor."""
         return ""

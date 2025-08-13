@@ -26,11 +26,12 @@ class DrawRectangle(BaseCommand):
         """,
     )
 
-    def __call__(self, terminal: "Terminal", *args: str) -> bool:
+    def __call__(self, terminal: "Terminal", *args: str, **_options: str) -> bool:
         """Draw rectangle command.
 
         :param terminal: The terminal instance.
         :param args: Arguments to be passed to the command.
+        :param options: Options passed to the command with optional arguments with those options.
         :return: True if command was executed successfully.
 
         @author Mira
@@ -63,7 +64,7 @@ class DrawRectangle(BaseCommand):
         terminal.output_info(f"rectangle at {x}x{y} size {w}x{h} filled with rgb{col.rgb}")
         return True
 
-    def predict_args(self, _terminal: "Terminal", *args: str) -> str | None:  # noqa: C901
+    def predict_args(self, _terminal: "Terminal", *args: str, **_options: str) -> str | None:  # noqa: C901
         """Argument predictor."""
         result = ""
         match len(args):

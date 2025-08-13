@@ -22,11 +22,12 @@ class ImageInfo(BaseCommand):
         """,
     )
 
-    def __call__(self, terminal: "Terminal", *args: str) -> bool:
+    def __call__(self, terminal: "Terminal", *args: str, **_options: str) -> bool:
         """...
 
         :param terminal: The terminal instance.
         :param args: Arguments to be passed to the command.
+        :param options: Options passed to the command with optional arguments with those options.
         :return: True if command was executed successfully.
 
         @author Mira
@@ -52,7 +53,7 @@ class ImageInfo(BaseCommand):
             terminal.output_info(f"Colors: {len(info['colors'])}")
         return True
 
-    def predict_args(self, _terminal: "Terminal", *args: str) -> str | None:
+    def predict_args(self, _terminal: "Terminal", *args: str, **_options: str) -> str | None:
         """Argument predictor."""
         if len(args) == 0:
             return " x y"

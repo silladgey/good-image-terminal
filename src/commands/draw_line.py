@@ -26,11 +26,12 @@ class DrawLine(BaseCommand):
         """,
     )
 
-    def __call__(self, terminal: "Terminal", *args: str) -> bool:
+    def __call__(self, terminal: "Terminal", *args: str, **_options: str) -> bool:
         """Draw line command.
 
         :param terminal: The terminal instance.
         :param args: Arguments to be passed to the command.
+        :param options: Options passed to the command with optional arguments with those options.
         :return: True if command was executed successfully.
 
         @author Mira
@@ -68,7 +69,7 @@ class DrawLine(BaseCommand):
         terminal.output_info(f"line from {x1}x{y1} to {x2}x{y2} with rgb{col.rgb}")
         return True
 
-    def predict_args(self, _terminal: "Terminal", *args: str) -> str | None:  # noqa: C901
+    def predict_args(self, _terminal: "Terminal", *args: str, **_options: str) -> str | None:  # noqa: C901
         """Argument predictor."""
         result = ""
         match len(args):

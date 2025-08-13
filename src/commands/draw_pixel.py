@@ -25,11 +25,12 @@ class DrawPixel(BaseCommand):
         """,
     )
 
-    def __call__(self, terminal: "Terminal", *args: str) -> bool:
+    def __call__(self, terminal: "Terminal", *args: str, **_options: str) -> bool:
         """Draw pixel command.
 
         :param terminal: The terminal instance.
         :param args: Arguments to be passed to the command.
+        :param options: Options passed to the command with optional arguments with those options.
         :return: True if command was executed successfully.
 
         @author Mira
@@ -58,7 +59,7 @@ class DrawPixel(BaseCommand):
         terminal.output_info(f"Pixel at {x}x{y} filled with rgb{col.rgb}.")
         return True
 
-    def predict_args(self, _terminal: "Terminal", *args: str) -> str | None:
+    def predict_args(self, _terminal: "Terminal", *args: str, **_options: str) -> str | None:
         """Argument predictor."""
         result = ""
         match len(args):
