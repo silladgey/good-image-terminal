@@ -6,30 +6,35 @@ if TYPE_CHECKING:
     from terminal import Terminal
 
 
-class Ping(BaseCommand):
-    """Test ping command.
+class Undo(BaseCommand):
+    """Magic Undo button.
 
-    Just echos pong to terminal
-
-    @author Philip
+    @author Mira
     """
 
-    name: str = "ping"
+    name: str = "undo"
     help_pages: tuple[str, ...] = (
-        """Pong!!!
+        """
+        Usage: undo
+
+        Undoes the last thing you did.
+        Can be only done once!
         """,
     )
 
-    def __call__(self, terminal: "Terminal", *args: str) -> bool:
-        """Print pong to terminal.
+    def __call__(self, terminal: "Terminal", *args: str) -> bool:  # noqa: ARG002
+        """...
 
         :param terminal: The terminal instance.
         :param args: Arguments to be passed to the command.
         :return: True if command was executed successfully.
 
-        @author Philip
+        @author Mira
         """
-        terminal.output_success("pong" + (f": {', '.join(args)}" if args else ""))
+        if terminal.image.undo():
+            terminal.output_error("Cannot be undone.")
+            return False
+        terminal.output_success("Undone :)")
         return True
 
     def predict_args(self, _terminal: "Terminal", *_args: str) -> str | None:

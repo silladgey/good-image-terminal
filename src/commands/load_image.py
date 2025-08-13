@@ -1,9 +1,12 @@
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 from commands.base_command import BaseCommand
 
 if TYPE_CHECKING:
     from terminal import Terminal
+
+IMAGES_PATH = Path(__file__).parent.parent.resolve() / "images"
 
 
 class LoadImage(BaseCommand):
@@ -15,7 +18,7 @@ class LoadImage(BaseCommand):
     name: str = "load_image"
     help_pages: tuple[str, ...] = (
         """
-        Usage: load_image <image.name>
+        Usage: load_image <image_name.png>
 
         Default image loading: load_image default
         """,
@@ -28,14 +31,25 @@ class LoadImage(BaseCommand):
         :param args: Arguments to be passed to the command.
         :return: True if command was executed successfully.
 
-        @author Philip
+        @author Mira
         """
         if not args:
-            terminal.output_error("You need to provide an image name see help for more info.")
+            terminal.output_error("You need to provide a full image name. See help for more info.")
             return False
         if args[0] == "default":
             terminal.image.load()
+            terminal.output_info("default image loaded")
         elif terminal.image.load(args[0]):
             terminal.output_error("Image not found.")
             return False
+        terminal.output_info(f"image `{args[0]}` loaded")
         return True
+
+    def predict_args(self, _terminal: "Terminal", *args: str) -> str | None:
+        """Argument predictor."""
+        if len(args) != 1:
+            return ""
+        for path in IMAGES_PATH.iterdir():
+            if path.name.startswith(args[0]):
+                return path.name
+        return ""

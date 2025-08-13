@@ -2,8 +2,9 @@ import base64
 import io
 import pathlib
 
-from PIL import Image as _Image
+from PIL import Image, ImageDraw
 
+from gui.components.image_preview import ImagePreview
 from utils.color import Color
 
 IMAGES_DIR = pathlib.Path(__file__).parent.resolve() / "images"
@@ -15,12 +16,19 @@ class PaintImage:
     :author: Mira
     """
 
-    def __init__(self) -> None:
+    def __init__(self, image_preview: ImagePreview) -> None:
         """Create an image object."""
-        self.buf = io.BytesIO()
         self.img_name = ""
-        self.img = _Image.new("RGB", (400, 250), (0, 0, 0))
-        self._custom_image = False
+        self.img = Image.new("RGB", (400, 250), (0, 0, 0))
+        self.backupImage = self.img.copy()
+        self.undo_available = True
+        self.edits = 0
+        self.image_preview = image_preview
+
+    def refresh_image(self) -> None:
+        """Display edits on screen."""
+        self.edits += 1
+        self.image_preview.display_image(self.get_js_link())
 
     def load(self, image_name: str = "default.png") -> int:
         """Load image from images.
@@ -29,21 +37,23 @@ class PaintImage:
         return returns 0 if image has loaded 1 if the image wasn't located
         """
         if (IMAGES_DIR / image_name).exists():
-            self.img = _Image.open(IMAGES_DIR / image_name, "r").copy()
+            self.img = Image.open(IMAGES_DIR / image_name, "r").copy()
             self.img_name = image_name
+            self.edits = -1
+            self.refresh_image()
             return 0
         return 1
 
-    def save(self) -> int:
-        """Save image to images/.
+    def save(self, img_name: str) -> int:
+        """Save image to images/<img_name>.
 
-        return returns 0 if image has saved 1 if the image wasn't
+        returns 0 if image has saved 1 if the image wasn't
         """
-        if self.img_name:
-            self.img.save(IMAGES_DIR / self.img_name, format="PNG")
-        else:
+        if not img_name:
             print("Can't save an empty image.")
             return 1
+        self.img.save(IMAGES_DIR / img_name, format="PNG")
+        self.edits = 0
         return 0
 
     def get_js_link(self) -> str:
@@ -51,24 +61,103 @@ class PaintImage:
 
         return string - image src link
         """
-        self.img.save(self.buf, format="PNG")
-        data = base64.b64encode(self.buf.getvalue()).decode("utf-8")
+        buf = io.BytesIO()
+        self.img.save(buf, format="PNG")
+        data = base64.b64encode(buf.getvalue()).decode("utf-8")
         return f"data:image/png;base64,{data}"
 
-    def get_image_info(self) -> dict:
+    def load_from_image_link(self, js_link: str) -> None:
+        """Load image from a base64 image src link (data URL) into self.img.
+
+        js_link: str - base64 data URL like "data:image/png;base64,iVBORw0..."
+        """
+        header, encoded = js_link.split(",", 1)
+        img_data = base64.b64decode(encoded)
+        buf = io.BytesIO(img_data)
+        self.img = Image.open(buf)
+        self.undo_save()
+        self.edits = -1
+        self.refresh_image()
+
+    def undo(self) -> int:
+        """Return 0 if chages undone, otherwise 1."""
+        if self.undo_available:
+            self.img = self.backup_image
+            self.undo_available = False
+            self.refresh_image()
+            return 0
+        return 1
+
+    def undo_save(self) -> None:
+        """Save for undo."""
+        self.backup_image = self.img.copy()
+        self.undo_available = True
+
+    def get_info(self) -> dict[str, tuple[int, int] | str | bool | list | None]:
         """Return image information dictionary.
 
-        return dictionary
+        return dictionary containing basic information including: size, format, colors
         """
         return {
             "size": self.img.size,
             "format": self.img.format,
+            "edits": self.edits,
+            "colors": self.img.getcolors(),
         }
 
     def set_pixel(self, x: int, y: int, color: Color) -> None:
         """Set an image pixel."""
-        self.img.putpixel((x, y), color)
+        self.undo_save()
+        self.img.putpixel((x, y), color.rgb)
+        self.refresh_image()
 
     def get_pixel(self, x: int, y: int) -> tuple[int, ...]:
         """Get an image pixel."""
         return self.img.getpixel((x, y))
+
+    def fill_rect(self, x: int, y: int, width: int, height: int, color: Color) -> int:
+        """Fill rectangle on an image.
+
+        return 0 on success 1 on fail
+        """
+        if width <= 0 or height <= 0:
+            return 1
+
+        self.undo_save()
+
+        draw = ImageDraw.Draw(self.img)
+        draw.rectangle(
+            [x, y, x + width - 1, y + height - 1],
+            fill=color.rgb,
+        )
+        self.refresh_image()
+        return 0
+
+    def draw_line(self, x1: int, y1: int, x2: int, y2: int, color: Color) -> int:
+        """Draw a straight line on the image."""
+        self.undo_save()
+
+        draw = ImageDraw.Draw(self.img)
+        draw.line((x1, y1, x2, y2), fill=color.rgb)
+        self.refresh_image()
+        return 0
+
+    def draw_circle(self, cx: int, cy: int, radius: int, color: Color) -> int:
+        """Draw a circle on the image."""
+        self.undo_save()
+
+        draw = ImageDraw.Draw(self.img)
+        bbox = [cx - radius, cy - radius, cx + radius, cy + radius]
+        draw.ellipse(bbox, fill=color.rgb)
+        self.refresh_image()
+        return 0
+
+    def draw_circle_outlines(self, cx: int, cy: int, radius: int, color: Color) -> int:
+        """Draw a circle on the image."""
+        self.undo_save()
+
+        draw = ImageDraw.Draw(self.img)
+        bbox = [cx - radius, cy - radius, cx + radius, cy + radius]
+        draw.ellipse(bbox, outline=color.rgb)
+        self.refresh_image()
+        return 0
