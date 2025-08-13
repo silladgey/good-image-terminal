@@ -16,10 +16,10 @@
 				const pyodide = await loadPyodide();
 				await pyodide.loadPackage("pillow");
 				await pyodide.runPythonAsync(`
-            from pyodide.http import pyfetch
-            response = await pyfetch("src.zip")
-            await response.unpack_archive()
-          `);
+					from pyodide.http import pyfetch
+					response = await pyfetch("src.zip")
+					await response.unpack_archive()
+				`);
 				const main = await pyodide.pyimport("main");
 				await main.main();
 			})();
