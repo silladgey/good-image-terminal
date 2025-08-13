@@ -81,3 +81,27 @@ class Color:
         h = degrees(atan2(b, a))
         h = h + 360 if h < 0 else h
         return l, c, h
+
+
+colors = {
+    "black": Color(0, 0, 0),
+    "white": Color(255, 255, 255),
+    "red": Color(255, 0, 0),
+    "green": Color(0, 255, 0),
+    "blue": Color(0, 0, 255),
+    "yellow": Color(255, 255, 0),
+    "cyan": Color(0, 255, 255),
+    "magenta": Color(255, 0, 255),
+    "gray": Color(128, 128, 128),
+    "maroon": Color(128, 0, 0),
+    "olive": Color(128, 128, 0),
+    "purple": Color(128, 0, 128),
+    "teal": Color(0, 128, 128),
+    "navy": Color(0, 0, 128),
+    "silver": Color(192, 192, 192),
+    "lime": Color(0, 255, 0),
+    "orange": Color(255, 165, 0),
+    "brown": Color(165, 42, 42),
+    "pink": Color(255, 192, 203),
+    "gold": Color(255, 215, 0),
+}

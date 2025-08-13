@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 from commands.base_command import BaseCommand
@@ -5,31 +6,37 @@ from commands.base_command import BaseCommand
 if TYPE_CHECKING:
     from terminal import Terminal
 
+IMAGES_PATH = Path(__file__).parent.parent.resolve() / "images"
 
-class Ping(BaseCommand):
-    """Test ping command.
 
-    Just echos pong to terminal
+class Ls(BaseCommand):
+    """Listing of image directory.
 
-    @author Philip
+    @author Mira
     """
 
-    name: str = "ping"
+    name: str = "ls"
     help_pages: tuple[str, ...] = (
-        """Pong!!!
+        """
+        Usage: ls
+
+        Lists the directory of images.
+        Does not need any arguments.
         """,
     )
 
     def __call__(self, terminal: "Terminal", *args: str) -> bool:
-        """Print pong to terminal.
+        """List all image files.
 
         :param terminal: The terminal instance.
         :param args: Arguments to be passed to the command.
         :return: True if command was executed successfully.
 
-        @author Philip
+        @author Mira
         """
-        terminal.output_success("pong" + (f": {', '.join(args)}" if args else ""))
+        if args:
+            terminal.output_error("No arguments needed")
+        terminal.output_info("Files: " + " ".join([path.name for path in IMAGES_PATH.iterdir() if path.is_file()]))
         return True
 
     def predict_args(self, _terminal: "Terminal", *_args: str) -> str | None:

@@ -31,12 +31,15 @@ class Layout(Element):
         """,
         )
 
+        # create an image canvas then link it to everything that needs it
+
         self.image_preview = ImagePreview(parent=self)
         self.separator = Separator(parent=self, on_resize=self._handle_resize)
         self.terminal_gui = TerminalGui(parent=self)
 
-        # Set up objects
-        image = PaintImage()
+        image = PaintImage(self.image_preview)
+        image.load()
+        # create a terminal
         self.terminal = Terminal(image, self.terminal_gui)
 
     def _handle_resize(self, mouse_y: int) -> None:

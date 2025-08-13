@@ -7,6 +7,58 @@ _A lightweight frontend Python project_
 This project uses [Pyodide](https://pyodide.org) to run Python directly in the browser using WebAssembly (WASM).  
 Almost no JavaScript is required — the frontend is written entirely in Python and HTML/CSS.
 
+## Setup
+
+1. First we set up our python enviroment
+
+```shell
+$ python -m venv .venv
+```
+
+2. Entering it
+
+```shell
+# Linux, Bash
+$ source .venv/bin/activate
+# Linux, Fish
+$ source .venv/bin/activate.fish
+# Linux, Csh
+$ source .venv/bin/activate.csh
+# Linux, PowerShell Core
+$ .venv/bin/Activate.ps1
+# Windows, cmd.exe
+> .venv\Scripts\activate.bat
+# Windows, PowerShell
+> .venv\Scripts\Activate.ps1
+```
+
+3. Installing development dependecies
+
+```shell
+$ pip install --group dev
+```
+
+_If it gives errors try:_
+```shell
+$ python -m pip install --upgrade pip  
+```
+
+4. If we want to exit our enviroment we do
+
+```shell
+$ deactivate
+```
+
+## Running the project
+
+To build the project, run
+
+```shell
+$ python build.py --serve --port 8000
+```
+
+This will serve the project on `http://localhost:8000` after building it to `build/`. If you make changes to your code, run `build.py` again to rebuild the project.
+
 ## Current Project Structure
 
 ```
@@ -159,50 +211,3 @@ import os
 import pathlib
 from pathlib import Path
 ```
-
-## Setup
-
-1. First we set up our python enviroment
-
-```shell
-$ python -m venv .venv
-```
-
-2. Entering it
-
-```shell
-# Linux, Bash
-$ source .venv/bin/activate
-# Linux, Fish
-$ source .venv/bin/activate.fish
-# Linux, Csh
-$ source .venv/bin/activate.csh
-# Linux, PowerShell Core
-$ .venv/bin/Activate.ps1
-# Windows, cmd.exe
-> .venv\Scripts\activate.bat
-# Windows, PowerShell
-> .venv\Scripts\Activate.ps1
-```
-
-3. Installing development dependecies
-
-```shell
-$ pip install --group dev
-```
-
-4. If we want to exit our enviroment we do
-
-```shell
-$ deactivate
-```
-
-## Running the project
-
-To build the project, run
-
-```shell
-$ python build.py --serve --port 8000
-```
-
-This will serve the project on `http://localhost:8000` after building it to `build/`. If you make changes to your code, run `build.py` again to rebuild the project.
