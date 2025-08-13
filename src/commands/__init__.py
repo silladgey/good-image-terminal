@@ -10,6 +10,7 @@ from commands.load_image import LoadImage
 from commands.ls import Ls
 from commands.ping import Ping
 from commands.save_image import SaveImage
+from commands.undo import Undo
 
 all_commands: dict[str, BaseCommand] = {
     Ping.name: Ping(),
@@ -23,6 +24,7 @@ all_commands: dict[str, BaseCommand] = {
     DrawRectangle.name: DrawRectangle(),
     DrawCircle.name: DrawCircle(),
     DrawLine.name: DrawLine(),
+    Undo.name: Undo(),
 }
 
 image_refresh_needed: list[str] = [
@@ -31,4 +33,5 @@ image_refresh_needed: list[str] = [
     DrawRectangle.name,
     DrawCircle.name,
     DrawLine.name,
+    Undo.name,
 ]
