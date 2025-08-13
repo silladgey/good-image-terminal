@@ -21,7 +21,6 @@ class ImageDisplayManager:
         self.container = container
         self.current_image_src: str | None = None
         self._setup_elements()
-        self.display_image()
 
     def _setup_elements(self) -> None:
         """Create the image container, image element, and placeholder text."""

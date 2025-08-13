@@ -40,7 +40,7 @@ class Layout(Element):
         image = PaintImage(self.image_preview)
         image.load()
         # create a terminal
-        self.terminal = Terminal(image, self.terminal_gui, self.image_preview)
+        self.terminal = Terminal(image, self.terminal_gui)
 
     def _handle_resize(self, mouse_y: int) -> None:
         """Handle resizing of the image preview section.
