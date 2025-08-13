@@ -19,6 +19,8 @@ def get_options(args: list[str]) -> tuple[list[str], dict[str, str]]:
             last_key = arg[2:]
             options[last_key] = ""
             continue
+        if options[last_key] != "":
+            options[last_key] += " "
         options[last_key] += arg
     return args[:options_start], options
 
