@@ -13,25 +13,16 @@ from commands.save_image import SaveImage
 from commands.undo import Undo
 
 all_commands: dict[str, BaseCommand] = {
-    Ping.name: Ping(),
-    Help.name: Help(),
-    LoadImage.name: LoadImage(),
-    Background.name: Background(),
     Ls.name: Ls(),
-    SaveImage.name: SaveImage(),
-    ImageInfo.name: ImageInfo(),
-    DrawPixel.name: DrawPixel(),
-    DrawRectangle.name: DrawRectangle(),
-    DrawCircle.name: DrawCircle(),
-    DrawLine.name: DrawLine(),
+    Help.name: Help(),
+    Ping.name: Ping(),
     Undo.name: Undo(),
+    DrawLine.name: DrawLine(),
+    DrawPixel.name: DrawPixel(),
+    ImageInfo.name: ImageInfo(),
+    LoadImage.name: LoadImage(),
+    SaveImage.name: SaveImage(),
+    Background.name: Background(),
+    DrawCircle.name: DrawCircle(),
+    DrawRectangle.name: DrawRectangle(),
 }
-
-image_refresh_needed: list[str] = [
-    LoadImage.name,
-    DrawPixel.name,
-    DrawRectangle.name,
-    DrawCircle.name,
-    DrawLine.name,
-    Undo.name,
-]

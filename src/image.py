@@ -4,6 +4,7 @@ import pathlib
 
 from PIL import Image, ImageDraw
 
+from gui.components.image_preview import ImagePreview
 from utils.color import Color
 
 IMAGES_DIR = pathlib.Path(__file__).parent.resolve() / "images"
@@ -15,13 +16,19 @@ class PaintImage:
     :author: Mira
     """
 
-    def __init__(self) -> None:
+    def __init__(self, image_preview: ImagePreview) -> None:
         """Create an image object."""
         self.img_name = ""
         self.img = Image.new("RGB", (400, 250), (0, 0, 0))
         self.backupImage = self.img.copy()
         self.undo_available = True
         self.edits = 0
+        self.image_preview = image_preview
+
+    def refresh_image(self) -> None:
+        """Display edits on screen."""
+        self.edits += 1
+        self.image_preview.display_image(self.get_js_link())
 
     def load(self, image_name: str = "default.png") -> int:
         """Load image from images.
@@ -32,7 +39,8 @@ class PaintImage:
         if (IMAGES_DIR / image_name).exists():
             self.img = Image.open(IMAGES_DIR / image_name, "r").copy()
             self.img_name = image_name
-            self.edits = 0
+            self.edits = -1
+            self.refresh_image()
             return 0
         return 1
 
@@ -68,13 +76,15 @@ class PaintImage:
         buf = io.BytesIO(img_data)
         self.img = Image.open(buf)
         self.undo_save()
-        self.edits = 0
+        self.edits = -1
+        self.refresh_image()
 
     def undo(self) -> int:
         """Return 0 if chages undone, otherwise 1."""
         if self.undo_available:
             self.img = self.backup_image
             self.undo_available = False
+            self.refresh_image()
             return 0
         return 1
 
@@ -98,8 +108,8 @@ class PaintImage:
     def set_pixel(self, x: int, y: int, color: Color) -> None:
         """Set an image pixel."""
         self.undo_save()
-        self.edits += 1
         self.img.putpixel((x, y), color.rgb)
+        self.refresh_image()
 
     def get_pixel(self, x: int, y: int) -> tuple[int, ...]:
         """Get an image pixel."""
@@ -114,40 +124,40 @@ class PaintImage:
             return 1
 
         self.undo_save()
-        self.edits += 1
 
         draw = ImageDraw.Draw(self.img)
         draw.rectangle(
             [x, y, x + width - 1, y + height - 1],
             fill=color.rgb,
         )
+        self.refresh_image()
         return 0
 
     def draw_line(self, x1: int, y1: int, x2: int, y2: int, color: Color) -> int:
         """Draw a straight line on the image."""
         self.undo_save()
-        self.edits += 1
 
         draw = ImageDraw.Draw(self.img)
         draw.line((x1, y1, x2, y2), fill=color.rgb)
+        self.refresh_image()
         return 0
 
     def draw_circle(self, cx: int, cy: int, radius: int, color: Color) -> int:
         """Draw a circle on the image."""
         self.undo_save()
-        self.edits += 1
 
         draw = ImageDraw.Draw(self.img)
         bbox = [cx - radius, cy - radius, cx + radius, cy + radius]
         draw.ellipse(bbox, fill=color.rgb)
+        self.refresh_image()
         return 0
 
     def draw_circle_outlines(self, cx: int, cy: int, radius: int, color: Color) -> int:
         """Draw a circle on the image."""
         self.undo_save()
-        self.edits += 1
 
         draw = ImageDraw.Draw(self.img)
         bbox = [cx - radius, cy - radius, cx + radius, cy + radius]
         draw.ellipse(bbox, outline=color.rgb)
+        self.refresh_image()
         return 0

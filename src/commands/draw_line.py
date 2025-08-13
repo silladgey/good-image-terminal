@@ -68,7 +68,7 @@ class DrawLine(BaseCommand):
         terminal.output_info(f"line from {x1}x{y1} to {x2}x{y2} with rgb{col.rgb}")
         return True
 
-    def predict_args(self, terminal: "Terminal", *args: str) -> str | None:  # noqa: ARG002, C901
+    def predict_args(self, _terminal: "Terminal", *args: str) -> str | None:  # noqa: C901
         """Argument predictor."""
         result = ""
         match len(args):

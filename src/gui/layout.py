@@ -32,13 +32,13 @@ class Layout(Element):
         )
 
         # create an image canvas then link it to everything that needs it
-        image = PaintImage()
-        image.load()
 
-        self.image_preview = ImagePreview(image=image, parent=self)
+        self.image_preview = ImagePreview(parent=self)
         self.separator = Separator(parent=self, on_resize=self._handle_resize)
         self.terminal_gui = TerminalGui(parent=self)
 
+        image = PaintImage(self.image_preview)
+        image.load()
         # create a terminal
         self.terminal = Terminal(image, self.terminal_gui, self.image_preview)
 

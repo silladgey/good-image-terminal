@@ -1,7 +1,6 @@
 import js  # type: ignore[import]
 
 from gui.element import Element
-from image import PaintImage
 
 
 class ImageDisplayManager:
@@ -11,7 +10,7 @@ class ImageDisplayManager:
         Ricky
     """
 
-    def __init__(self, container: Element, image: PaintImage) -> None:
+    def __init__(self, container: Element) -> None:
         """Initialize image display manager.
 
         Args:
@@ -22,7 +21,7 @@ class ImageDisplayManager:
         self.container = container
         self.current_image_src: str | None = None
         self._setup_elements()
-        self.display_image(image.get_js_link())
+        self.display_image()
 
     def _setup_elements(self) -> None:
         """Create the image container, image element, and placeholder text."""

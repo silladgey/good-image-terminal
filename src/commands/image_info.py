@@ -52,7 +52,7 @@ class ImageInfo(BaseCommand):
             terminal.output_info(f"Colors: {len(info['colors'])}")
         return True
 
-    def predict_args(self, terminal: "Terminal", *args: str) -> str | None:  # noqa: ARG002
+    def predict_args(self, _terminal: "Terminal", *args: str) -> str | None:
         """Argument predictor."""
         if len(args) == 0:
             return " x y"

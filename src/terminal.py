@@ -1,5 +1,4 @@
-from commands import all_commands, image_refresh_needed
-from gui.components.image_preview import ImagePreview
+from commands import all_commands
 from gui.components.terminal_gui import TerminalGui
 from image import PaintImage
 
@@ -13,10 +12,9 @@ class Terminal:
     @author Philip
     """
 
-    def __init__(self, image: PaintImage, display: TerminalGui, image_preview: ImagePreview) -> None:
+    def __init__(self, image: PaintImage, display: TerminalGui) -> None:
         self.image = image
 
-        self.image_preview = image_preview
         self.terminal_display = display
         display.terminal = self
 
@@ -35,8 +33,6 @@ class Terminal:
 
         if command in all_commands:
             all_commands[command](self, *args)
-            if command in image_refresh_needed:
-                self.image_preview.display_image(self.image.get_js_link())
         else:
             self.output_error(f"`{command}` is not a valid command.")
             self.output_error("use `help` to see list of available commands`")

@@ -45,7 +45,7 @@ class LoadImage(BaseCommand):
         terminal.output_info(f"image `{args[0]}` loaded")
         return True
 
-    def predict_args(self, terminal: "Terminal", *args: str) -> str | None:  # noqa: ARG002
+    def predict_args(self, _terminal: "Terminal", *args: str) -> str | None:
         """Argument predictor."""
         if len(args) != 1:
             return ""

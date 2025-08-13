@@ -37,6 +37,6 @@ class Undo(BaseCommand):
         terminal.output_success("Undone :)")
         return True
 
-    def predict_args(self, terminal: "Terminal", *args: str) -> str | None:  # noqa: ARG002
+    def predict_args(self, _terminal: "Terminal", *_args: str) -> str | None:
         """Argument predictor."""
         return ""

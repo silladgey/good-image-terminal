@@ -39,6 +39,6 @@ class Ls(BaseCommand):
         terminal.output_info("Files: " + " ".join([path.name for path in IMAGES_PATH.iterdir() if path.is_file()]))
         return True
 
-    def predict_args(self, terminal: "Terminal", *args: str) -> str | None:  # noqa: ARG002
+    def predict_args(self, _terminal: "Terminal", *_args: str) -> str | None:
         """Argument predictor."""
         return ""

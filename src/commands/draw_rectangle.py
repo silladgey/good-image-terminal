@@ -63,7 +63,7 @@ class DrawRectangle(BaseCommand):
         terminal.output_info(f"rectangle at {x}x{y} size {w}x{h} filled with rgb{col.rgb}")
         return True
 
-    def predict_args(self, terminal: "Terminal", *args: str) -> str | None:  # noqa: ARG002, C901
+    def predict_args(self, _terminal: "Terminal", *args: str) -> str | None:  # noqa: C901
         """Argument predictor."""
         result = ""
         match len(args):

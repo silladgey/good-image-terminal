@@ -53,7 +53,7 @@ class SaveImage(BaseCommand):
         terminal.output_info(f"Image succesfully saved as `{path}`")
         return True
 
-    def predict_args(self, terminal: "Terminal", *args: str) -> str | None:  # noqa: ARG002
+    def predict_args(self, _terminal: "Terminal", *args: str) -> str | None:
         """Argument predictor."""
         if len(args) > 2 or len(args) == 0:  # noqa: PLR2004
             return ""

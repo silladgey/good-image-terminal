@@ -63,7 +63,7 @@ class DrawCircle(BaseCommand):
         terminal.output_info(f"Circle at {x}x{y} size {rad} filled with rgb{col.rgb}.")
         return True
 
-    def predict_args(self, terminal: "Terminal", *args: str) -> str | None:  # noqa: ARG002
+    def predict_args(self, _terminal: "Terminal", *args: str) -> str | None:
         """Argument predictor."""
         result = ""
         match len(args):
