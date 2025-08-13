@@ -16,13 +16,13 @@ class Undo(BaseCommand):
     help_pages: tuple[str, ...] = (
         """
         Usage: undo
-        
+
         Undoes the last thing you did.
         Can be only done once!
         """,
     )
 
-    def __call__(self, terminal: "Terminal", *args: str) -> bool: # noqa: ARG002
+    def __call__(self, terminal: "Terminal", *args: str) -> bool:  # noqa: ARG002
         """...
 
         :param terminal: The terminal instance.
@@ -37,6 +37,6 @@ class Undo(BaseCommand):
         terminal.output_success("Undone :)")
         return True
 
-    def predict_args(self, terminal: "Terminal", *args: str) -> str | None:
-        '''Argument predictor.'''
+    def predict_args(self, terminal: "Terminal", *args: str) -> str | None:  # noqa: ARG002
+        """Argument predictor."""
         return ""

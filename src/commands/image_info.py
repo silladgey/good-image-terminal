@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 
 
 class ImageInfo(BaseCommand):
-    """Display Image info
+    """Display Image info.
 
     @author Mira
     """
@@ -32,24 +32,30 @@ class ImageInfo(BaseCommand):
         @author Mira
         """
         info = terminal.image.get_info()
-        if len(args) == 2:
+        if len(args) == 2:  # noqa: PLR2004
             # check if the pixel is in an image
-            if args[0].isdigit() and args[0].isdigit() and 0 <= int(args[0]) < info["size"][0] and 0 <= int(args[1]) < info["size"][1]:
+            if (
+                args[0].isdigit()
+                and args[0].isdigit()
+                and 0 <= int(args[0]) < info["size"][0]
+                and 0 <= int(args[1]) < info["size"][1]
+            ):
                 terminal.output_info(f"Image pixel info (x:{int(args[0])} y:{int(args[1])}):")
                 terminal.output_info(f"Color: rgb{terminal.image.get_pixel(int(args[0]), int(args[1]))}")
                 return True
-            terminal.output_error(f"Incorrectly placed x and y coordinates of a pixel.")
+            terminal.output_error("Incorrectly placed x and y coordinates of a pixel.")
             return False
-        terminal.output_info(f"Image info:")
-        terminal.output_info(f"Size: {info["size"][0]}x{info["size"][1]} pixels")
-        terminal.output_info(f"Edit count: {info["edits"]}")
-        if info["colors"]: terminal.output_info(f"Colors: {len(info["colors"])}")
+        terminal.output_info("Image info:")
+        terminal.output_info(f"Size: {info['size'][0]}x{info['size'][1]} pixels")
+        terminal.output_info(f"Edit count: {info['edits']}")
+        if info["colors"]:
+            terminal.output_info(f"Colors: {len(info['colors'])}")
         return True
 
-    def predict_args(self, terminal: "Terminal", *args: str) -> str | None: # noqa: ARG002
-        '''Argument predictor.'''
+    def predict_args(self, terminal: "Terminal", *args: str) -> str | None:  # noqa: ARG002
+        """Argument predictor."""
         if len(args) == 0:
             return " x y"
-        elif len(args) == 1:
+        if len(args) == 1:
             return " y"
         return ""
