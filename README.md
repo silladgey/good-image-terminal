@@ -77,7 +77,7 @@ codejam-laudatory-larkspurs/
 python -m venv .venv
 ```
 
-1. Entering it
+2. Entering it
 
 ```shell
 # Linux, Bash
@@ -94,7 +94,7 @@ $ .venv/bin/Activate.ps1
 > .venv\Scripts\Activate.ps1
 ```
 
-1. Installing development dependecies
+3. Installing development dependecies
 
 ```shell
 pip install --group dev
@@ -106,7 +106,7 @@ _If it gives errors try:_
 python -m pip install --upgrade pip  
 ```
 
-1. If we want to exit our enviroment we do
+4. If we want to exit our enviroment we do
 
 ```shell
 deactivate
