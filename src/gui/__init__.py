@@ -13,18 +13,23 @@ body {
     flex-direction: column;
     overflow: hidden;
     font-family: monospace;
+    background-color: var(--body-background-color);
+    color: var(--text-color);
 }
 
 :root {
+    color-scheme: dark;
+    --body-background-color: #262626;
     --terminal-background-color: black;
     --terminal-output-color: white;
     --terminal-error-color: red;
     --terminal-success-color: green;
     --terminal-suggestion-color: rgb(119, 119, 119);
-    --description-background-color: #d3d3d3;
-    --text-color: #000;
-    --image-preview-background-color: #f0f0f0;
-    --separator-color: #ccc;
+    --description-background-color: #1c1c1c;
+    --description-button-border-color: #6b6b6b;
+    --text-color: white;
+    --image-preview-background: repeating-conic-gradient(#202020 0 25%, #0000 0 50%) 50% / 3em 3em;
+    --separator-color: #6b6b6b;
 }
 
 #description {
@@ -60,6 +65,11 @@ body {
     #description > .expand-btn {
         min-height: 2em;
     }
+}
+
+.expand-btn:hover {
+    filter: brightness(0.9);
+    cursor: pointer;
 }
 
 #description > .description-content {

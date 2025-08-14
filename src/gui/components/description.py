@@ -49,6 +49,7 @@ class Description(Element):
             text-align: center;
             user-select: none;
             font-family: monospace;
+            border: 3px solid var(--description-button-border-color);
         """,
         )
         expand_btn.class_name = "expand-btn"
