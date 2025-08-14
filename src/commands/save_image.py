@@ -38,6 +38,12 @@ class SaveImage(BaseCommand):
 
         @author Mira
         """
+        if len(args) == 0:
+            terminal.output_error("You need to provide a full image name. See help for more info.")
+            return False
+        if len(args) > 1:
+            terminal.output_error("Too many arguments. See help for more info.")
+            return False
         path = args[0]
         if not path.endswith(".png"):
             terminal.output_error("Please save the image as a .png")
