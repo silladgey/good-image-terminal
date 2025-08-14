@@ -20,7 +20,7 @@ class ImagePreview(Element):
             parent=parent,
             id="image-preview",
             style="""
-            background-color: var(--image-preview-background-color);
+            background: var(--image-preview-background);
             height: 50%;
             display: flex;
             flex-direction: column;
@@ -34,8 +34,21 @@ class ImagePreview(Element):
         )
         self.class_name = "image-preview"
 
+        self.cursor_info = Element(
+            "div",
+            parent=self,
+            style="""
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: white;
+            font-size: 14px;
+            z-index: 1;
+        """,
+        )
+
         # Initialize the image display manager
-        self.image_manager = ImageDisplayManager(self)
+        self.image_manager = ImageDisplayManager(self, self.cursor_info)
 
         # Initialize the file upload handler
         self.file_handler = FileUploadHandler(

@@ -1,4 +1,5 @@
 import traceback
+from typing import Any
 
 import js  # type: ignore[import]
 
@@ -13,7 +14,12 @@ class ImageDisplayManager:
         Ricky
     """
 
-    def __init__(self, container: Element) -> None:
+    image_container: Element
+    image_element: Element
+    placeholder_text: Element
+    cursor_info_element: Element
+
+    def __init__(self, container: Element, cursor_info_element: Element) -> None:
         """Initialize image display manager.
 
         Args:
@@ -22,6 +28,8 @@ class ImageDisplayManager:
         """
         self.container = container
         self.current_image_src: str | None = None
+        self.cursor_info = cursor_info_element
+
         self._setup_elements()
         self._load_default_image()
 
@@ -65,6 +73,25 @@ class ImageDisplayManager:
         """,
         )
         self.placeholder_text.text = "Loading default image..."
+
+        # Add mouse move event to update cursor info
+        self.image_element.on("mousemove", self._on_image_mouse_move)
+
+        # Add mouse leave event to clear cursor info
+        self.image_element.on("mouseleave", self._on_image_mouse_leave)
+
+    def _on_image_mouse_move(self, event: Any) -> None:  # noqa: ANN401
+        """Handle mouse movement over the image to update cursor info."""
+        if self.current_image_src:
+            intrinsic_mouse_x = int(((event.clientX - self.image_element["offsetLeft"]) / self.image_element["clientWidth"]) * self.image_element["naturalWidth"])
+            intrinsic_mouse_y = int(((event.clientY - self.image_element["offsetTop"]) / self.image_element["clientHeight"]) * self.image_element["naturalHeight"])
+            self.cursor_info.text = f"X: {intrinsic_mouse_x}, Y: {intrinsic_mouse_y}"
+        else:
+            self.cursor_info.text = ""
+    
+    def _on_image_mouse_leave(self, _event: Any) -> None:  # noqa: ANN401
+        """Clear cursor info when mouse leaves the image."""
+        self.cursor_info.text = ""
 
     def _load_default_image(self) -> None:
         """Load and display the default.png image from the images folder."""
