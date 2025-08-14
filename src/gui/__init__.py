@@ -1,6 +1,5 @@
 import js  # type: ignore[import]
 
-from gui.components.description import Description
 from gui.element import Element
 from gui.layout import Layout
 
@@ -23,18 +22,18 @@ body {
     --terminal-success-color: green;
     --terminal-suggestion-color: rgb(119, 119, 119);
     --description-background-color: #d3d3d3;
+    --text-color: #000;
     --image-preview-background-color: #f0f0f0;
     --separator-color: #ccc;
 }
 
 #description {
-    position:fixed;
+    position: fixed;
     top: 0;
     right: 0;
-    width: 50px;
-    height: 5%;
+    width: 5em;
     background-color: var(--description-background-color);
-    transition: width 0.3s ease, height 0.3s ease;
+    transition: width 0.2s ease;
     z-index: 100;
     overflow: hidden;
     display: flex;
@@ -44,9 +43,37 @@ body {
 
 #description.open {
     width: 40%;
-    height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+@media screen and (max-width: 600px) {
+    #description {
+        width: 100%;
+        position: static;
+    }
+
+    #description.open {
+        width: 100%;
+    }
+
+    #description > .expand-btn {
+        min-height: 2em;
+    }
+}
+
+#description > .description-content {
+    transition: height 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    height: 0;
+    overflow-y: hidden;
+}
+
+#description.open > .description-content {
+    height: 100vh;
+    width: 100%;
+    overflow-y: auto;
 }
 
 #image-preview {
@@ -113,11 +140,8 @@ def init_gui() -> Element:
     # Create the main layout with image preview, separator, and terminal
     layout = Layout(parent=body)
 
-    # Create the description component
-    description = Description(parent=body)
-
     # Set up global event handlers
-    body.on("click", lambda _: description["classList"].remove("open"))
+    body.on("click", lambda _: layout.description["classList"].remove("open"))
     body.on("mouseup", layout.handle_global_mouse_up)
     body.on("mousemove", layout.handle_global_mouse_move)
 
