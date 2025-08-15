@@ -1,4 +1,5 @@
 import re
+from colorsys import hsv_to_rgb
 from dataclasses import dataclass
 from math import atan2, degrees, sqrt
 
@@ -109,6 +110,18 @@ def create_color(color_string: str) -> Color:
     )
     if match:
         return Color(*(int(i) for i in match.groups()))
+
+    sep = r"(?:, |,| )"
+    match = re.search(rf"^(\d+){sep}(\d+){sep}(\d+)(?:{sep}(\d+))?$", color_string) or re.search(
+        rf"^rgba?\((\d+){sep}(\d+){sep}(\d+)(?:{sep}(\d+))?\)$",
+        color_string,
+    )
+    if match:
+        return Color(*(int(i) for i in match.groups()))
+
+    match = re.search(rf"^hsva?\((\d+){sep}(\d+){sep}(\d+)(?:{sep}(\d+))?\)$", color_string)
+    if match:
+        return Color(*hsv_to_rgb(*(int(i) for i in match.groups())))
 
     msg = f"Invalid color: {color_string}"
     raise ValueError(msg)
