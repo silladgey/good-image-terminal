@@ -102,9 +102,9 @@ def create_color(color_string: str) -> Color:
     except ValueError:
         pass
 
-    sep = r"[, ]*"
-    match = re.search(rf"^(\d*){sep}(\d*){sep}(\d*)$", color_string) or re.search(
-        rf"^rgba?\((\d*){sep}(\d*){sep}(\d*)\)$",
+    sep = r"(?:, |,| )"
+    match = re.search(rf"^(\d+){sep}(\d+){sep}(\d+)(?:{sep}(\d+))?$", color_string) or re.search(
+        rf"^rgba?\((\d+){sep}(\d+){sep}(\d+)(?:{sep}(\d+))?\)$",
         color_string,
     )
     if match:
