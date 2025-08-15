@@ -82,9 +82,7 @@ class ImageDisplayManager:
 
     def show_error(self, message: str) -> None:
         """Show an error message."""
-        self.placeholder_text.text = f"Error: {message}"
-        self.placeholder_text["style"].color = "red"
-        js.setTimeout(self._reset_placeholder, 3000)
+        print(message)
 
     def _reset_placeholder(self) -> None:
         """Reset placeholder to original state."""
