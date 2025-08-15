@@ -1,5 +1,3 @@
-import js  # type: ignore[import]
-
 from gui.element import Element
 
 
