@@ -1,5 +1,8 @@
+import re
 from dataclasses import dataclass
 from math import atan2, degrees, sqrt
+
+import webcolors
 
 
 @dataclass
@@ -81,6 +84,34 @@ class Color:
         h = degrees(atan2(b, a))
         h = h + 360 if h < 0 else h
         return l, c, h
+
+
+def create_color(color_string: str) -> Color:
+    """Create a color object from string.
+
+    This string can be hex, name of color or rgb integers separated by comma or space
+
+    @author Philip
+    """
+    try:
+        return Color(*webcolors.hex_to_rgb(color_string))
+    except ValueError:
+        pass
+    try:
+        return Color(*webcolors.name_to_rgb(color_string))
+    except ValueError:
+        pass
+
+    sep = r"[, ]*"
+    match = re.search(rf"^(\d*){sep}(\d*){sep}(\d*)$", color_string) or re.search(
+        rf"^rgba?\((\d*){sep}(\d*){sep}(\d*)\)$",
+        color_string,
+    )
+    if match:
+        return Color(*(int(i) for i in match.groups()))
+
+    msg = f"Invalid color: {color_string}"
+    raise ValueError(msg)
 
 
 colors = {
