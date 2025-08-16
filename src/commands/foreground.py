@@ -1,6 +1,5 @@
 from typing import TYPE_CHECKING
 
-import commands
 from commands.base_command import BaseCommand
 from utils.color import create_color
 
@@ -42,28 +41,27 @@ class Foreground(BaseCommand):
 
         return True
 
-    def predict_args(self, _terminal: "Terminal", *args: str, **_options: str) -> str | None:
+    def predict_args(self, terminal: "Terminal", *args: str, **_options: str) -> str | None:
         """Predicts the next argument for help.
 
-        :param _terminal: The terminal instance.
+        :param terminal: The terminal instance.
         :param args: Arguments already passed to the command.
         :return: The predicted continuance of the arguments for the command. If new argument, start with space.
                  If no more arguments "". If error in arguments, return None.
 
         @author Philip
         """
+        if not all(arg.isdigit() for arg in args):
+            return ""
+
         match len(args):
             case 0:
-                return " help"
+                return " " + terminal.background_color.r
             case 1:
-                if args[0] not in commands.all_commands:
-                    for command in commands.all_commands:
-                        if command.startswith(args[0]):
-                            return command
-                    return None  # invalid command
-                return " 1"
+                return " " + terminal.background_color.g
             case 2:
-                if args[1].isdigit():
-                    return ""
+                return " " + terminal.background_color.b
+            case 3:
+                return " " + terminal.background_color.a
 
         return None
