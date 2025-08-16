@@ -1,4 +1,3 @@
-from commands.background import Background
 from commands.base_command import BaseCommand
 from commands.draw_circle import DrawCircle
 from commands.draw_line import DrawLine
@@ -10,6 +9,7 @@ from commands.load_image import LoadImage
 from commands.ls import Ls
 from commands.ping import Ping
 from commands.save_image import SaveImage
+from commands.terminal_background import TerminalBackground
 from commands.undo import Undo
 
 all_commands: dict[str, BaseCommand] = {
@@ -22,7 +22,7 @@ all_commands: dict[str, BaseCommand] = {
     ImageInfo.name: ImageInfo(),
     LoadImage.name: LoadImage(),
     SaveImage.name: SaveImage(),
-    Background.name: Background(),
+    TerminalBackground.name: TerminalBackground(),
     DrawCircle.name: DrawCircle(),
     DrawRectangle.name: DrawRectangle(),
 }

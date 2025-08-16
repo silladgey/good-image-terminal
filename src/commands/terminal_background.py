@@ -7,10 +7,8 @@ if TYPE_CHECKING:
     from terminal import Terminal
 
 
-class Background(BaseCommand):
-    """background command.
-
-    changes the color of the background of the web page
+class TerminalBackground(BaseCommand):
+    """terminal_background is a command that changes background color of the terminal.
 
     @author Julien
     """
@@ -20,12 +18,11 @@ class Background(BaseCommand):
     MIN_RGB_VALUE = 0
     BRIGHTNESS_THRESHOLD = 0.5
 
-    name: str = "bg"
+    name: str = "terminal_background"
     help_pages: tuple[str, ...] = (
-        """background is a command that changes the background.
+        """terminal_background is a command that changes background color of the terminal.
 
-        Usage: bg color
-        note: color is an rgb value
+        Usage: terminal_background color
         Exemple: bg rgb(255, 100, 0)
         """,
     )
