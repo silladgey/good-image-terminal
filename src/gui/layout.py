@@ -2,6 +2,7 @@
 
 from typing import Any
 
+from gui.components.description import Description
 from gui.components.image_preview import ImagePreview
 from gui.components.separator import Separator
 from gui.components.terminal_gui import TerminalGui
@@ -31,8 +32,7 @@ class Layout(Element):
         """,
         )
 
-        # create an image canvas then link it to everything that needs it
-
+        self.description = Description(parent=self)
         self.image_preview = ImagePreview(parent=self)
         self.separator = Separator(parent=self, on_resize=self._handle_resize)
         self.terminal_gui = TerminalGui(parent=self)

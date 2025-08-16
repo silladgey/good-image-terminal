@@ -110,6 +110,7 @@ class TerminalInput(Element):
                 position: relative;
                 z-index: 2;
             """,
+            autocomplete="off",
         )
 
     def set_suggestion(self, suggestion: str | None) -> None:
