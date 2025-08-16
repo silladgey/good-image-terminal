@@ -111,11 +111,44 @@ def create_color(color_string: str) -> Color:
         color_string,
     )
     if match:
+        r, g, b, a = (int(hsv) for hsv in match.groups())
+        if 0 > r or 255 < r:
+            msg = f"r must be between 0 and 255: {r}"
+            raise ValueError(msg)
+        if 0 > g or 255 < g:
+            msg = f"g must be between 0 and 255: {g}"
+            raise ValueError(msg)
+        if 0 > b or 255 < b:
+            msg = f"b must be between 0 and 255: {b}"
+            raise ValueError(msg)
+        if a and (0 > a or 255 < a):
+            msg = f"a must be between 0 and 255: {a}"
+            raise ValueError(msg)
         return Color(*(int(i) for i in match.groups() if i is not None))
 
     match = re.search(rf"^hsva?\((\d+){sep}(\d+){sep}(\d+)(?:{sep}(\d+))?\)$", color_string)
     if match:
-        return Color(*hsv_to_rgb(*(int(i) for i in match.groups() if i is not None)))
+        h, s, v, a = (int(hsv) for hsv in match.groups())
+        if 0 > h or 360 < h:
+            msg = f"h must be between 0 and 360: {h}"
+            raise ValueError(msg)
+        h /= 360
+
+        if 0 > s or 100 < s:
+            msg = f"s must be between 0 and 100: {s}"
+            raise ValueError(msg)
+        s /= 100
+
+        if 0 > v or 100 < v:
+            msg = f"v must be between 0 and 100: {v}"
+            raise ValueError(msg)
+        v /= 100
+
+        if a and (0 > a or 255 < a):
+            msg = f"a must be between 0 and 255: {a}"
+            raise ValueError(msg)
+
+        return Color(*(int(rgb * 255) for rgb in hsv_to_rgb(h, s, v)), a if a else 255)
 
     msg = f"Invalid color: {color_string}"
     raise ValueError(msg)
