@@ -196,6 +196,10 @@ class TerminalGui(Element):
         elif event.key == "ArrowDown":
             self._navigate_commands(1)
             event.preventDefault()
+        elif event.key == "ArrowRight" and event.target.selectionStart == len(event.target.value):
+            self._confirm_suggestion(event)
+            self.current_command_idx = None
+            event.preventDefault()
 
     def _on_input(self, event: Any) -> None:  # noqa: ANN401
         self.input.set_suggestion(self.get_suggestion(event.target.value))

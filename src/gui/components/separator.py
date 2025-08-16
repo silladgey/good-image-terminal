@@ -33,7 +33,7 @@ class Separator(Element):
             style="""
             background-color: var(--separator-color);
             width: 100%;
-            height: 1%;
+            height: 3px;
             cursor: ns-resize;
             flex-shrink: 0;
         """,

@@ -20,7 +20,7 @@ class ImagePreview(Element):
             parent=parent,
             id="image-preview",
             style="""
-            background-color: var(--image-preview-background-color);
+            background: var(--image-preview-background);
             height: 50%;
             display: flex;
             flex-direction: column;
@@ -34,8 +34,21 @@ class ImagePreview(Element):
         )
         self.class_name = "image-preview"
 
+        self.cursor_info = Element(
+            "div",
+            parent=self,
+            style="""
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: white;
+            font-size: 14px;
+            z-index: 1;
+        """,
+        )
+
         # Initialize the image display manager
-        self.image_manager = ImageDisplayManager(self)
+        self.image_manager = ImageDisplayManager(self, self.cursor_info)
 
         # Initialize the file upload handler
         self.file_handler = FileUploadHandler(
@@ -58,11 +71,14 @@ class ImagePreview(Element):
 
         # Add click to upload functionality
         self.on("click", self.file_handler.handle_click_upload)
+        self.image = None
 
     def _on_file_processed(self, data_url: str) -> None:
         """Handle successfully processed file."""
-        self.image.load_from_image_link(data_url)
-        self.image_manager.display_image(data_url)
+        if self.image is not None:
+            self.image.load_from_image_link(data_url)
+        else:
+            self.image_manager.display_image(data_url)
 
     def _on_error(self, error_message: str) -> None:
         """Handle file processing error."""

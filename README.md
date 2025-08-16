@@ -1,4 +1,4 @@
-# -Good Project name-
+# Good Image Terminal
 
 <p align="center">
     <img src="logo.png" alt="Logo" />
@@ -13,12 +13,15 @@
 ```text
 codejam-laudatory-larkspurs/
 ├─ build.py                  # Build + serve script (Pyodide bundling)
+├─ Dockerfile                # Docker configuration
 ├─ pyproject.toml            # Project & dependency metadata
 ├─ uv.lock                   # Locked dependency versions
 ├─ README.md / CONTRIBUTING.md
 ├─ LICENSE
 ├─ .pre-commit-config.yaml   # Lint & format hooks
 ├─ .github/workflows/
+│   ├─ deploy.yaml           # CI deployment pipeline
+|   ├─ build.yaml            # CI build pipeline
 │   └─ lint.yaml             # CI lint pipeline
 ├─ public/                   # Static assets
 │   ├─ index.html
@@ -77,7 +80,7 @@ codejam-laudatory-larkspurs/
 python -m venv .venv
 ```
 
-1. Entering it
+2. Entering it
 
 ```shell
 # Linux, Bash
@@ -94,7 +97,7 @@ $ .venv/bin/Activate.ps1
 > .venv\Scripts\Activate.ps1
 ```
 
-1. Installing development dependecies
+3. Installing development dependecies
 
 ```shell
 pip install --group dev
@@ -103,10 +106,10 @@ pip install --group dev
 _If it gives errors try:_
 
 ```shell
-python -m pip install --upgrade pip  
+python -m pip install --upgrade pip
 ```
 
-1. If we want to exit our enviroment we do
+4. If we want to exit our enviroment we do
 
 ```shell
 deactivate
@@ -121,6 +124,39 @@ python build.py --serve --port 8000
 ```
 
 This will serve the project on `http://localhost:8000` after building it to `build/`. If you make changes to your code, run `build.py` again to rebuild the project.
+
+### Running with Docker
+
+You can run the app without a local Python setup using the provided `Dockerfile`.
+
+Build the image:
+
+```shell
+docker build -t good-image-terminal:latest .
+```
+
+Run (default port `8000`):
+
+```shell
+docker run --rm --name good-image-terminal -e PORT=8000 -p 8000:8000 good-image-terminal:latest
+```
+
+Custom port:
+
+```shell
+docker run --rm --name good-image-terminal -e PORT=9000 -p 9000:9000 good-image-terminal:latest
+```
+
+The container runs `python build.py --serve --port $PORT` on startup:
+
+- Builds fresh each run (output in container at `/app/build`).
+- Serves the site at `http://localhost:<PORT>`.
+
+Faster rebuilds during iteration:
+
+```shell
+docker build -t good-image-terminal:latest .  # after changing code
+```
 
 ## Contributors
 
