@@ -1,6 +1,7 @@
 from commands import all_commands
 from gui.components.terminal_gui import TerminalGui
 from image import PaintImage
+from utils.color import Color, create_color
 
 SUCCESS_COLOUR = "var(--terminal-success-color)"
 ERROR_COLOUR = "var(--terminal-error-color)"
@@ -31,6 +32,9 @@ class Terminal:
     @author Philip
     """
 
+    foreground_color = Color(255, 255, 255)
+    background_color = Color(0, 0, 0)
+
     def __init__(self, image: PaintImage, display: TerminalGui) -> None:
         self.image = image
 
@@ -52,14 +56,41 @@ class Terminal:
         args: list[str]
         command, *args = command_str.strip().split()
 
+        options: dict[str, str | Color]
         args, options = get_options(args)
 
         if command in all_commands:
-            all_commands[command](self, *args, **options)
+            command_obj = all_commands[command]
         else:
             self.output_error(f"`{command}` is not a valid command.")
             self.output_error("use `help` to see list of available commands`")
             return False
+
+        invalid_options: tuple[str, ...] = tuple(
+            option for option in options if option not in command_obj.known_options
+        )
+
+        if any(option not in command_obj.known_options for option in options):
+            self.output_error(f"{invalid_options} are not a valid option(s) for the command.")
+            return False
+
+        try:
+            if "fg" in command_obj.known_options:
+                if "fg" in options:
+                    options["fg"] = create_color(options["fg"])
+                else:
+                    options["fg"] = self.foreground_color
+            if "bg" in command_obj.known_options:
+                if "bg" in options:
+                    options["bg"] = create_color(options["bg"])
+                else:
+                    options["bg"] = self.background_color
+
+        except ValueError as e:
+            self.output_error(e.args[0])
+            return False
+
+        command_obj(self, *args, **options)
 
         return True
 
