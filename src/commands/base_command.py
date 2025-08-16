@@ -22,6 +22,7 @@ class BaseCommand:
         if you see this message in the application report how
         """,
     )
+    known_options: tuple[str, ...] = ()
 
     def __call__(self, terminal: "Terminal", *args: str, **options: str) -> bool:
         """Preforms the command being called using `*args`.
