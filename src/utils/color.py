@@ -111,19 +111,11 @@ def create_color(color_string: str) -> Color:
         color_string,
     )
     if match:
-        return Color(*(int(i) for i in match.groups()))
-
-    sep = r"(?:, |,| )"
-    match = re.search(rf"^(\d+){sep}(\d+){sep}(\d+)(?:{sep}(\d+))?$", color_string) or re.search(
-        rf"^rgba?\((\d+){sep}(\d+){sep}(\d+)(?:{sep}(\d+))?\)$",
-        color_string,
-    )
-    if match:
-        return Color(*(int(i) for i in match.groups()))
+        return Color(*(int(i) for i in match.groups() if i is not None))
 
     match = re.search(rf"^hsva?\((\d+){sep}(\d+){sep}(\d+)(?:{sep}(\d+))?\)$", color_string)
     if match:
-        return Color(*hsv_to_rgb(*(int(i) for i in match.groups())))
+        return Color(*hsv_to_rgb(*(int(i) for i in match.groups() if i is not None)))
 
     msg = f"Invalid color: {color_string}"
     raise ValueError(msg)
