@@ -2,10 +2,10 @@
 
 from typing import Any
 
+from gui.components.description import Description
 from gui.components.image_preview import ImagePreview
 from gui.components.separator import Separator
 from gui.components.terminal_gui import TerminalGui
-from gui.components.description import Description
 from gui.element import Element, HTMLElement
 from image import PaintImage
 from terminal import Terminal

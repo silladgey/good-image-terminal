@@ -2,11 +2,14 @@ from typing import Any
 
 from gui.element import Button, Element, HTMLElement
 
+
 class DescriptionContent(Element):
+    """The description content element for displaying useful information to the user."""
+
     def __init__(self, parent: HTMLElement | Element | None = None) -> None:
         super().__init__("div", parent=parent, id="description-content", style="text-align: left;")
         self.class_name = "description-content"
-        
+
         self.content_wrapper = Element(
             "div",
             parent=self,
@@ -31,6 +34,7 @@ class DescriptionContent(Element):
             "Once an image is uploaded, you can interact with it using the terminal commands. "
             "Use the 'help' command to see a list of available commands."
         )
+
 
 class Description(Element):
     """The description element for displaying useful information to the user."""
