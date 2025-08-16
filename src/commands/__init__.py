@@ -1,3 +1,4 @@
+from commands.background import Background
 from commands.base_command import BaseCommand
 from commands.draw_circle import DrawCircle
 from commands.draw_line import DrawLine
@@ -27,4 +28,5 @@ all_commands: dict[str, BaseCommand] = {
     DrawCircle.name: DrawCircle(),
     DrawRectangle.name: DrawRectangle(),
     Foreground.name: Foreground(),
+    Background.name: Background(),
 }
