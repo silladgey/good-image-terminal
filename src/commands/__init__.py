@@ -3,6 +3,7 @@ from commands.draw_circle import DrawCircle
 from commands.draw_line import DrawLine
 from commands.draw_pixel import DrawPixel
 from commands.draw_rectangle import DrawRectangle
+from commands.foreground import Foreground
 from commands.help import Help
 from commands.image_info import ImageInfo
 from commands.load_image import LoadImage
@@ -25,4 +26,5 @@ all_commands: dict[str, BaseCommand] = {
     TerminalBackground.name: TerminalBackground(),
     DrawCircle.name: DrawCircle(),
     DrawRectangle.name: DrawRectangle(),
+    Foreground.name: Foreground(),
 }
