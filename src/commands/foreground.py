@@ -56,12 +56,12 @@ class Foreground(BaseCommand):
 
         match len(args):
             case 0:
-                return " " + str(terminal.background_color.r)
+                return " " + str(terminal.foreground_color.r)
             case 1:
-                return " " + str(terminal.background_color.g)
+                return " " + str(terminal.foreground_color.g)
             case 2:
-                return " " + str(terminal.background_color.b)
+                return " " + str(terminal.foreground_color.b)
             case 3:
-                return " " + str(terminal.background_color.a)
+                return " " + str(terminal.foreground_color.a)
 
         return None
