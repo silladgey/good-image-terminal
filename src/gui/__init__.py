@@ -140,6 +140,9 @@ def init_gui() -> Element:
         Jont
         Ricky
     """
+    # Hide the loading screen
+    js.document.getElementById("loading").style.display = "none"
+    
     body = Element(element=js.document.body)
 
     # Set the base style for the app
