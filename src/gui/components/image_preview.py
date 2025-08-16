@@ -5,6 +5,7 @@ from gui.components.file_upload_handler import FileUploadHandler
 from gui.components.image_display_manager import ImageDisplayManager
 from gui.element import Element, HTMLElement
 
+
 class ImagePreview(Element):
     """A component for displaying an image preview with a drag-drop upload functionality.
 

@@ -39,7 +39,7 @@ class Layout(Element):
 
         image = PaintImage(self.image_preview)
         self.image_preview.image = image
-        
+
         image.load()
 
         # create a terminal
