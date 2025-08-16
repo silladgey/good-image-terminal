@@ -4,7 +4,6 @@ from typing import Any
 import js  # type: ignore[import]
 
 from gui.element import Element
-from image import PaintImage
 
 
 class ImageDisplayManager:
@@ -24,6 +23,7 @@ class ImageDisplayManager:
 
         Args:
             container: The container element to create image display elements in
+            image: Python Image
 
         """
         self.container = container
@@ -31,7 +31,6 @@ class ImageDisplayManager:
         self.cursor_info = cursor_info_element
 
         self._setup_elements()
-        self._load_default_image()
 
     def _setup_elements(self) -> None:
         """Create the image container, image element, and placeholder text."""
@@ -73,7 +72,7 @@ class ImageDisplayManager:
         """,
         )
         self.placeholder_text.text = "Loading default image..."
-
+        
         # Add mouse move event to update cursor info
         self.image_element.on("mousemove", self._on_image_mouse_move)
 
@@ -112,7 +111,7 @@ class ImageDisplayManager:
             print(f"Error loading default image: {e!s}")
             self.placeholder_text.text = "Drop an image here or click to upload"
             traceback.print_exc()
-
+    
     def display_image(self, image_src: str) -> None:
         """Display an image in the preview area."""
         self.current_image_src = image_src
@@ -132,9 +131,7 @@ class ImageDisplayManager:
 
     def show_error(self, message: str) -> None:
         """Show an error message."""
-        self.placeholder_text.text = f"Error: {message}"
-        self.placeholder_text["style"].color = "red"
-        js.setTimeout(self._reset_placeholder, 3000)
+        print(message)
 
     def _reset_placeholder(self) -> None:
         """Reset placeholder to original state."""
