@@ -26,8 +26,10 @@ class Terminal:
 
         @author Philip
         """
-        command_str = command_str.strip()
-        command, *args = command_str.split()
+        if command_str.strip() == "":
+            return False
+
+        command, *args = command_str.strip().split()
 
         if command in all_commands:
             all_commands[command](self, *args)
@@ -48,10 +50,11 @@ class Terminal:
 
         @author Philip
         """
-        if command_str == "":
+        if command_str.strip() == "":
             return ""
 
-        command, *args = command_str.split()
+        command, *args = command_str.strip().split()
+
         if command in all_commands:
             output = command
             prediction = all_commands[command].predict_args(self, *args)
