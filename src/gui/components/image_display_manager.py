@@ -1,7 +1,4 @@
-import traceback
 from typing import Any
-
-import js  # type: ignore[import]
 
 from gui.element import Element
 
@@ -72,7 +69,7 @@ class ImageDisplayManager:
         """,
         )
         self.placeholder_text.text = "Loading default image..."
-        
+
         # Add mouse move event to update cursor info
         self.image_element.on("mousemove", self._on_image_mouse_move)
 
@@ -98,26 +95,6 @@ class ImageDisplayManager:
         """Clear cursor info when mouse leaves the image."""
         self.cursor_info.text = ""
 
-    def _load_default_image(self) -> None:
-        """Load and display the default.png image from the images folder."""
-        try:
-            img = PaintImage()
-            result = img.load("default.png")
-
-            if result == 0:  # success
-                js_link = img.get_js_link()
-                self.display_image(js_link)
-            else:
-                # Update placeholder to show drag/drop functionality
-                self.placeholder_text.text = "Drop an image here or click to upload"
-        except ImportError as e:
-            print(f"Import error loading image module: {e!s}")
-            self.placeholder_text.text = "Drop an image here or click to upload"
-        except (AttributeError, OSError, ValueError) as e:
-            print(f"Error loading default image: {e!s}")
-            self.placeholder_text.text = "Drop an image here or click to upload"
-            traceback.print_exc()
-    
     def display_image(self, image_src: str) -> None:
         """Display an image in the preview area."""
         self.current_image_src = image_src

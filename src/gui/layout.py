@@ -31,7 +31,7 @@ class Layout(Element):
             height: 100%;
         """,
         )
-        
+
         self.description = Description(parent=self)
         self.image_preview = ImagePreview(parent=self)
         self.separator = Separator(parent=self, on_resize=self._handle_resize)
