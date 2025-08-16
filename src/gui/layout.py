@@ -38,7 +38,10 @@ class Layout(Element):
         self.terminal_gui = TerminalGui(parent=self)
 
         image = PaintImage(self.image_preview)
+        self.image_preview.image = image
+        
         image.load()
+
         # create a terminal
         self.terminal = Terminal(image, self.terminal_gui)
 

@@ -5,7 +5,6 @@ from gui.components.file_upload_handler import FileUploadHandler
 from gui.components.image_display_manager import ImageDisplayManager
 from gui.element import Element, HTMLElement
 
-
 class ImagePreview(Element):
     """A component for displaying an image preview with a drag-drop upload functionality.
 
@@ -58,10 +57,14 @@ class ImagePreview(Element):
 
         # Add click to upload functionality
         self.on("click", self.file_handler.handle_click_upload)
+        self.image = None
 
     def _on_file_processed(self, data_url: str) -> None:
         """Handle successfully processed file."""
-        self.image_manager.display_image(data_url)
+        if self.image is not None:
+            self.image.load_from_image_link(data_url)
+        else:
+            self.image_manager.display_image(data_url)
 
     def _on_error(self, error_message: str) -> None:
         """Handle file processing error."""
