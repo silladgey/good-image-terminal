@@ -153,13 +153,26 @@ class PaintImage:
         self.refresh_image()
         return 0
 
-    def draw_circle(self, cx: int, cy: int, radius: int, color: Color) -> int:
+    def draw_circle(  # noqa: PLR0913
+        self,
+        cx: int,
+        cy: int,
+        radius: int,
+        fill_color: Color | None = None,
+        outline_color: Color | None = None,
+        outline_size: int = 0,
+    ) -> int:
         """Draw a circle on the image."""
         self.undo_save()
 
         draw = ImageDraw.Draw(self.img)
         bbox = [cx - radius, cy - radius, cx + radius, cy + radius]
-        draw.ellipse(bbox, fill=color.rgb)
+        draw.ellipse(
+            bbox,
+            fill=fill_color.rgba if fill_color else None,
+            outline=outline_color.rgba if outline_color else None,
+            width=outline_size,
+        )
         self.refresh_image()
         return 0
 
