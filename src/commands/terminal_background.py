@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from commands.base_command import BaseCommand
-from utils.color import Color
+from utils.color import create_color
 
 if TYPE_CHECKING:
     from terminal import Terminal
@@ -12,11 +12,6 @@ class TerminalBackground(BaseCommand):
 
     @author Julien
     """
-
-    RGB_COMPONENTS = 3
-    MAX_RGB_VALUE = 255
-    MIN_RGB_VALUE = 0
-    BRIGHTNESS_THRESHOLD = 0.5
 
     name: str = "terminal_background"
     help_pages: tuple[str, ...] = (
@@ -37,56 +32,11 @@ class TerminalBackground(BaseCommand):
 
         @author Julien
         """
-        # filtering user input #
-        if not args:
-            terminal.output_error(
-                "You need to provide the color of the background to change it",
-            )
+        try:
+            terminal.terminal_display.output_color = f"rgb{create_color(' '.join(args)).rgb}"
+        except ValueError as e:
+            terminal.output_error(e.args[0])
             return False
-
-        if not args[0].startswith("rgb("):
-            terminal.output_error(
-                "wrong argument expected format: bg rgb(number, number, number)",
-            )
-            return False
-
-        if len(args) < self.RGB_COMPONENTS:
-            terminal.output_error(
-                "wrong argument expected format: bg rgb(number, number, number)",
-            )
-            return False
-        list_args = [args[0].replace("rgb(", ""), args[1], args[2].replace(")", "")]
-
-        rgb = []
-        for index in range(3):
-            value = list_args[index].replace(",", "")
-
-            if not value.isdigit():
-                terminal.output_error(
-                    f"wrong argument expected format: bg rgb(number, number, number): {value}",
-                )
-                return False
-
-            value = int(value)
-
-            if value < self.MIN_RGB_VALUE or value > self.MAX_RGB_VALUE:
-                terminal.output_error(
-                    f"rgb value too high or too low, max value is {self.MAX_RGB_VALUE}, min is {self.MIN_RGB_VALUE}",
-                )
-                return False
-
-            rgb.append(value)
-        # filtering user input #
-
-        color = Color(rgb[0], rgb[1], rgb[2])
-
-        # changes the background color of the terminal
-        terminal.terminal_display.background_color = f"rgb{color.rgb}"
-
-        text_color = Color(255, 255, 255) if color.hsv[2] < self.BRIGHTNESS_THRESHOLD else Color(0, 0, 0)
-
-        # changes the text color of all the users input
-        terminal.terminal_display.output_color = f"rgb{text_color.rgb}"
 
         terminal.output_info("background-color succesfully changed")
         return True
