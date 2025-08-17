@@ -137,8 +137,8 @@ class PaintImage:
         draw = ImageDraw.Draw(self.img)
         draw.rectangle(
             [x, y, x + width - 1, y + height - 1],
-            fill=fill_color.rgba,
-            outline=outline_color.rgba,
+            fill=fill_color.rgba if fill_color else None,
+            outline=outline_color.rgba if outline_color else None,
             width=outline_size,
         )
         self.refresh_image()
