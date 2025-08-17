@@ -6,6 +6,8 @@ from utils.color import Color, colors
 if TYPE_CHECKING:
     from terminal import Terminal
 
+REQUIRED_NUMBER_ARGS = 3
+
 
 class DrawCircle(BaseCommand):
     """Circle drawing on PaintImage.
@@ -16,17 +18,16 @@ class DrawCircle(BaseCommand):
     name: str = "draw_circle"
     help_pages: tuple[str, ...] = (
         """
-        Usage: draw_circle x y radius color
-        or: draw_circle x y radius r g b
+        Usage: draw_circle x y radius
+        or: draw_circle x y radius
 
         arguments x,y: coordinate numbers
         argument radius: color name
-        argument color: color name
-        arguments r,g,b: red,green,blue numbers
         """,
     )
+    known_options = ("fg", "bg")
 
-    def __call__(self, terminal: "Terminal", *args: str, **_options: str) -> bool:
+    def __call__(self, terminal: "Terminal", *args: str, **options: str | Color) -> bool:
         """Draw circle command.
 
         :param terminal: The terminal instance.
@@ -36,19 +37,10 @@ class DrawCircle(BaseCommand):
 
         @author Mira
         """
-        if len(args) == 4:  # noqa: PLR2004
-            if args[3] not in colors:
-                terminal.output_error("Invalid color name.")
-                return False
-            col = colors[args[3]]
-        elif len(args) == 6:  # noqa: PLR2004
-            if not all([a.isdigit() and 0 <= int(a) < 256 for a in args[3:]]):  # noqa: PLR2004, C419
-                terminal.output_error("Wrong color, please input `r g b` as numbers 0-255.")
-                return False
-            col = Color(int(args[3]), int(args[4]), int(args[5]))
-        else:
+        if len(args) != REQUIRED_NUMBER_ARGS:
             terminal.output_error("Bad amount of arguments, see help for options")
             return False
+
         size = terminal.image.img.size
         if not (
             args[0].isdigit() and args[1].isdigit() and 0 <= int(args[0]) < size[0] and 0 <= int(args[1]) < size[1]
@@ -56,15 +48,20 @@ class DrawCircle(BaseCommand):
             terminal.output_error("Invalid coordinates.")
             return False
         x, y = int(args[0]), int(args[1])
+
         if not (args[2].isdigit()):
             terminal.output_error("Invalid radius.")
             return False
         rad = int(args[2])
-        terminal.image.draw_circle(x, y, rad, col)
-        terminal.output_info(f"Circle at {x}x{y} size {rad} filled with rgb{col.rgb}.")
+        if rad < 0:
+            terminal.output_error("Radius cannot be negative.")
+            return False
+
+        terminal.image.draw_circle(x, y, rad, options["fg"])
+        terminal.output_info(f"Circle at {x}x{y} size {rad} filled with rgb{options['fg'].rgba}.")
         return True
 
-    def predict_args(self, _terminal: "Terminal", *args: str, **_options: str) -> str | None:
+    def predict_args(self, _terminal: "Terminal", *args: str, **_options: str | Color) -> str | None:
         """Argument predictor."""
         result = ""
         match len(args):
