@@ -29,10 +29,10 @@ class DrawRectangle(BaseCommand):
         fg <color>: set fill color for rectangle
         bg <color>: set border color for rectangle
         no-fill: don't fill rectangle
-        border <int>: set size of boarder around rectangle
+        outline <int>: set size of outline around rectangle
         """,
     )
-    known_options = ("fg", "bg", "no-fill", "border")
+    known_options = ("fg", "bg", "no-fill", "outline")
 
     def __call__(self, terminal: "Terminal", *args: str, **options: str | Color) -> bool:
         """Draw rectangle command.
@@ -67,21 +67,21 @@ class DrawRectangle(BaseCommand):
         else:
             fill_color = options["fg"]
 
-        if "border" in options:
-            if options["border"].isdigit():
-                boarder_size = int(options["border"])
-                if boarder_size < 0:
-                    terminal.output_error("Invalid border size.")
+        if "outline" in options:
+            if options["outline"].isdigit():
+                outline_size = int(options["outline"])
+                if outline_size < 0:
+                    terminal.output_error("Invalid outline size.")
                     return False
-                boarder_color = options["bg"]
+                outline_color = options["bg"]
             else:
-                terminal.output_error("Invalid border size.")
+                terminal.output_error("Invalid outline size.")
                 return False
         else:
-            boarder_size = 0
-            boarder_color = None
+            outline_size = 0
+            outline_color = None
 
-        terminal.image.fill_rect(x, y, w, h, fill_color, boarder_color, boarder_size)
+        terminal.image.fill_rect(x, y, w, h, fill_color, outline_color, outline_size)
         terminal.output_info(f"rectangle at {x}x{y} size {w}x{h} filled with rgb{options['fg'].rgba}")
         return True
 
