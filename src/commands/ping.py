@@ -20,11 +20,12 @@ class Ping(BaseCommand):
         """,
     )
 
-    def __call__(self, terminal: "Terminal", *args: str) -> bool:
+    def __call__(self, terminal: "Terminal", *args: str, **_options: str) -> bool:
         """Print pong to terminal.
 
         :param terminal: The terminal instance.
         :param args: Arguments to be passed to the command.
+        :param options: Options passed to the command with optional arguments with those options.
         :return: True if command was executed successfully.
 
         @author Philip
@@ -32,6 +33,6 @@ class Ping(BaseCommand):
         terminal.output_success("pong" + (f": {', '.join(args)}" if args else ""))
         return True
 
-    def predict_args(self, _terminal: "Terminal", *_args: str) -> str | None:
+    def predict_args(self, _terminal: "Terminal", *_args: str, **_options: str) -> str | None:
         """Argument predictor."""
         return ""

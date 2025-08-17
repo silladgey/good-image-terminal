@@ -24,11 +24,12 @@ class Help(BaseCommand):
         """,
     )
 
-    def __call__(self, terminal: "Terminal", *args: str) -> bool:
+    def __call__(self, terminal: "Terminal", *args: str, **_options: str) -> bool:
         """Pushes the text present in the help_pages of each command.
 
         :param terminal: The terminal instance.
         :param args: Arguments to be passed to the command.
+        :param options: Options passed to the command with optional arguments with those options.
         :return: True if command was executed successfully.
 
         @author Philip
@@ -67,7 +68,7 @@ class Help(BaseCommand):
 
         return True
 
-    def predict_args(self, _terminal: "Terminal", *args: str) -> str | None:
+    def predict_args(self, _terminal: "Terminal", *args: str, **_options: str) -> str | None:
         """Predicts the next argument for help.
 
         :param _terminal: The terminal instance.

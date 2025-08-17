@@ -1,5 +1,9 @@
+import re
+from colorsys import hsv_to_rgb
 from dataclasses import dataclass
 from math import atan2, degrees, sqrt
+
+import webcolors
 
 
 @dataclass
@@ -81,6 +85,90 @@ class Color:
         h = degrees(atan2(b, a))
         h = h + 360 if h < 0 else h
         return l, c, h
+
+
+def create_color(color_string: str) -> Color:
+    """Create a color object from string.
+
+    This string can be hex, name of color or rgb integers separated by comma or space
+
+    @author Philip
+    """
+    try:
+        return Color(*webcolors.hex_to_rgb(color_string))
+    except ValueError:
+        pass
+    try:
+        return Color(*webcolors.name_to_rgb(color_string))
+    except ValueError:
+        pass
+
+    color_string = color_string.lower()
+
+    sep = r"(?:, |,| )"
+    match = re.search(rf"^(\d+){sep}(\d+){sep}(\d+)(?:{sep}(\d+))?$", color_string) or re.search(
+        rf"^rgba?\((\d+){sep}(\d+){sep}(\d+)(?:{sep}(\d+))?\)$",
+        color_string,
+    )
+    if match:
+        return rgb_factory(*(int(i) for i in match.groups() if i is not None))
+
+    match = re.search(rf"^hsva?\((\d+){sep}(\d+){sep}(\d+)(?:{sep}(\d+))?\)$", color_string)
+    if match:
+        return hsv_factory(*(int(i) for i in match.groups() if i is not None))
+
+    msg = f"Invalid color: {color_string}"
+    raise ValueError(msg)
+
+
+def rgb_factory(r: int, g: int, b: int, a: int | None = None) -> Color:
+    """Create Color from rgb values with checks."""
+    if r < 0 or r > 255:
+        msg = f"r must be between 0 and 255: {r}"
+        raise ValueError(msg)
+
+    if g < 0 or g > 255:
+        msg = f"g must be between 0 and 255: {g}"
+        raise ValueError(msg)
+
+    if b < 0 or b > 255:
+        msg = f"b must be between 0 and 255: {b}"
+        raise ValueError(msg)
+
+    if a and (a < 0 or a > 255):
+        msg = f"a must be between 0 and 255: {a}"
+        raise ValueError(msg)
+
+    return Color(r, g, b, a if a else 255)
+
+
+def hsv_factory(h: int, s: int, v: int, a: int | None = None) -> Color:
+    """Create Color from hsv values with checks."""
+    if h < 0 or h > 360:
+        msg = f"h must be between 0 and 360: {h}"
+        raise ValueError(msg)
+    h /= 360
+
+    if s < 0 or s > 100:
+        msg = f"s must be between 0 and 100: {s}"
+        raise ValueError(msg)
+    s /= 100
+
+    if v < 0 or v > 100:
+        msg = f"v must be between 0 and 100: {v}"
+        raise ValueError(msg)
+    v /= 100
+
+    if a and (a < 0 or a > 255):
+        msg = f"a must be between 0 and 255: {a}"
+        raise ValueError(msg)
+
+    r, g, b = hsv_to_rgb(h, s, v)
+    r *= 255
+    g *= 255
+    b *= 255
+
+    return Color(int(r), int(g), int(b), a if a else 255)
 
 
 colors = {

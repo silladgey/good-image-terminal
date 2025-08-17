@@ -7,22 +7,22 @@ if TYPE_CHECKING:
     from terminal import Terminal
 
 
-class Background(BaseCommand):
-    """Sets the background color for use in drawing commands.
+class Foreground(BaseCommand):
+    """Sets the foreground color for use in drawing commands.
 
     @author Philip
     """
 
-    name: str = "bg"
+    name: str = "fg"
     help_pages: tuple[str, ...] = (
-        """Sets the background color for use in drawing commands.
+        """Sets the foreground color for use in drawing commands.
 
         Usage: fg color
         """,
     )
 
     def __call__(self, terminal: "Terminal", *args: str, **_options: str) -> bool:
-        """Set the background color for use in drawing commands.
+        """Set the foreground color for use in drawing commands.
 
         :param terminal: The terminal instance.
         :param args: Arguments to be passed to the command.
@@ -37,7 +37,7 @@ class Background(BaseCommand):
             terminal.output_error(e.args[0])
             return False
 
-        terminal.background_color = color
+        terminal.foreground_color = color
 
         return True
 
@@ -56,12 +56,12 @@ class Background(BaseCommand):
 
         match len(args):
             case 0:
-                return " " + str(terminal.background_color.r)
+                return " " + str(terminal.foreground_color.r)
             case 1:
-                return " " + str(terminal.background_color.g)
+                return " " + str(terminal.foreground_color.g)
             case 2:
-                return " " + str(terminal.background_color.b)
+                return " " + str(terminal.foreground_color.b)
             case 3:
-                return " " + str(terminal.background_color.a)
+                return " " + str(terminal.foreground_color.a)
 
         return None
