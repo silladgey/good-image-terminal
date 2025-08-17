@@ -69,28 +69,16 @@ class DrawLine(BaseCommand):
         terminal.output_info(f"line from {x1}x{y1} to {x2}x{y2} with rgb{col.rgb}")
         return True
 
-    def predict_args(self, _terminal: "Terminal", *args: str, **_options: str) -> str | None:  # noqa: C901
+    def predict_args(self, _terminal: "Terminal", *args: str, **_options: str | Color) -> str | None:  # noqa: C901
         """Argument predictor."""
         result = ""
         match len(args):
             case 0:
-                result = " x1 y1 x2 y2 color"
+                result = " x1"
             case 1:
-                result = " y1 x2 y2 color"
+                result = " y1"
             case 2:
-                result = " x2 y2 color"
+                result = " x2"
             case 3:
-                result = " y2 color"
-            case 4:
-                result = " color"
-            case 5:
-                for col in colors:
-                    if col.startswith(args[4]):
-                        result = col
-                if args[4].isdigit():
-                    result = " g b"
-            case 6:
-                result = " b"
-            case _:
-                pass
+                result = " y2"
         return result
