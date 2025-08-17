@@ -52,7 +52,7 @@ class DrawRectangle(BaseCommand):
             return False
         w, h = int(args[2]), int(args[3])
         terminal.image.fill_rect(x, y, w, h, options["fg"])
-        terminal.output_info(f"rectangle at {x}x{y} size {w}x{h} filled with rgb{terminal.foreground_color.rgb}")
+        terminal.output_info(f"rectangle at {x}x{y} size {w}x{h} filled with rgb{terminal.foreground_color.rgba}")
         return True
 
     def predict_args(self, _terminal: "Terminal", *args: str, **_options: str | Color) -> str | None:
