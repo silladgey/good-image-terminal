@@ -65,7 +65,7 @@ class DrawRectangle(BaseCommand):
             fill_color = dataclasses.replace(options["fg"])
             fill_color.a = 0
         else:
-            fill_color = None
+            fill_color = options["fg"]
 
         if "border" in options:
             if options["border"].isdigit():
