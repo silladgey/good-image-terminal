@@ -33,7 +33,7 @@ class TerminalBackground(BaseCommand):
         @author Julien
         """
         try:
-            terminal.terminal_display.output_color = f"rgb{create_color(' '.join(args)).rgb}"
+            terminal.terminal_display.background_color = f"rgb{create_color(' '.join(args)).rgb}"
         except ValueError as e:
             terminal.output_error(e.args[0])
             return False
