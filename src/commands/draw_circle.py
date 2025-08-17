@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from commands.base_command import BaseCommand
-from utils.color import Color, colors
+from utils.color import Color
 
 if TYPE_CHECKING:
     from terminal import Terminal
@@ -66,21 +66,9 @@ class DrawCircle(BaseCommand):
         result = ""
         match len(args):
             case 0:
-                result = " x y radius color"
+                result = " x"
             case 1:
-                result = " y radius color"
+                result = " y"
             case 2:
-                result = " radius color"
-            case 3:
-                result = " color"
-            case 4:
-                for col in colors:
-                    if col.startswith(args[2]):
-                        result = col
-                if args[3].isdigit():
-                    result = " g b"
-            case 5:
-                result = " b"
-            case _:
-                pass
+                result = " radius"
         return result
