@@ -115,7 +115,16 @@ class PaintImage:
         """Get an image pixel."""
         return self.img.getpixel((x, y))
 
-    def fill_rect(self, x: int, y: int, width: int, height: int, color: Color) -> int:
+    def fill_rect(
+        self,
+        x: int,
+        y: int,
+        width: int,
+        height: int,
+        fill_color: Color,
+        outline_color: Color,
+        outline_size: int,
+    ) -> int:
         """Fill rectangle on an image.
 
         return 0 on success 1 on fail
@@ -128,7 +137,9 @@ class PaintImage:
         draw = ImageDraw.Draw(self.img)
         draw.rectangle(
             [x, y, x + width - 1, y + height - 1],
-            fill=color.rgb,
+            fill=fill_color.rgba,
+            outline=outline_color.rgba,
+            width=outline_size,
         )
         self.refresh_image()
         return 0
