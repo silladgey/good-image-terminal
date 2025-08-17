@@ -27,6 +27,7 @@ class DrawLine(BaseCommand):
         arguments r,g,b: red,green,blue numbers
         """,
     )
+    known_options = ("fg",)
 
     def __call__(self, terminal: "Terminal", *args: str, **options: str | Color) -> bool:
         """Draw line command.
