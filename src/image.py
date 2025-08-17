@@ -115,15 +115,15 @@ class PaintImage:
         """Get an image pixel."""
         return self.img.getpixel((x, y))
 
-    def fill_rect(
+    def fill_rect(  # noqa: PLR0913
         self,
         x: int,
         y: int,
         width: int,
         height: int,
-        fill_color: Color,
-        outline_color: Color,
-        outline_size: int,
+        fill_color: Color | None = None,
+        outline_color: Color | None = None,
+        outline_size: int = 0,
     ) -> int:
         """Fill rectangle on an image.
 
