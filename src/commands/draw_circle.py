@@ -1,3 +1,4 @@
+import dataclasses
 from typing import TYPE_CHECKING
 
 from commands.base_command import BaseCommand
@@ -24,10 +25,17 @@ class DrawCircle(BaseCommand):
         arguments x,y: coordinate numbers
         argument radius: color name
         """,
+        """
+        Options:
+        fg <color>: set fill color for circle
+        bg <color>: set border color for circle
+        no-fill: don't fill circle
+        outline <int>: set size of outline around circle
+        """,
     )
-    known_options = ("fg", "bg")
+    known_options = ("fg", "bg", "no-fill", "outline")
 
-    def __call__(self, terminal: "Terminal", *args: str, **options: str | Color) -> bool:
+    def __call__(self, terminal: "Terminal", *args: str, **options: str | Color) -> bool:  #  noqa: PLR0911
         """Draw circle command.
 
         :param terminal: The terminal instance.
@@ -57,7 +65,27 @@ class DrawCircle(BaseCommand):
             terminal.output_error("Radius cannot be negative.")
             return False
 
-        terminal.image.draw_circle(x, y, rad, options["fg"])
+        if "no-fill" in options:
+            fill_color = dataclasses.replace(options["fg"])
+            fill_color.a = 0
+        else:
+            fill_color = options["fg"]
+
+        if "outline" in options:
+            if options["outline"].isdigit():
+                outline_size = int(options["outline"])
+                if outline_size < 0:
+                    terminal.output_error("Invalid outline size.")
+                    return False
+                boarder_color = options["bg"]
+            else:
+                terminal.output_error("Invalid outline size.")
+                return False
+        else:
+            outline_size = 0
+            boarder_color = None
+
+        terminal.image.draw_circle(x, y, rad, fill_color, boarder_color, outline_size)
         terminal.output_info(f"Circle at {x}x{y} size {rad} filled with rgb{options['fg'].rgba}.")
         return True
 
