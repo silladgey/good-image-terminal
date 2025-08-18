@@ -17,7 +17,7 @@ class Help(BaseCommand):
     help_pages: tuple[str, ...] = (
         """help is a command that displays the help documentation of the command given.
 
-        Usage: help command integer
+        Usage: help <command> <page>
 
         The help documentation may also contain multiple pages so it can either be call multiple times
         with the same arguments to get the next page or be called with the page number you are looking for
