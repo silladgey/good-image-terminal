@@ -1,5 +1,7 @@
 from typing import TYPE_CHECKING
 
+from utils.color import Color
+
 if TYPE_CHECKING:
     from terminal import Terminal
 
@@ -10,6 +12,11 @@ class BaseCommand:
     it contains some utility functions, but most calls should be overridden in full command implementation.
 
     `name` and `help_pages` should be overwritten in full command implementation.
+    `known_options` is the options that a command can take.
+
+    The options "fg" and "bg" are special and represent the foreground and background color for drawing.
+    If these are requested, they will always be supplied
+    either temporarily changed from command line or set from `fg` and `bg` commands.
 
     @author Philip
     """
@@ -24,7 +31,7 @@ class BaseCommand:
     )
     known_options: tuple[str, ...] = ()
 
-    def __call__(self, terminal: "Terminal", *args: str, **options: str) -> bool:
+    def __call__(self, terminal: "Terminal", *args: str, **options: str | Color) -> bool:
         """Preforms the command being called using `*args`.
 
         This function should be overridden by subclasses.
@@ -41,7 +48,7 @@ class BaseCommand:
         msg = "BaseCommand should not be called and should be overridden"
         raise NotImplementedError(msg)
 
-    def predict_args(self, terminal: "Terminal", *args: str, **options: str) -> str | None:
+    def predict_args(self, terminal: "Terminal", *args: str, **options: str | Color) -> str | None:
         """Predicts the next argument for the command.
 
         This function should be overridden by subclasses.
