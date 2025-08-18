@@ -18,13 +18,16 @@ class DrawLine(BaseCommand):
     name: str = "draw_line"
     help_pages: tuple[str, ...] = (
         """
-        Usage: draw_line x1 y1 x2 y2
-        or: draw_line x1 y1 x2 y2
+        Usage: draw_line <x1> <y1> <x2> <y2>
 
         arguments x1,y1: starting coordinates
         arguments x2,y2: ending coordinates
         argument color: color name
         arguments r,g,b: red,green,blue numbers
+        """,
+        """
+        Options:
+        fg <color>: set color of line
         """,
     )
     known_options = ("fg",)
@@ -59,7 +62,7 @@ class DrawLine(BaseCommand):
         x2, y2 = int(args[2]), int(args[3])
 
         terminal.image.draw_line(x1, y1, x2, y2, options["fg"])
-        terminal.output_info(f"line from {x1}x{y1} to {x2}x{y2} with rgb{options['fg'].rgb}")
+        terminal.output_info(f"line from {x1}x{y1} to {x2}x{y2} with rgb{options['fg'].rgba}")
         return True
 
     def predict_args(self, _terminal: "Terminal", *args: str, **_options: str | Color) -> str | None:
