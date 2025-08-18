@@ -19,8 +19,7 @@ class DrawCircle(BaseCommand):
     name: str = "draw_circle"
     help_pages: tuple[str, ...] = (
         """
-        Usage: draw_circle x y radius
-        or: draw_circle x y radius
+        Usage: draw_circle <x> <y> <radius>
 
         arguments x,y: coordinate numbers
         argument radius: color name
