@@ -18,10 +18,13 @@ class DrawPixel(BaseCommand):
     name: str = "draw_pixel"
     help_pages: tuple[str, ...] = (
         """
-        Usage: draw_pixel x y
-        or: draw_pixel x y
+        Usage: draw_pixel <x> <y>
 
         arguments x,y: coordinate numbers
+        """,
+        """
+        Options:
+        fg <color>: set color of pixel
         """,
     )
     known_options = ("fg",)
