@@ -178,12 +178,25 @@ class PaintImage:
         self.refresh_image()
         return 0
 
-    def draw_circle_outlines(self, cx: int, cy: int, radius: int, color: Color) -> int:
-        """Draw a circle on the image."""
+    def draw_polygon(
+        self,
+        points: list[tuple[int, int]],
+        fill_color: Color | None = None,
+        outline_color: Color | None = None,
+        outline_size: int = 0,
+    ) -> int:
+        """Fill polygon on an image.
+
+        Return 0 on success 1 on fail
+        """
         self.undo_save()
 
         draw = ImageDraw.Draw(self.img, "RGBA")
-        bbox = [cx - radius, cy - radius, cx + radius, cy + radius]
-        draw.ellipse(bbox, outline=color.rgba)
+        draw.polygon(
+            points,
+            fill=fill_color.rgba if fill_color else None,
+            outline=outline_color.rgba if outline_color else None,
+            width=outline_size,
+        )
         self.refresh_image()
         return 0

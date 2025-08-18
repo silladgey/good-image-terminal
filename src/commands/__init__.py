@@ -3,6 +3,7 @@ from commands.base_command import BaseCommand
 from commands.draw_circle import DrawCircle
 from commands.draw_line import DrawLine
 from commands.draw_pixel import DrawPixel
+from commands.draw_polygon import DrawPolygon
 from commands.draw_rectangle import DrawRectangle
 from commands.foreground import Foreground
 from commands.help import Help
@@ -29,4 +30,5 @@ all_commands: dict[str, BaseCommand] = {
     DrawRectangle.name: DrawRectangle(),
     Foreground.name: Foreground(),
     Background.name: Background(),
+    DrawPolygon.name: DrawPolygon(),
 }
