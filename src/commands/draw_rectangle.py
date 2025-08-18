@@ -19,7 +19,7 @@ class DrawRectangle(BaseCommand):
     name: str = "draw_rectangle"
     help_pages: tuple[str, ...] = (
         """
-        Usage: draw_rectangle x y width height
+        Usage: draw_rectangle <x> <y> <width> <height>
 
         arguments x,y: coordinate numbers
         arguments width,height: width and height of the rectangle
