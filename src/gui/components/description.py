@@ -4,16 +4,24 @@ from gui.element import Button, Element, HTMLElement
 
 
 class DescriptionContent(Element):
-    """The description content element for displaying useful information to the user."""
+    """The description content element for displaying useful information to the user.
+
+    ---
+
+    :author: Jont
+
+    """
 
     def __init__(self, parent: HTMLElement | Element | None = None) -> None:
-        super().__init__("div", parent=parent, id="description-content", style="text-align: left;")
+        super().__init__(
+            "div", parent=parent, id="description-content", style="text-align: left;"
+        )
         self.class_name = "description-content"
 
         self.content_wrapper = Element(
             "div",
             parent=self,
-            style="""padding: 0 20px;""",
+            style="padding: 0 20px;",
         )
 
         header = Element(
@@ -35,6 +43,49 @@ class DescriptionContent(Element):
             "Use the 'help' command to see a list of available commands."
         )
 
+        # Footer / attribution
+        footer_sep = Element(
+            "hr",
+            parent=self.content_wrapper,
+            style="""
+            margin: 16px 0;
+            border: 0;
+            border-top: 1px solid var(--description-button-border-color);
+            """,
+        )
+        footer_sep.class_name = "description-footer-separator"
+
+        footer = Element(
+            "div",
+            parent=self.content_wrapper,
+            style="""
+            font-size: 12px;
+            opacity: 0.85;
+            padding-bottom: 4px;
+            """,
+        )
+        footer.class_name = "description-footer"
+
+        footer_text = Element(
+            "span",
+            parent=footer,
+        )
+        footer_text.text = "Project for the Pydis Summer Codejam 2025. "
+
+        link = Element(
+            "a",
+            parent=footer,
+            style="""
+            color: var(--link-color, #4ea1ff);
+            text-decoration: underline;
+            cursor: pointer;
+            """,
+        )
+
+        link["href"] = "https://github.com/Miras3210/codejam-laudatory-larkspurs/"
+        link["target"] = "_blank"
+        link.text = "GitHub Repository"
+
 
 class Description(Element):
     """The description element for displaying useful information to the user."""
@@ -54,7 +105,7 @@ class Description(Element):
             user-select: none;
             font-family: monospace;
             border: 3px solid var(--description-button-border-color);
-        """,
+            """,
         )
         expand_btn.class_name = "expand-btn"
         expand_btn.text = "About"
