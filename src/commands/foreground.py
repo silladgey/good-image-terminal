@@ -17,7 +17,15 @@ class Foreground(BaseCommand):
     help_pages: tuple[str, ...] = (
         """Sets the foreground color for use in drawing commands.
 
-        Usage: fg color
+        Usage: fg <color>
+        Examples:
+        bg 255 255 255
+        bg 100 0 0 255
+        bg gold
+        bg #C0FFEE
+        bg rgb(0 200 150)
+        bg rgba(0 255 255 100)
+        bg hsv(360 100 100)
         """,
     )
 
