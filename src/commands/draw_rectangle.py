@@ -1,3 +1,4 @@
+import dataclasses
 from typing import TYPE_CHECKING
 
 from commands.base_command import BaseCommand
@@ -18,13 +19,20 @@ class DrawRectangle(BaseCommand):
     name: str = "draw_rectangle"
     help_pages: tuple[str, ...] = (
         """
-        Usage: draw_rectangle x y width height
+        Usage: draw_rectangle <x> <y> <width> <height>
 
         arguments x,y: coordinate numbers
         arguments width,height: width and height of the rectangle
         """,
+        """
+        Options:
+        fg <color>: set fill color for rectangle
+        bg <color>: set border color for rectangle
+        no-fill: don't fill rectangle
+        outline <int>: set size of outline around rectangle
+        """,
     )
-    known_options = ("fg", "bg")
+    known_options = ("fg", "bg", "no-fill", "outline")
 
     def __call__(self, terminal: "Terminal", *args: str, **options: str | Color) -> bool:
         """Draw rectangle command.
@@ -47,11 +55,33 @@ class DrawRectangle(BaseCommand):
             terminal.output_error("Invalid coordinates.")
             return False
         x, y = int(args[0]), int(args[1])
+
         if not (args[2].isdigit() and args[3].isdigit()):
             terminal.output_error("Invalid size.")
             return False
         w, h = int(args[2]), int(args[3])
-        terminal.image.fill_rect(x, y, w, h, options["fg"])
+
+        if "no-fill" in options:
+            fill_color = dataclasses.replace(options["fg"])
+            fill_color.a = 0
+        else:
+            fill_color = options["fg"]
+
+        if "outline" in options:
+            if options["outline"].isdigit():
+                outline_size = int(options["outline"])
+                if outline_size < 0:
+                    terminal.output_error("Invalid outline size.")
+                    return False
+                outline_color = options["bg"]
+            else:
+                terminal.output_error("Invalid outline size.")
+                return False
+        else:
+            outline_size = 0
+            outline_color = None
+
+        terminal.image.fill_rect(x, y, w, h, fill_color, outline_color, outline_size)
         terminal.output_info(f"rectangle at {x}x{y} size {w}x{h} filled with rgb{options['fg'].rgba}")
         return True
 

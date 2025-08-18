@@ -108,14 +108,25 @@ class PaintImage:
     def set_pixel(self, x: int, y: int, color: Color) -> None:
         """Set an image pixel."""
         self.undo_save()
-        self.img.putpixel((x, y), color.rgb)
+
+        draw = ImageDraw.Draw(self.img, "RGBA")
+        draw.point((x, y), color.rgb)
         self.refresh_image()
 
     def get_pixel(self, x: int, y: int) -> tuple[int, ...]:
         """Get an image pixel."""
         return self.img.getpixel((x, y))
 
-    def fill_rect(self, x: int, y: int, width: int, height: int, color: Color) -> int:
+    def fill_rect(  # noqa: PLR0913
+        self,
+        x: int,
+        y: int,
+        width: int,
+        height: int,
+        fill_color: Color | None = None,
+        outline_color: Color | None = None,
+        outline_size: int = 0,
+    ) -> int:
         """Fill rectangle on an image.
 
         return 0 on success 1 on fail
@@ -125,10 +136,12 @@ class PaintImage:
 
         self.undo_save()
 
-        draw = ImageDraw.Draw(self.img)
+        draw = ImageDraw.Draw(self.img, "RGBA")
         draw.rectangle(
             [x, y, x + width - 1, y + height - 1],
-            fill=color.rgb,
+            fill=fill_color.rgba if fill_color else None,
+            outline=outline_color.rgba if outline_color else None,
+            width=outline_size,
         )
         self.refresh_image()
         return 0
@@ -137,18 +150,31 @@ class PaintImage:
         """Draw a straight line on the image."""
         self.undo_save()
 
-        draw = ImageDraw.Draw(self.img)
+        draw = ImageDraw.Draw(self.img, "RGBA")
         draw.line((x1, y1, x2, y2), fill=color.rgb)
         self.refresh_image()
         return 0
 
-    def draw_circle(self, cx: int, cy: int, radius: int, color: Color) -> int:
+    def draw_circle(  # noqa: PLR0913
+        self,
+        cx: int,
+        cy: int,
+        radius: int,
+        fill_color: Color | None = None,
+        outline_color: Color | None = None,
+        outline_size: int = 0,
+    ) -> int:
         """Draw a circle on the image."""
         self.undo_save()
 
-        draw = ImageDraw.Draw(self.img)
+        draw = ImageDraw.Draw(self.img, "RGBA")
         bbox = [cx - radius, cy - radius, cx + radius, cy + radius]
-        draw.ellipse(bbox, fill=color.rgb)
+        draw.ellipse(
+            bbox,
+            fill=fill_color.rgba if fill_color else None,
+            outline=outline_color.rgba if outline_color else None,
+            width=outline_size,
+        )
         self.refresh_image()
         return 0
 
@@ -156,8 +182,8 @@ class PaintImage:
         """Draw a circle on the image."""
         self.undo_save()
 
-        draw = ImageDraw.Draw(self.img)
+        draw = ImageDraw.Draw(self.img, "RGBA")
         bbox = [cx - radius, cy - radius, cx + radius, cy + radius]
-        draw.ellipse(bbox, outline=color.rgb)
+        draw.ellipse(bbox, outline=color.rgba)
         self.refresh_image()
         return 0
