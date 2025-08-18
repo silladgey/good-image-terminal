@@ -17,7 +17,7 @@ class TerminalBackground(BaseCommand):
     help_pages: tuple[str, ...] = (
         """terminal_background is a command that changes background color of the terminal.
 
-        Usage: terminal_background color
+        Usage: terminal_background <color>
         Exemple: bg rgb(255, 100, 0)
         """,
     )
