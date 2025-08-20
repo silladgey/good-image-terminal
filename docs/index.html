@@ -29,63 +29,17 @@
 		/>
 	</head>
 	<body>
-		<!--
-		<section
-			id="installation"
-			style="
-				font-family: system-ui, sans-serif;
-				max-width: 860px;
-				margin: 2rem auto;
-				line-height: 1.5;
-			"
-		>
-			<h1 style="margin-top: 0">Installation</h1>
-			<p>Choose one of the methods below to get started.</p>
-			<h2>Source (recommended for now)</h2>
-			<pre><code>git clone https://github.com/Miras3210/codejam-laudatory-larkspurs.git
-cd codejam-laudatory-larkspurs
-python -m venv .venv
-# Windows
-.venv\Scripts\activate
-# Linux / macOS
-source .venv/bin/activate
-pip install --upgrade pip
-pip install .
-python build.py --serve --port 8000</code></pre>
-			<p>
-				Open
-				<a href="http://localhost:8000" target="_blank" rel="noopener"
-					>http://localhost:8000</a
-				>.
-			</p>
-			<h2>Dev / Editable Install</h2>
-			<pre><code>pip install --upgrade pip
-pip install --group dev -e .  # if your pip supports dependency groups
-# otherwise:
-pip install -e .
-pip install pre-commit ruff</code></pre>
-			<h2>Docker</h2>
-			<pre><code>docker build -t good-image-terminal:latest .
-docker run --rm -p 8000:8000 good-image-terminal:latest</code></pre>
-			<p>Then visit <code>http://localhost:8000</code>.</p>
-			<h2>PyPI (future)</h2>
-			<p>Once published:</p>
-			<pre><code>pip install good-image-terminal</code></pre>
-		</section>
-		-->
 		<div id="app"></div>
 		<script>
 			window.$docsify = {
-				name: "Good Image Terminal",
+				name: '<img src="_media/banner.svg" alt="Good Image Terminal" style="width:100%;display:block;">',
 				repo: "https://github.com/Miras3210/codejam-laudatory-larkspurs",
 				coverpage: true,
+				loadNavbar: true,
 				loadSidebar: true,
 				subMaxLevel: 2,
+				externalLinkTarget: "_blank",
 				<!-- themeColor: "#fff", -->
-				darkMode: {
-					toggleBtn: true,
-					default: true,
-				},
 			};
 		</script>
 	</body>
