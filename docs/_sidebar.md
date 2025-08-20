@@ -1,4 +1,6 @@
-<!-- docs/_sidebar.md -->
+<!-- _sidebar.md -->
 
 * [Home](/)
-* [Installation](installation.md "Installation Guide")
+* [Installation](installation.md)
+* [Commands](commands.md)
+* [Contribution](contribution.md)
