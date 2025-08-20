@@ -1,6 +1,8 @@
-![logo](_media/banner.svg)
+<!-- _coverpage.md -->
 
-# good image terminal
+![logo](_media/icon.png)
+
+# Good Image Terminal
 
 > An image editor. In the terminal. In the browser.
 
@@ -10,4 +12,4 @@
 - Runs in the browser. No installation required
 
 [Start Editing](https://good-image-terminal.vercel.app)
-[Get Started](#docsify)
+[Get Started](#get-started)
