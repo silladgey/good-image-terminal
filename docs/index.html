@@ -1,0 +1,138 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<meta charset="UTF-8" />
+		<title>Docs</title>
+
+		<script
+			src="https://cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"
+			defer
+		></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"
+			defer
+		></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"
+			defer
+		></script>
+
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css"
+		/>
+
+		<!-- <style>
+			:root {
+				--bg-color: #121212;
+				--text-color: #e0e0e0;
+				--link-color: #66ccff;
+				--sidebar-bg: #1e1e1e;
+				--sidebar-text: #bbb;
+				--sidebar-active: #66ccff;
+			}
+
+			body {
+				background-color: var(--bg-color);
+				color: var(--text-color);
+			}
+
+			a {
+				color: var(--link-color);
+			}
+
+			.sidebar {
+				background-color: var(--sidebar-bg);
+				color: var(--sidebar-text);
+			}
+
+			.sidebar a {
+				color: var(--sidebar-text);
+			}
+
+			.sidebar a.active {
+				color: var(--sidebar-active);
+				font-weight: bold;
+			}
+
+			.app-name {
+				color: var(--sidebar-active) !important;
+			}
+
+			code,
+			pre {
+				background-color: #1e1e1e;
+				color: #ccc;
+			}
+
+			.markdown-section {
+				padding: 40px;
+			}
+		</style> -->
+	</head>
+	<body>
+		<!--
+		<section
+			id="installation"
+			style="
+				font-family: system-ui, sans-serif;
+				max-width: 860px;
+				margin: 2rem auto;
+				line-height: 1.5;
+			"
+		>
+			<h1 style="margin-top: 0">Installation</h1>
+			<p>Choose one of the methods below to get started.</p>
+			<h2>Source (recommended for now)</h2>
+			<pre><code>git clone https://github.com/Miras3210/codejam-laudatory-larkspurs.git
+cd codejam-laudatory-larkspurs
+python -m venv .venv
+# Windows
+.venv\Scripts\activate
+# Linux / macOS
+source .venv/bin/activate
+pip install --upgrade pip
+pip install .
+python build.py --serve --port 8000</code></pre>
+			<p>
+				Open
+				<a href="http://localhost:8000" target="_blank" rel="noopener"
+					>http://localhost:8000</a
+				>.
+			</p>
+			<h2>Dev / Editable Install</h2>
+			<pre><code>pip install --upgrade pip
+pip install --group dev -e .  # if your pip supports dependency groups
+# otherwise:
+pip install -e .
+pip install pre-commit ruff</code></pre>
+			<h2>Docker</h2>
+			<pre><code>docker build -t good-image-terminal:latest .
+docker run --rm -p 8000:8000 good-image-terminal:latest</code></pre>
+			<p>Then visit <code>http://localhost:8000</code>.</p>
+			<h2>PyPI (future)</h2>
+			<p>Once published:</p>
+			<pre><code>pip install good-image-terminal</code></pre>
+		</section>
+		-->
+		<div id="app"></div>
+		<script>
+			window.$docsify = {
+				name: "Good Image Terminal",
+				repo: "https://github.com/Miras3210/codejam-laudatory-larkspurs",
+				coverpage: true,
+				loadSidebar: true,
+				subMaxLevel: 2,
+				<!-- themeColor: "#fff", -->
+				darkMode: {
+					toggleBtn: true,
+					default: true,
+				},
+			};
+		</script>
+	</body>
+</html>
