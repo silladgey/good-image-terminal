@@ -1,7 +1,7 @@
 # Good Image Terminal
 
 <p align="center">
-    <img src="logo.png" alt="Logo" />
+    <img src="docs/_media/icon.svg" alt="Logo" style="max-width: 192px; max-height: 192px;" />
 </p>
 
 <p align="center">
