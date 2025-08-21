@@ -12,6 +12,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 bg <color>
 ```
 
+![bg command](_media/showcase/bg.gif)
+
 ## `draw_circle`
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -19,8 +21,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 ### Usage
 
 ```
-draw_circle <x> <y> <radius>
+draw_circle <x> <y> <radius> [--fg <color>] [--bg <color>] [--outline <int>] [--no-fill]
 ```
+
+![draw_circle command](_media/showcase/draw_circle.gif)
 
 ## `draw_line`
 
@@ -29,8 +33,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 ### Usage
 
 ```
-draw_line <x1> <y1> <x2> <y2>
+draw_line <x1> <y1> <x2> <y2> [--fg <color>]
 ```
+
+![draw_line command](_media/showcase/draw_line.gif)
 
 ## `draw_pixel`
 
@@ -39,8 +45,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 ### Usage
 
 ```
-draw_pixel <x> <y>
+draw_pixel <x> <y> [--fg <color>]
 ```
+
+![draw_pixel command](_media/showcase/draw_pixel.gif)
 
 ## `draw_polygon`
 
@@ -49,8 +57,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 ### Usage
 
 ```
-draw_rectangle <x1> <y1> <x2> <y2> <x3> <y3> ...
+draw_rectangle <x> <y> <width> <height> [--fg <color>] [--bg <color>] [--outline <int>] [--no-fill]
 ```
+
+![draw_polygon command](_media/showcase/draw_polygon.gif)
 
 ## `draw_rectangle`
 
@@ -62,6 +72,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 draw_rectangle <x> <y> <width> <height>
 ```
 
+![draw_rectangle command](_media/showcase/draw_rectangle.gif)
+
 ## `fg`
 
 Sets the foreground color for use in drawing commands.
@@ -72,6 +84,8 @@ Sets the foreground color for use in drawing commands.
 fg <color>
 ```
 
+![fg command](_media/showcase/fg.gif)
+
 ## `help`
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -79,7 +93,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 ### Usage
 
 ```
-help <command> <page>
+help [command] [page]
 ```
 
 ## `image_info`
@@ -99,7 +113,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 ### Usage
 
 ```
-load_image <image_name.png>
+load_image <filename>
 ```
 
 ## `ls`
@@ -129,7 +143,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 ### Usage
 
 ```
-save_image <image_name.png>
+save_image <filename>
 ```
 
 ## `terminal_background`
