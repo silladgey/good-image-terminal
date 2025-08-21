@@ -22,7 +22,10 @@
 
 ### Philip
 - <https://github.com/Osiris32-and-a-half>
-- ...
+- Command parser/environment and command framework
+- Written/maintained a Majority of the commands listed in [/commands](https://miras3210.github.io/codejam-laudatory-larkspurs/#/commands) as the system evolved
+  - notable ones being help and bg/fg
+- Came up with the initial idea. (which then got misinterpreted twice)
 
 ### Ricky
 - <https://github.com/silladgey>
