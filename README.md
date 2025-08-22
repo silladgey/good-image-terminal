@@ -20,34 +20,36 @@ codejam-laudatory-larkspurs/
 ├─ LICENSE
 ├─ .pre-commit-config.yaml   # Lint & format hooks
 ├─ .github/workflows/
+│   ├─ build.yaml            # CI build pipeline
 │   ├─ deploy.yaml           # CI deployment pipeline
-|   ├─ build.yaml            # CI build pipeline
 │   └─ lint.yaml             # CI lint pipeline
+├─ docs/                     # Documentation files
 ├─ public/                   # Static assets
 │   ├─ index.html
 │   ├─ favicon.* / icons
 │   ├─ site.webmanifest
 │   └─ templates/
 │       └─ app_template.html
-├─ samples/                  # Example environment files
-│   └─ Pipfile
 └─ src/                      # Application source (runs in Pyodide)
     ├─ main.py               # Entry point
     ├─ terminal.py           # Terminal UI
     ├─ image.py              # Image model
     ├─ commands/             # Individual terminal commands
-    │   ├─ base_command.py
     │   ├─ background.py
+    │   ├─ base_command.py
     │   ├─ draw_circle.py
     │   ├─ draw_line.py
     │   ├─ draw_pixel.py
+    │   ├─ draw_polygon.py
     │   ├─ draw_rectangle.py
+    │   ├─ foreground.py
     │   ├─ help.py
     │   ├─ image_info.py
     │   ├─ load_image.py
     │   ├─ ls.py
     │   ├─ ping.py
     │   ├─ save_image.py
+    │   ├─ terminal_background.py
     │   ├─ undo.py
     │   └─ __init__.py
     ├─ gui/                   # Lightweight GUI abstraction
