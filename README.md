@@ -19,6 +19,8 @@ This project is a web-based image editing tool that runs entirely in the browser
 
 The tool allows users to upload images and apply edits through various commands, all within a user-friendly interface.
 
+The inherently visual task of image editing performed entirely through programmatic terminal commands makes Good Image Terminal the "Wrong tool for the job." Despite this dissonance, we've made GIT comfortable and responsive.
+
 ## Project Structure
 
 ```text
