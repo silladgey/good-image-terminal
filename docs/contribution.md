@@ -198,4 +198,7 @@ from pathlib import Path
 
 <https://github.com/Jujulien45>
 
-- ...
+- app layout design
+- help with gui
+- new feature ideas
+- testing
