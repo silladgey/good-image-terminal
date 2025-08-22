@@ -1,6 +1,13 @@
 # Good Image Terminal
 
 <p align="center">
+<a href="https://github.com/Miras3210/codejam-laudatory-larkspurs/actions/workflows/lint.yaml"><img src="https://github.com/Miras3210/codejam-laudatory-larkspurs/actions/workflows/lint.yaml/badge.svg" alt="Lint"></a>
+<a href="https://github.com/Miras3210/codejam-laudatory-larkspurs/actions/workflows/build.yaml"><img src="https://github.com/Miras3210/codejam-laudatory-larkspurs/actions/workflows/build.yaml/badge.svg" alt="Build"></a>
+<a href="https://github.com/Miras3210/codejam-laudatory-larkspurs/actions/workflows/deploy.yaml"><img src="https://github.com/Miras3210/codejam-laudatory-larkspurs/actions/workflows/deploy.yaml/badge.svg" alt="Deploy"></a>
+<a href="https://github.com/Miras3210/codejam-laudatory-larkspurs/actions/workflows/pages/pages-build-deployment"><img src="https://github.com/Miras3210/codejam-laudatory-larkspurs/actions/workflows/pages/pages-build-deployment/badge.svg" alt="Deploy"></a>
+</p>
+
+<p align="center">
     <img src="docs/_media/icon.svg" width="192" height="192" alt="Logo" style="max-width: 192px; max-height: 192px;" />
 </p>
 
