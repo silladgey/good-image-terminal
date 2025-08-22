@@ -32,6 +32,7 @@ This project uses the following packages:
 
 - [Pillow](https://python-pillow.org/) - for image processing
 - [Pyodide](https://pyodide.org) - to run Python in the browser and for in-browser file management
+- [Webcolors](https://pypi.org/project/webcolors/) - used to parse hex and CSS named colors
 
 ## FAQ
 
