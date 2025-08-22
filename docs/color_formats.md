@@ -8,7 +8,8 @@ These color formats are accepted by commands that take a `<color>` argument (e.g
 
 - Space- or comma-separated `R G B [A]` (0–255)
 - Hex `#RRGGBB`
-- Named CSS colors (e.g. `gold`)
+- Named CSS colors
+  - List can be found [here](https://developer.mozilla.org/en-US/docs/Web/CSS/named-color)
 - Functional notations:
   - `rgb(r g b)` / `rgb(r, g, b)`
   - `rgba(r g b a)` / `rgba(r, g, b, a)`
@@ -24,4 +25,4 @@ These color formats are accepted by commands that take a `<color>` argument (e.g
 - `rgba(0 255 255 100)`
 - `hsv(360 100 100)`
 
-> Alpha channel (A) is optional. Values are clamped into range where necessary.
+> Alpha channel (A) is optional. Values are rejected if out of bounds.
