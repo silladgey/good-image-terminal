@@ -2,7 +2,7 @@
 
 ![logo](_media/icon.png)
 
-# Good Image Terminal
+# Good Image Terminal <small>0.1.0</small>
 
 > An image editor. In the terminal. In the browser.
 
@@ -12,4 +12,4 @@
 - Runs in the browser
 
 [Start Editing](https://good-image-terminal.vercel.app)
-[Get Started](#get-started)
+[Getting Started](#good-image-terminal)

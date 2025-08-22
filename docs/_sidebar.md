@@ -1,6 +1,6 @@
 <!-- _sidebar.md -->
 
-* [Get Started](/ "Good Image Terminal docs")
+* [Home](/ "Good Image Terminal docs")
 * [Features](features.md)
 * [Installation](installation.md)
 * [Commands](commands.md)

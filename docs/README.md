@@ -13,7 +13,7 @@ Your presentation should cover the following:
 - [X] Roughly what each team member contributed
 -->
 
-# Get Started
+# Good Image Terminal
 
 ## A Wrong Tool for the Job
 
