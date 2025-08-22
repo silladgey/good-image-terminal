@@ -9,7 +9,7 @@
 - Built with **Pyodide**
 - Supports basic image editing commands
 - Easy to use with a simple command-line interface
-- Runs in the browser. No installation required
+- Runs in the browser
 
 [Start Editing](https://good-image-terminal.vercel.app)
 [Get Started](#get-started)
