@@ -31,6 +31,15 @@ This project uses the following packages:
 - [Pillow](https://python-pillow.org/) - for image processing
 - [Pyodide](https://pyodide.org) - to run Python in the browser and for in-browser file management
 
+## FAQ
+
+<details>
+    <summary><h3 style="display: inline;">How can I download the image?</h3></summary>
+    <p>On Chrome / Firefox / Brave / Safari / Edge, you can right-click the image and select <strong>Save image as...</strong> to download it.</p>
+    <p>On iOS, you can tap and hold the image to bring up the context menu, then select <strong>Add to Photos</strong> or <strong>Save Image</strong>.</p>
+    <p>On Android, you can tap and hold the image, then select <strong>Download Image</strong> from the context menu.</p>
+</details>
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/Miras3210/codejam-laudatory-larkspurs/blob/main/LICENSE) file for details.
