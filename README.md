@@ -8,6 +8,10 @@
     <em>An image editor. In the terminal. In the browser.</em>
 </p>
 
+This project is a web-based image editing tool that runs entirely in the browser through a terminal. It uses Pyodide to enable Python-based image processing without the need for a backend server. All while letting JavaScript sit back, relax, and just load the page.
+
+The tool allows users to upload images and apply edits through various commands, all within a user-friendly interface.
+
 ## Project Structure
 
 ```text
