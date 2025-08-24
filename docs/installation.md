@@ -7,7 +7,7 @@ Choose one of the methods below to get started.
 ### 1. Fork the repository
 
 ```bash
-git clone https://github.com/Miras3210/codejam-laudatory-larkspurs.git && cd codejam-laudatory-larkspurs
+git clone https://github.com/silladgey/good-image-terminal.git && cd good-image-terminal
 ```
 
 ### 2. Setup and activate a Python environment

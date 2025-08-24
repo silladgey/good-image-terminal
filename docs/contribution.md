@@ -4,7 +4,7 @@
 
 ## How to Contribute
 
-1. Fork and clone the repo from <https://github.com/Miras3210/codejam-laudatory-larkspurs>.
+1. Fork and clone the repo from <https://github.com/silladgey/good-image-terminal>.
 2. Make some changes to the source code.
 3. Run code checks to make sure nothing breaks.
 4. Push your changes and open a pull request.
@@ -154,7 +154,7 @@ from pathlib import Path
 
 ## Contributors
 
-<a href="https://github.com/Miras3210/codejam-laudatory-larkspurs/graphs/contributors"><img src="https://camo.githubusercontent.com/14f13a19c08fa212bdd5e2bc5cae2c35df4450011e2996efc0a2377f8cecf030/68747470733a2f2f636f6e747269622e726f636b732f696d6167653f7265706f3d4d69726173333231302f636f64656a616d2d6c61756461746f72792d6c61726b7370757273" alt="Contributors" data-canonical-src="https://contrib.rocks/image?repo=Miras3210/codejam-laudatory-larkspurs" style="max-width: 100%;"></a>
+<a href="https://github.com/silladgey/good-image-terminal/graphs/contributors"><img src="https://camo.githubusercontent.com/14f13a19c08fa212bdd5e2bc5cae2c35df4450011e2996efc0a2377f8cecf030/68747470733a2f2f636f6e747269622e726f636b732f696d6167653f7265706f3d4d69726173333231302f636f64656a616d2d6c61756461746f72792d6c61726b7370757273" alt="Contributors" data-canonical-src="https://contrib.rocks/image?repo=silladgey/good-image-terminal" style="max-width: 100%;"></a>
 
 ### Mira
 
@@ -176,7 +176,7 @@ from pathlib import Path
   - notable ones being help and bg/fg
 - Came up with the initial idea. (which then got misinterpreted twice)
 
-### Ricky
+### Richard Szilagyi
 
 <https://github.com/silladgey>
 

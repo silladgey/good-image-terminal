@@ -1,8 +1,13 @@
-name: Build project and publish
+name: Build project
 
 on:
     push:
         branches: [main]
+        paths:
+            - src/**
+            - public/**
+            - "**/*.py"
+            - "**/*.toml"
     workflow_dispatch:
 
 concurrency:

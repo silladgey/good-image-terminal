@@ -1,10 +1,10 @@
 # Good Image Terminal
 
 <p align="center">
-<a href="https://github.com/Miras3210/codejam-laudatory-larkspurs/actions/workflows/lint.yaml"><img src="https://github.com/Miras3210/codejam-laudatory-larkspurs/actions/workflows/lint.yaml/badge.svg" alt="Lint"></a>
-<a href="https://github.com/Miras3210/codejam-laudatory-larkspurs/actions/workflows/build.yaml"><img src="https://github.com/Miras3210/codejam-laudatory-larkspurs/actions/workflows/build.yaml/badge.svg" alt="Build"></a>
-<a href="https://github.com/Miras3210/codejam-laudatory-larkspurs/actions/workflows/deploy.yaml"><img src="https://github.com/Miras3210/codejam-laudatory-larkspurs/actions/workflows/deploy.yaml/badge.svg" alt="Deploy"></a>
-<a href="https://github.com/Miras3210/codejam-laudatory-larkspurs/actions/workflows/pages/pages-build-deployment"><img src="https://github.com/Miras3210/codejam-laudatory-larkspurs/actions/workflows/pages/pages-build-deployment/badge.svg" alt="Deploy"></a>
+<a href="https://github.com/silladgey/good-image-terminal/actions/workflows/lint.yaml"><img src="https://github.com/silladgey/good-image-terminal/actions/workflows/lint.yaml/badge.svg" alt="Lint"></a>
+<a href="https://github.com/silladgey/good-image-terminal/actions/workflows/build.yaml"><img src="https://github.com/silladgey/good-image-terminal/actions/workflows/build.yaml/badge.svg" alt="Build"></a>
+<a href="https://github.com/silladgey/good-image-terminal/actions/workflows/deploy.yaml"><img src="https://github.com/silladgey/good-image-terminal/actions/workflows/deploy.yaml/badge.svg" alt="Deploy"></a>
+<a href="https://github.com/silladgey/good-image-terminal/actions/workflows/deploy-docs.yaml"><img src="https://github.com/silladgey/good-image-terminal/actions/workflows/deploy-docs.yaml/badge.svg" alt="Deploy"></a>
 </p>
 
 <p align="center">
@@ -13,6 +13,13 @@
 
 <p align="center">
     <em>An image editor. In the terminal. In the browser.</em>
+</p>
+
+<!-- markdownlint-disable-next-line MD033 -->
+<p align="center">
+    <strong>
+        <a href="https://good-image-terminal.vercel.app">Live Demo</a> · <a href="https://silladgey.github.io/good-image-terminal">Documentation</a>
+    </strong>
 </p>
 
 This project is a web-based image editing tool that runs entirely in the browser through a terminal. It uses Pyodide to enable Python-based image processing without the need for a backend server. All while letting JavaScript sit back, relax, and just load the page.
@@ -95,7 +102,7 @@ codejam-laudatory-larkspurs/
 python -m venv .venv
 ```
 
-2. Entering it
+1. Entering it
 
 ```shell
 # Linux, Bash
@@ -112,7 +119,7 @@ $ .venv/bin/Activate.ps1
 > .venv\Scripts\Activate.ps1
 ```
 
-3. Installing development dependecies
+1. Installing development dependecies
 
 ```shell
 pip install --group dev
@@ -124,7 +131,7 @@ _If it gives errors try:_
 python -m pip install --upgrade pip
 ```
 
-4. If we want to exit our enviroment we do
+1. If we want to exit our enviroment we do
 
 ```shell
 deactivate
@@ -175,4 +182,4 @@ docker build -t good-image-terminal:latest .  # after changing code
 
 ## Contributors
 
-[![Contributors](https://contrib.rocks/image?repo=Miras3210/codejam-laudatory-larkspurs)](https://github.com/Miras3210/codejam-laudatory-larkspurs/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=silladgey/good-image-terminal)](https://github.com/silladgey/good-image-terminal/graphs/contributors)

@@ -15,7 +15,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /app
 
 # Copy project files
-COPY build.py pyproject.toml README.md uv.lock* ./
+COPY build.py pyproject.toml README.md ./
 RUN pip install --no-cache-dir .
 
 COPY public ./public

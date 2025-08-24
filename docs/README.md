@@ -45,7 +45,7 @@ This project uses the following packages:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/Miras3210/codejam-laudatory-larkspurs/blob/main/LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/silladgey/good-image-terminal/blob/main/LICENSE) file for details.
 
 ### Assets & Media
 
